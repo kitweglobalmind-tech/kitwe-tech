@@ -29,6 +29,8 @@
         }
         .container {
             padding: 20px;
+            max-width: 600px;
+            margin: auto;
         }
         .card {
             background-color: #003399;
@@ -37,10 +39,24 @@
             padding: 15px;
             margin: 15px 0;
             text-align: left;
+            transition: 0.3s;
+        }
+        .card:hover {
+            background-color: #0040cc;
         }
         .card h3 {
             color: #FFD700;
             margin-top: 0;
+        }
+        .btn {
+            display: inline-block;
+            background-color: #FFD700;
+            color: #002366;
+            padding: 8px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-top: 10px;
         }
         footer {
             margin-top: 30px;
@@ -64,12 +80,14 @@
 
         <div class="card">
             <h3>🤖 AI Learning Hub</h3>
-            <p>Jifunze matumizi ya AI kuanzia hatua ya kwanza (beginner) kwa Kiswahili rahisi.</p>
+            <p>Jifunze matumizi ya AI kuanzia hatua ya kwanza (beginner) kwa Kiswahili rahisi, kuanzia misingi ya Prompt Engineering hadi kutumia AI kwenye biashara.</p>
+            <a href="#" class="btn">Anza Kujifunza</a>
         </div>
 
         <div class="card">
             <h3>💡 Innovation Hub</h3>
-            <p>Tengeneza, thibitisha, na hifadhi mawazo yako ya biashara na teknolojia.</p>
+            <p>Tengeneza, thibitisha, na hifadhi mawazo yako ya biashara na teknolojia kwa mfumo wa vitendo.</p>
+            <a href="#" class="btn">Gundua Mawazo</a>
         </div>
     </div>
 
