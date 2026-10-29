@@ -3,102 +3,596 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Somo la 1: Utangulizi wa AI - KITWE TECH HUB</title>
+    <title>KITWE IDEALAB AI</title>
+    <!-- FontAwesome kwa ajili ya Icon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
-            background-color: #002366;
-            color: #FFFFFF;
-            font-family: Arial, sans-serif;
+        * {
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            text-align: left;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
         }
-        header {
-            background-color: #001540;
-            padding: 15px;
-            text-align: center;
-            border-bottom: 3px solid #FFD700;
+
+        body {
+            background-color: #f0f4f9;
+            color: #1f1f1f;
+            padding-bottom: 70px;
         }
-        h1 {
-            color: #FFD700;
-            font-size: 20px;
-            margin: 0;
+
+        /* Top Navigation Header */
+        .navbar {
+            background-color: #002366;
+            color: #ffffff;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
         }
-        .container {
-            padding: 20px;
-            max-width: 600px;
-            margin: auto;
+
+        .navbar-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
-        h2 {
-            color: #FFD700;
+
+        .brand-logo {
+            background-color: #ffd700;
+            color: #002366;
+            font-weight: bold;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .brand-title {
+            font-size: 15px;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        .bell-icon {
+            color: #ffd700;
             font-size: 18px;
         }
-        p, li {
-            line-height: 1.6;
-            font-size: 14px;
-            color: #E0E0E0;
+
+        /* Tab Content Display */
+        .tab-content {
+            display: none;
+            padding: 16px;
+            max-width: 600px;
+            margin: 0 auto;
         }
-        .box {
-            background-color: #003399;
-            border: 1px solid #FFD700;
-            border-radius: 6px;
-            padding: 15px;
-            margin: 15px 0;
+
+        .tab-content.active {
+            display: block;
         }
-        .btn {
-            display: inline-block;
-            background-color: #FFD700;
-            color: #002366;
-            padding: 8px 15px;
-            text-decoration: none;
-            border-radius: 5px;
+
+        /* ----- HOME TAB STYLES ----- */
+        .greeting-title {
+            font-size: 20px;
             font-weight: bold;
-            margin-top: 15px;
+            color: #002366;
+        }
+
+        .tagline {
+            font-size: 13px;
+            color: #ffd700;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .status-badge {
+            background-color: #d97706;
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 3px 8px;
+            border-radius: 12px;
+            float: right;
+            text-transform: uppercase;
+        }
+
+        .card-title {
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .card-desc {
+            font-size: 12px;
+            color: #5f6368;
+            margin-bottom: 12px;
+            line-height: 1.4;
+        }
+
+        .btn-yellow {
+            background-color: #ffd700;
+            color: #002366;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        /* Usage Metrics */
+        .usage-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
             text-align: center;
         }
-        footer {
-            margin-top: 30px;
-            padding: 15px;
-            font-size: 12px;
-            background-color: #001540;
-            color: #FFD700;
+
+        .usage-val {
+            font-weight: bold;
+            font-size: 14px;
+            color: #002366;
+        }
+
+        .usage-lbl {
+            font-size: 11px;
+            color: #70757a;
+            margin-top: 2px;
+        }
+
+        .section-header {
+            font-size: 14px;
+            font-weight: bold;
+            margin: 15px 0 10px 0;
+            color: #1f1f1f;
+        }
+
+        /* Services Grid */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .service-item {
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 12px 8px;
             text-align: center;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            cursor: pointer;
+        }
+
+        .service-icon {
+            font-size: 20px;
+            margin-bottom: 6px;
+        }
+
+        .service-name {
+            font-size: 11px;
+            font-weight: 600;
+            color: #002366;
+            line-height: 1.2;
+        }
+
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .link-blue {
+            color: #002366;
+            font-size: 12px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        /* ----- AI CHAT TAB STYLES ----- */
+        .chat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .chat-subtext {
+            font-size: 11px;
+            color: #70757a;
+            margin-bottom: 15px;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #002366;
+            color: #002366;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: 5px;
+            cursor: pointer;
+        }
+
+        .prompt-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .prompt-btn {
+            background-color: #ffffff;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 10px 12px;
+            text-align: left;
+            font-size: 12px;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .chat-box {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-bottom: 60px;
+        }
+
+        .chat-message {
+            padding: 10px 14px;
+            border-radius: 12px;
+            font-size: 13px;
+            max-width: 85%;
+            line-height: 1.4;
+        }
+
+        .chat-user {
+            background-color: #002366;
+            color: #ffffff;
+            align-self: flex-end;
+        }
+
+        .chat-bot {
+            background-color: #ffffff;
+            color: #333;
+            align-self: flex-start;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        /* Input Area at Bottom of Chat */
+        .chat-input-bar {
+            position: fixed;
+            bottom: 60px;
+            left: 0;
+            right: 0;
+            background-color: #ffffff;
+            padding: 8px 16px;
+            display: flex;
+            gap: 8px;
+            box-shadow: 0 -1px 4px rgba(0,0,0,0.05);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .chat-input-bar input {
+            flex: 1;
+            border: 1px solid #e0e0e0;
+            border-radius: 20px;
+            padding: 8px 15px;
+            font-size: 13px;
+            outline: none;
+        }
+
+        .send-btn {
+            background-color: #002366;
+            color: #ffffff;
+            border: none;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        /* ----- BOTTOM NAVIGATION BAR ----- */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 55px;
+            background-color: #ffffff;
+            border-top: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            z-index: 100;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #70757a;
+            font-size: 10px;
+            text-decoration: none;
+            cursor: pointer;
+            width: 20%;
+        }
+
+        .nav-item i {
+            font-size: 16px;
+            margin-bottom: 3px;
+        }
+
+        .nav-item.active {
+            color: #002366;
+            font-weight: bold;
+            border-top: 2px solid #ffd700;
+            padding-top: 2px;
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <h1>AI LEARNING HUB</h1>
-    </header>
-
-    <div class="container">
-        <h2>Somo la 1: Nini maana ya Artificial Intelligence (AI)?</h2>
-        <p>Karibu kwenye somo lako la kwanza kabisa! Hapa tutafafanua AI kwa Kiswahili chepesi bila lugha ngumu za kitaalamu.</p>
-
-        <div class="box">
-            <h3>🤖 AI ni Nini?</h3>
-            <p><strong>Artificial Intelligence (Akili Bandia)</strong> ni uwezo wa kompyuta, simu, au mfumo wa kiteknolojia kufikiri, kujifunza, na kufanya maamuzi kama binadamu.</p>
+    <!-- TOP HEADER -->
+    <div class="navbar">
+        <div class="navbar-left">
+            <i class="fa-solid fa-bars"></i>
+            <div class="brand-logo">K</div>
+            <div class="brand-title">KITWE IDEALAB AI</div>
         </div>
-
-        <h3>Mifano Halisi Tunayotumia Kila Siku:</h3>
-        <ul>
-            <li><strong>Utabiri wa Maneno (Autocorrect):</strong> Jinsi simu yako inavyotambua neno unalotaka kuandika ukiwa unatuma ujumbe.</li>
-            <li><strong>Mitandao ya Kijamii:</strong> Jinsi TikTok au Instagram zinavyosoma mambo unayopenda na kukuletea video zinazofanana.</li>
-            <li><strong>Mratibu wa Sauti:</strong> Programu zinazoweza kusikia na kujibu maswali yako.</li>
-        </ul>
-
-        <div class="box">
-            <h3>Kwanini Vijana wa Tanzania Tujifunze AI?</h3>
-            <p>AI inarahisisha kazi, inaongeza kasi ya uzalishaji kwenye biashara, na inafungua fursa mpya za kujipatia kipato kupitia mtandao.</p>
-        </div>
-
-        <a href="index.html" class="btn">⬅ Rudi Ukurasa Mkuu</a>
+        <i class="fa-solid fa-bell bell-icon"></i>
     </div>
 
-    <footer>
-        &copy; 2026 KITWE GlobalMind. Haki zote zimehifadhiwa.
-    </footer>
+    <!-- ================= TAB 1: NYUMBANI (HOME) ================= -->
+    <div id="tab-home" class="tab-content active">
+        <div class="greeting-title">Karibu, YAHAYA 👋</div>
+        <div class="tagline">Think. Create. Innovate.</div>
 
+        <!-- Card: Usajili Wako -->
+        <div class="card">
+            <span class="status-badge">INASUBIRI - PENDING</span>
+            <div class="card-title">Usajili wako</div>
+            <div class="card-desc">Malipo yako yanasubiri uthibitisho wa admin. Utafunguliwa Premium baada ya kuthibitishwa.</div>
+            <button class="btn-yellow" onclick="switchTab('ai')">Pata Premium</button>
+        </div>
+
+        <!-- Card: Matumizi ya AI ya Leo -->
+        <div class="card">
+            <div class="card-title" style="margin-bottom: 12px;">Matumizi ya AI ya leo</div>
+            <div class="usage-grid">
+                <div>
+                    <div class="usage-val" id="usage-count">0/5</div>
+                    <div class="usage-lbl">Mazungumzo</div>
+                </div>
+                <div>
+                    <div class="usage-val">0/2</div>
+                    <div class="usage-lbl">Mawazo</div>
+                </div>
+                <div>
+                    <div class="usage-val">0/1</div>
+                    <div class="usage-lbl">Mpango wa AI</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grid ya Huduma Zote -->
+        <div class="section-header">Huduma</div>
+        <div class="services-grid">
+            <div class="service-item" onclick="switchTab('ai')">
+                <div class="service-icon">🤖</div>
+                <div class="service-name">Uliza KITWE AI</div>
+            </div>
+            <div class="service-item">
+                <div class="service-icon">💡</div>
+                <div class="service-name">Jenereta ya Mawazo</div>
+            </div>
+            <div class="service-item">
+                <div class="service-icon">📊</div>
+                <div class="service-name">Tathmini ya Wazo</div>
+            </div>
+            <div class="service-item">
+                <div class="service-icon">📁</div>
+                <div class="service-name">Mawazo Yaliyohifadhiwa</div>
+            </div>
+            <div class="service-item">
+                <div class="service-icon">⭐</div>
+                <div class="service-name">Vipendwa</div>
+            </div>
+            <div class="service-item">
+                <div class="service-icon">⚖️</div>
+                <div class="service-name">LInganisha Mawazo</div>
+            </div>
+            <div class="service-item">
+                <div class="service-icon">🛠️</div>
+                <div class="service-name">KITWE DIY LAB</div>
+            </div>
+            <div class="service-item">
+                <div class="service-icon">🧮</div>
+                <div class="service-name">Kikokotoo cha Biashara</div>
+            </div>
+            <div class="service-item">
+                <div class="service-icon">🏆</div>
+                <div class="service-name">Changamoto za Ubunifu</div>
+            </div>
+            <div class="service-item">
+                <div class="service-icon">📐</div>
+                <div class="service-name">Mpangaji wa Mfano</div>
+            </div>
+            <div class="service-item">
+                <div class="service-icon">📈</div>
+                <div class="service-name">Maendeleo ya Mfano</div>
+            </div>
+            <div class="service-item">
+                <div class="service-icon">📝</div>
+                <div class="service-name">Mpango wa Biashara</div>
+            </div>
+            <div class="service-item">
+                <div class="service-icon">📚</div>
+                <div class="service-name">Masomo</div>
+            </div>
+        </div>
+
+        <!-- Section: Arifa na Mawazo ya hivi karibuni -->
+        <div class="card" style="margin-top: 15px;">
+            <div class="flex-between">
+                <div class="card-title">Arifa za hivi karibuni</div>
+                <a href="#" class="link-blue">Zote →</a>
+            </div>
+            <div style="font-size: 12px; font-weight: 600; margin-top: 5px;">Karibu KITWE IDEALAB AI</div>
+            <div style="font-size: 11px; color: #70757a;">16 Oct 2026, 17:30</div>
+        </div>
+
+        <div class="card">
+            <div class="flex-between">
+                <div class="card-title">Mawazo yako ya karibuni</div>
+                <a href="#" class="link-blue">Yote →</a>
+            </div>
+            <div style="font-size: 12px; color: #5f6368; margin-top: 5px;">
+                Bado hujahifadhi wazo. Anza na <a href="#" class="link-blue">Jenereta ya Mawazo</a>.
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= TAB 2: ULIZA KITWE AI ================= -->
+    <div id="tab-ai" class="tab-content">
+        <div class="chat-header">
+            <div class="greeting-title" style="font-size: 18px;">Uliza KITWE AI</div>
+            <div>
+                <button class="btn-outline">Historia</button>
+                <button class="btn-outline">Mpya</button>
+            </div>
+        </div>
+        <div class="chat-subtext">
+            Kiswahili, English au Swanglish. Leo: <span id="chat-limit-text">0/5</span> · Historia inahifadhiwa (unaweza kuzima kwenye Wasifu).
+        </div>
+
+        <!-- Container ya Chat -->
+        <div class="chat-box" id="chat-box">
+            <div style="font-size: 12px; color: #5f6368; font-weight: 600;">Anza mazungumzo. Mfano:</div>
+            
+            <div class="prompt-list" id="default-prompts">
+                <button class="prompt-btn" onclick="sendPrompt('Mambo!')">Mambo!</button>
+                <button class="prompt-btn" onclick="sendPrompt('Nina mtaji wa TSh 20,000. Nipe wazo la biashara.')">Nina mtaji wa TSh 20,000. Nipe wazo la biashara.</button>
+                <button class="prompt-btn" onclick="sendPrompt('Nieleze photosynthesis kwa Kiswahili rahisi.')">Nieleze photosynthesis kwa Kiswahili rahisi.</button>
+                <button class="prompt-btn" onclick="sendPrompt('Nipe wazo la kifaa cha cardboard, na vipimo na gharama.')">Nipe wazo la kifaa cha cardboard, na vipimo na gharama.</button>
+            </div>
+        </div>
+
+        <!-- Bar ya Kuandikia Ujumbe -->
+        <div class="chat-input-bar">
+            <input type="text" id="user-input" placeholder="Andika ujumbe...">
+            <button class="send-btn" onclick="sendMessage()"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <!-- ================= BOTTOM NAVIGATION BAR ================= -->
+    <div class="bottom-nav">
+        <div class="nav-item active" onclick="switchTab('home')" id="nav-home">
+            <i class="fa-solid fa-house"></i>
+            <div>Nyumbani</div>
+        </div>
+        <div class="nav-item" onclick="switchTab('ai')" id="nav-ai">
+            <i class="fa-solid fa-robot"></i>
+            <div>AI</div>
+        </div>
+        <div class="nav-item">
+            <i class="fa-solid fa-lightbulb"></i>
+            <div>Mawazo</div>
+        </div>
+        <div class="nav-item">
+            <i class="fa-solid fa-wrench"></i>
+            <div>DIY</div>
+        </div>
+        <div class="nav-item">
+            <i class="fa-solid fa-bars"></i>
+            <div>Zaidi</div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        let chatCount = 0;
+        const maxFreeChats = 5;
+
+        // Function ya kubadili Tab za Chini
+        function switchTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+
+            if(tabName === 'home') {
+                document.getElementById('tab-home').classList.add('active');
+                document.getElementById('nav-home').classList.add('active');
+            } else if(tabName === 'ai') {
+                document.getElementById('tab-ai').classList.add('active');
+                document.getElementById('nav-ai').classList.add('active');
+            }
+        }
+
+        // Send Prompt kutoka kwenye orodha
+        function sendPrompt(text) {
+            document.getElementById('user-input').value = text;
+            sendMessage();
+        }
+
+        // Function ya kutuma Ujumbe na kuangalia Limit
+        function sendMessage() {
+            const inputField = document.getElementById('user-input');
+            const message = inputField.value.trim();
+
+            if (message === '') return;
+
+            // Ukaguzi wa Limit ya Bure (Free Tier Check)
+            if (chatCount >= maxFreeChats) {
+                alert("Umetumia kikomo chako cha mazungumzo ya bure ya leo (5/5). Tafadhali lipia Premium ili kuendelea!");
+                return;
+            }
+
+            const chatBox = document.getElementById('chat-box');
+
+            // Futa prompts za mfano kama ni mara ya kwanza
+            const defaultPrompts = document.getElementById('default-prompts');
+            if (defaultPrompts) defaultPrompts.style.display = 'none';
+
+            // Ongeza Ujumbe wa Mtumiaji
+            const userMsg = document.createElement('div');
+            userMsg.className = 'chat-message chat-user';
+            userMsg.innerText = message;
+            chatBox.appendChild(userMsg);
+
+            inputField.value = '';
+
+            // Ongeza Idadi ya Matumizi
+            chatCount++;
+            document.getElementById('usage-count').innerText = `${chatCount}/${maxFreeChats}`;
+            document.getElementById('chat-limit-text').innerText = `${chatCount}/${maxFreeChats}`;
+
+            // Jibu la AI (Simulated AI Response)
+            setTimeout(() => {
+                const botMsg = document.createElement('div');
+                botMsg.className = 'chat-message chat-bot';
+                botMsg.innerText = `[KITWE AI]: Asante kwa swali lako! Kuhusu "${message}", mfumo wetu unakuchambulia jibu la kitaalamu...`;
+                chatBox.appendChild(botMsg);
+                window.scrollTo(0, document.body.scrollHeight);
+            }, 800);
+        }
+    </script>
 </body>
 </html>
