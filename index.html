@@ -1,1166 +1,222 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="sw">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KITWE IDEALAB AI</title>
-    <meta name="theme-color" content="#002366">
-    <link rel="manifest" href="data:application/manifest+json,{&quot;name&quot;:&quot;KITWE IDEALAB AI&quot;,&quot;short_name&quot;:&quot;KITWE AI&quot;,&quot;start_url&quot;:&quot;.&quot;,&quot;display&quot;:&quot;standalone&quot;,&quot;background_color&quot;:&quot;#f4f6f9&quot;,&quot;theme_color&quot;:&quot;#002366&quot;}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            --navy: #002366;
-            --navy-dark: #001744;
-            --gold: #FFD700;
-            --gold-hover: #e6c200;
-            --bg-light: #f4f6f9;
-            --white: #ffffff;
-            --text-main: #1f2937;
-            --text-muted: #6b7280;
-            --border-color: #e5e7eb;
-            --pending-bg: #d97706;
-            --danger-red: #dc2626;
-            --success-green: #16a34a;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-        }
-
-        body {
-            background-color: var(--bg-light);
-            color: var(--text-main);
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            max-width: 480px;
-            margin: 0 auto;
-            position: relative;
-            box-shadow: 0 0 20px rgba(0,0,0,0.1);
-        }
-
-        /* Top Header Navbar */
-        header {
-            background-color: var(--navy);
-            color: var(--white);
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 16px;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.15);
-        }
-
-        .header-left {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .menu-btn {
-            background: none;
-            border: none;
-            color: var(--white);
-            font-size: 22px;
-            cursor: pointer;
-        }
-
-        .brand-logo {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: 700;
-            font-size: 16px;
-            letter-spacing: 0.5px;
-        }
-
-        .logo-circle {
-            width: 28px;
-            height: 28px;
-            border-radius: 50%;
-            border: 2px solid var(--gold);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 900;
-            color: var(--gold);
-            font-size: 14px;
-        }
-
-        .bell-btn {
-            background: none;
-            border: none;
-            color: var(--gold);
-            font-size: 20px;
-            position: relative;
-            cursor: pointer;
-        }
-
-        /* Side Navigation Drawer */
-        .drawer-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 200;
-            display: none;
-            backdrop-filter: blur(2px);
-        }
-
-        .drawer-overlay.active {
-            display: block;
-        }
-
-        .drawer {
-            position: fixed;
-            top: 0;
-            left: -320px;
-            width: 300px;
-            height: 100%;
-            background: var(--white);
-            z-index: 201;
-            transition: left 0.3s ease;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 5px 0 25px rgba(0,0,0,0.2);
-            overflow-y: auto;
-        }
-
-        .drawer.active {
-            left: 0;
-        }
-
-        .drawer-user-card {
-            background: var(--navy);
-            color: var(--white);
-            padding: 24px 16px;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            border-bottom: 3px solid var(--gold);
-        }
-
-        .user-avatar-circle {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            border: 2px solid var(--gold);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 18px;
-            color: var(--gold);
-            background: rgba(255,255,255,0.1);
-        }
-
-        .user-info-text .user-name {
-            font-size: 13px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-
-        .user-info-text .user-email {
-            font-size: 11px;
-            color: #d1d5db;
-            margin-top: 2px;
-        }
-
-        .drawer-menu {
-            list-style: none;
-            padding: 10px 0;
-            flex: 1;
-        }
-
-        .drawer-menu li a {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 12px 18px;
-            color: var(--text-main);
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            border-left: 4px solid transparent;
-        }
-
-        .drawer-menu li a:hover, .drawer-menu li a.active {
-            background: #f0f4ff;
-            color: var(--navy);
-            border-left-color: var(--navy);
-        }
-
-        .drawer-item-title {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-
-        .drawer-item-title i {
-            width: 20px;
-            text-align: center;
-            color: var(--navy);
-        }
-
-        .drawer-subtitle {
-            font-size: 11px;
-            color: var(--text-muted);
-        }
-
-        .drawer-footer {
-            padding: 16px;
-            border-top: 1px solid var(--border-color);
-            text-align: center;
-            background: #fafafa;
-        }
-
-        .logout-btn {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid var(--navy);
-            background: var(--white);
-            color: var(--navy);
-            border-radius: 20px;
-            font-weight: 600;
-            cursor: pointer;
-            font-size: 13px;
-            margin-bottom: 12px;
-        }
-
-        .brand-version {
-            font-size: 11px;
-            color: var(--text-muted);
-        }
-
-        /* App Main Content Screens */
-        main {
-            flex: 1;
-            padding: 16px;
-            padding-bottom: 80px;
-        }
-
-        .screen {
-            display: none;
-        }
-
-        .screen.active {
-            display: block;
-        }
-
-        .screen-title {
-            font-size: 18px;
-            font-weight: 700;
-            color: var(--navy);
-            margin-bottom: 14px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        /* UI Cards & Utility Components */
-        .card {
-            background: var(--white);
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 14px;
-            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-            border: 1px solid rgba(0,0,0,0.04);
-        }
-
-        .card-pending {
-            border-top: 4px solid var(--pending-bg);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .badge-pending {
-            background: var(--pending-bg);
-            color: var(--white);
-            font-size: 10px;
-            font-weight: 700;
-            padding: 3px 8px;
-            border-radius: 4px;
-            letter-spacing: 0.5px;
-        }
-
-        .btn-gold {
-            background: var(--gold);
-            color: var(--navy-dark);
-            border: none;
-            padding: 10px 16px;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 13px;
-            cursor: pointer;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .btn-navy {
-            background: var(--navy);
-            color: var(--white);
-            border: none;
-            padding: 12px 18px;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-            width: 100%;
-        }
-
-        .usage-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-bottom: 14px;
-        }
-
-        .usage-box {
-            background: var(--white);
-            padding: 10px;
-            border-radius: 8px;
-            text-align: center;
-            font-size: 11px;
-            border: 1px solid var(--border-color);
-        }
-
-        .usage-box span {
-            display: block;
-            font-weight: 700;
-            font-size: 13px;
-            color: var(--navy);
-            margin-top: 4px;
-        }
-
-        /* Form Inputs */
-        .form-group {
-            margin-bottom: 12px;
-        }
-
-        .form-group label {
-            display: block;
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-main);
-            margin-bottom: 5px;
-        }
-
-        .form-control {
-            width: 100%;
-            padding: 10px 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            font-size: 13px;
-            background: #fff;
-            outline: none;
-        }
-
-        .form-control:focus {
-            border-color: var(--navy);
-        }
-
-        textarea.form-control {
-            resize: vertical;
-            min-height: 70px;
-        }
-
-        /* Slider Controls (Idea Evaluation) */
-        .slider-group {
-            margin-bottom: 14px;
-        }
-
-        .slider-header {
-            display: flex;
-            justify-content: space-between;
-            font-size: 12px;
-            margin-bottom: 4px;
-        }
-
-        .slider-control {
-            width: 100%;
-            accent-color: var(--navy);
-        }
-
-        .score-box {
-            background: #b45309;
-            color: var(--white);
-            padding: 16px;
-            border-radius: 10px;
-            text-align: center;
-            font-size: 26px;
-            font-weight: 800;
-            margin: 16px 0;
-        }
-
-        /* Tabs (DIY & AI) */
-        .tab-buttons {
-            display: flex;
-            background: #e2e8f0;
-            border-radius: 8px;
-            padding: 3px;
-            margin-bottom: 14px;
-        }
-
-        .tab-btn {
-            flex: 1;
-            padding: 8px;
-            border: none;
-            background: none;
-            font-size: 12px;
-            font-weight: 600;
-            border-radius: 6px;
-            cursor: pointer;
-            color: var(--text-muted);
-        }
-
-        .tab-btn.active {
-            background: var(--navy);
-            color: var(--white);
-        }
-
-        /* Pricing Card Special Offer */
-        .offer-card {
-            background: var(--navy);
-            color: var(--white);
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-            margin-bottom: 16px;
-            border: 2px solid var(--gold);
-        }
-
-        .strike-price {
-            text-decoration: line-through;
-            opacity: 0.7;
-            font-size: 14px;
-        }
-
-        .main-price {
-            font-size: 32px;
-            font-weight: 900;
-            color: var(--gold);
-            margin: 6px 0;
-        }
-
-        .payment-method {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            margin-bottom: 8px;
-            background: var(--white);
-        }
-
-        .copy-btn {
-            background: #f3f4f6;
-            border: 1px solid #d1d5db;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 12px;
-            cursor: pointer;
-            font-weight: 600;
-        }
-
-        /* Accordion Collapsible Items */
-        .accordion-item {
-            background: var(--white);
-            border-radius: 8px;
-            margin-bottom: 8px;
-            border: 1px solid var(--border-color);
-            overflow: hidden;
-        }
-
-        .accordion-header {
-            padding: 12px;
-            font-weight: 600;
-            font-size: 13px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            background: #fafafa;
-        }
-
-        .accordion-body {
-            padding: 12px;
-            font-size: 12px;
-            line-height: 1.5;
-            color: #374151;
-            border-top: 1px solid var(--border-color);
-            display: none;
-        }
-
-        .accordion-item.active .accordion-body {
-            display: block;
-        }
-
-        /* Bottom Fixed Navigation Bar */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100%;
-            max-width: 480px;
-            height: 60px;
-            background: var(--white);
-            display: flex;
-            border-top: 1px solid var(--border-color);
-            z-index: 100;
-        }
-
-        .nav-item {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-            color: var(--text-muted);
-            font-size: 10px;
-            gap: 3px;
-            cursor: pointer;
-        }
-
-        .nav-item i {
-            font-size: 18px;
-        }
-
-        .nav-item.active {
-            color: var(--navy);
-            font-weight: 700;
-        }
-
-        .nav-item.active i {
-            color: var(--gold);
-        }
-
-        /* Chat Message Area */
-        .chat-messages {
-            height: 300px;
-            overflow-y: auto;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 12px;
-            background: #fafafa;
-            margin-bottom: 10px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        .message {
-            max-width: 80%;
-            padding: 8px 12px;
-            border-radius: 12px;
-            font-size: 13px;
-        }
-
-        .msg-user {
-            background: var(--navy);
-            color: var(--white);
-            align-self: flex-end;
-            border-bottom-right-radius: 2px;
-        }
-
-        .msg-ai {
-            background: #e5e7eb;
-            color: var(--text-main);
-            align-self: flex-start;
-            border-bottom-left-radius: 2px;
-        }
-
-        .chat-input-bar {
-            display: flex;
-            gap: 8px;
-        }
-
-        .chat-send-btn {
-            background: var(--navy);
-            color: var(--white);
-            border: none;
-            width: 42px;
-            border-radius: 8px;
-            cursor: pointer;
-        }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#002366">
+<title>KITWE IDEALAB AI</title>
+<style>
+:root{--navy:#002366;--royal:#0b3b9c;--gold:#FFD700;--bg:#f2f6ff;--card:#fff;--text:#14213d;--muted:#5b6785;--line:#dde3f0;--good:#14804a;--bad:#c0392b;--nav:62px}
+body.dark{--bg:#0b1226;--card:#141d38;--text:#e8edf9;--muted:#9aa6c4;--line:#27335a}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;font-family:system-ui,-apple-system,Roboto,sans-serif;background:var(--bg);color:var(--text);font-size:16px;line-height:1.45;padding-bottom:calc(var(--nav) + env(safe-area-inset-bottom))}
+header{position:sticky;top:0;z-index:30;background:var(--navy);color:#fff;display:flex;align-items:center;gap:10px;padding:10px 12px;padding-top:calc(10px + env(safe-area-inset-top));border-bottom:3px solid var(--gold)}
+header button{background:none;border:0;color:#fff;font-size:1.5rem;padding:4px 8px}
+header .logo{width:30px;height:30px;border-radius:50%;background:var(--navy);border:2px solid var(--gold);color:var(--gold);font-weight:800;display:grid;place-items:center}
+header h1{margin:0;font-size:1rem;flex:1}header h1 span{color:var(--gold)}
+.badge{position:relative}.badge i{position:absolute;top:-2px;right:0;background:var(--gold);color:var(--navy);font-style:normal;font-size:.65rem;font-weight:800;border-radius:99px;min-width:16px;padding:0 4px;text-align:center}
+main{max-width:760px;margin:0 auto;padding:14px}
+h2{color:var(--navy);font-size:1.25rem;margin:4px 0 8px}body.dark h2,body.dark h3{color:var(--gold)}
+h3{color:var(--navy);font-size:1rem;margin:14px 0 6px}
+.sub{color:var(--muted);font-size:.88rem;margin:0 0 10px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
+label{display:block;font-weight:600;font-size:.85rem;margin:10px 0 4px}
+input,select,textarea{width:100%;font:inherit;padding:12px;border:1.5px solid var(--line);border-radius:10px;background:var(--card);color:var(--text)}
+textarea{min-height:90px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:3px solid rgba(255,215,0,.6);border-color:var(--navy)}
+input[type=range]{padding:0;accent-color:var(--navy)}
+button{font:inherit;cursor:pointer}
+.btn{border:0;border-radius:12px;padding:12px 18px;font-weight:700;background:var(--navy);color:#fff;min-height:46px}
+body.dark .btn{background:var(--royal)}
+.btn.gold{background:var(--gold);color:var(--navy)}
+.btn.ghost{background:transparent;color:var(--navy);border:1.5px solid var(--navy)}body.dark .btn.ghost{color:var(--gold);border-color:var(--gold)}
+.btn.danger{background:var(--bad)}.btn.sm{padding:7px 12px;min-height:34px;font-size:.85rem;border-radius:9px}
+.btn.block{width:100%;margin-top:12px}.btn:disabled{opacity:.55}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center}
+.stat b{display:block;font-size:1.5rem;color:var(--navy)}body.dark .stat b{color:var(--gold)}.stat small{color:var(--muted)}
+.banner{background:linear-gradient(150deg,var(--navy),var(--royal));color:#fff;border-radius:14px;padding:16px;margin-bottom:12px;border-bottom:4px solid var(--gold)}
+.banner h2{color:#fff;margin:0}.banner p{margin:4px 0 0;opacity:.9;font-size:.9rem}
+.msg{padding:11px 13px;border-radius:12px;margin:10px 0;font-size:.9rem}
+.msg.err{background:#fdecea;color:#8a1f14;border:1px solid #f5c2bc}.msg.ok{background:#e6f6ed;color:#0e5d36;border:1px solid #b7e2c8}
+.msg.warn{background:#fff8db;color:#6b5200;border:1px solid #f1df8a}.msg.info{background:#eaf0ff;color:var(--navy);border:1px solid #cdd9f7}
+.tag{display:inline-block;font-size:.7rem;font-weight:700;padding:2px 9px;border-radius:99px;background:#e8eefc;color:var(--navy)}
+.tag.gold{background:var(--gold)}.tag.pend{background:#fff0c2;color:#8a5a00}.tag.good{background:#d9f3e4;color:#0e5d36}.tag.bad{background:#fde0dc;color:#8a1f14}
+.out{white-space:pre-wrap;word-wrap:break-word;background:var(--card);border:1.5px solid var(--gold);border-radius:14px;padding:14px;margin-top:12px}
+.item{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:8px}
+.item .t{display:flex;justify-content:space-between;gap:8px;font-weight:700}
+.meta{color:var(--muted);font-size:.8rem}
+.bar{height:12px;background:var(--line);border-radius:99px;overflow:hidden}.bar i{display:block;height:100%;background:var(--gold);transition:width .3s}
+.score{background:#b36b00;color:#fff;border-radius:12px;text-align:center;font-size:2rem;font-weight:800;padding:12px;margin-top:12px}.score small{font-size:1rem;opacity:.85}
+.score.good{background:var(--good)}.score.low{background:var(--bad)}
+.seg{display:flex;gap:6px;margin-bottom:10px}.seg button{flex:1;border:0;border-radius:10px;padding:11px;font-weight:700;background:#e8eefc;color:var(--navy)}.seg button.on{background:var(--navy);color:#fff}
+details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:8px}summary{font-weight:700;cursor:pointer}
+details .body{margin-top:8px;font-size:.92rem}details ul,details ol{padding-left:20px;margin:6px 0}
+table{width:100%;border-collapse:collapse;font-size:.88rem}th,td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left}td.r,th.r{text-align:right}
+.step{display:flex;gap:8px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;margin-top:8px}
+.step button.st{border:0;background:none;font-size:1.3rem}.step b{flex:1}.step span{font-size:.78rem;color:var(--muted)}
+.note-in{margin-top:4px}
+.chat{display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
+.bubble{max-width:88%;padding:10px 13px;border-radius:16px;white-space:pre-wrap;word-wrap:break-word}
+.bubble.me{align-self:flex-end;background:var(--navy);color:#fff;border-bottom-right-radius:4px}
+.bubble.bot{align-self:flex-start;background:var(--card);border:1px solid var(--line);border-bottom-left-radius:4px}
+.chips{display:flex;flex-direction:column;gap:6px;margin:8px 0}.chips button{text-align:left;background:var(--card);border:1px solid var(--line);color:var(--navy);border-radius:10px;padding:11px}body.dark .chips button{color:var(--text)}
+.chatbar{position:sticky;bottom:calc(var(--nav) + env(safe-area-inset-bottom) + 4px);background:var(--bg);padding:6px 0}
+.chatbar form{display:flex;gap:8px}.chatbar textarea{min-height:46px;max-height:110px}
+.spin{display:inline-block;width:15px;height:15px;border:3px solid rgba(0,35,102,.25);border-top-color:var(--navy);border-radius:50%;animation:s .8s linear infinite;vertical-align:-3px;margin-right:6px}@keyframes s{to{transform:rotate(360deg)}}
+nav.bottom{position:fixed;left:0;right:0;bottom:0;height:calc(var(--nav) + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom);background:var(--card);border-top:3px solid var(--gold);display:flex;z-index:30}
+nav.bottom button{flex:1;border:0;background:none;color:var(--muted);font-size:.7rem;font-weight:600;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+nav.bottom button b{font-size:1.3rem;font-weight:400}nav.bottom button.on{color:var(--navy);box-shadow:inset 0 3px 0 var(--gold)}body.dark nav.bottom button.on{color:var(--gold)}
+#side{position:fixed;inset:0;z-index:50;display:none}#side.open{display:block}
+#side .shade{position:absolute;inset:0;background:rgba(0,0,0,.5)}
+#side .panel{position:absolute;left:0;top:0;bottom:0;width:84%;max-width:340px;background:var(--card);overflow:auto;padding:14px;padding-top:calc(14px + env(safe-area-inset-top))}
+#side .who{border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:8px}
+#side .who b{display:block}#side .who small{color:var(--muted)}
+#side a{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:11px 8px;border-radius:10px;color:var(--text);text-decoration:none}
+#side a small{color:var(--muted);font-size:.7rem;text-align:right}#side a.on{background:#e8eefc;font-weight:700}body.dark #side a.on{background:#1f2c52}
+#toast{position:fixed;left:50%;bottom:calc(var(--nav) + 18px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);background:var(--navy);color:#fff;border:2px solid var(--gold);padding:10px 18px;border-radius:99px;font-weight:600;opacity:0;pointer-events:none;transition:.25s;z-index:60;max-width:90vw;text-align:center}
+#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.offer{background:linear-gradient(150deg,var(--navy),var(--royal));color:#fff;border:2px solid var(--gold);border-radius:14px;padding:16px;text-align:center;margin-bottom:12px}
+.offer .p{font-size:2.4rem;font-weight:800;color:var(--gold)}.offer s{opacity:.7}
+.acct{display:flex;justify-content:space-between;align-items:center;gap:8px;border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:8px}
+.acct b{font-size:1.15rem;color:var(--navy);letter-spacing:.5px}body.dark .acct b{color:var(--gold)}
+@page{size:A4;margin:14mm}
+@media print{header,nav.bottom,#side,#toast,.noprint,form{display:none!important}body{background:#fff;color:#000;padding:0}.out{border:0;padding:0}main{padding:0}}
+</style>
 </head>
 <body>
+<header>
+  <button data-act="menu" aria-label="Menyu">☰</button>
+  <div class="logo">K</div>
+  <h1>KITWE IDEALAB <span>AI</span></h1>
+  <button class="badge" data-go="notifications" aria-label="Arifa">🔔<i id="bell" hidden>0</i></button>
+</header>
+<main id="view"></main>
+<nav class="bottom" id="bottom"></nav>
+<div id="side"><div class="shade" data-act="menu"></div><div class="panel" id="sidePanel"></div></div>
+<div id="toast" role="status" aria-live="polite"></div>
 
-    <!-- Top Header -->
-    <header>
-        <div class="header-left">
-            <button class="menu-btn" id="openDrawer"><i class="fa-solid fa-bars"></i></button>
-            <div class="brand-logo">
-                <div class="logo-circle">K</div>
-                <span>KITWE IDEALAB AI</span>
-            </div>
-        </div>
-        <button class="bell-btn" onclick="navigateTo('notificationsScreen')">
-            <i class="fa-solid fa-bell"></i>
-        </button>
-    </header>
+<script>
+'use strict';
+/* =====================================================================
+   KITWE IDEALAB AI — faili moja. Data zote zinahifadhiwa kwenye simu (localStorage).
+   MIPANGILIO (hariri hapa tu):
+   ===================================================================== */
+const CONFIG = {
+  // Anwani ya Worker/seva ya AI. Acha tupu = AI haijaunganishwa (programu inasema wazi).
+  // Inatarajia: POST {messages:[{role,content}], lang:'sw'}  ->  {reply:'...'}
+  AI_ENDPOINT: '',
+  // Anwani ya seva ya malipo (hiari). Tupu = malipo yanahifadhiwa kwenye simu kama "INASUBIRI" tu.
+  API_BASE: '',
+  FREE_CHAT_PER_DAY: 5,
+  // true = chat inajibu kwa MFANO wa ndani (si AI halisi) pale AI_ENDPOINT haijawekwa. Weka false kuzima.
+  SIMULATE_AI: true,
+  // true = kitufe cha "Thibitisha (DEMO)" kinaonekana kwa majaribio TU. Weka false kwenye programu halisi.
+  DEMO_MODE: false,
+  PRICE: 600, MONTHS: 3, OLD_PRICE: 900,
+  ACCOUNTS: [
+    { id: 'mpesa',   name: 'Vodacom M-Pesa', number: '0796133662', holder: 'Yahaya Boniphace Andrea' },
+    { id: 'airtel',  name: 'Airtel Money',   number: '0683530583', holder: 'Amina Adam Kitwe' },
+    { id: 'halotel', name: 'Halotel Money',  number: '0610333788', holder: 'Yahaya Boniphace Andrea' },
+    { id: 'tigo',    name: 'Tigo Pesa',      number: '',           holder: '' }, // weka namba yako ya Tigo Pesa ili ionekane
+  ].filter((a) => a.number),
+};
 
-    <!-- Side Menu Drawer Overlay -->
-    <div class="drawer-overlay" id="drawerOverlay"></div>
+/* ---------- Hifadhi ---------- */
+const KEY = 'kitwe_idealab_v1';
+const DEFAULT = {
+  profile: { name: 'Yahaya Boniphace Andrea', email: 'yahayakitwe@gmail.com', institution: 'TIA Kigoma', dark: true, saveChat: true },
+  ideas: [], evals: [], projects: [], payments: [], notifs: [], chat: [], chatUse: { date: '', n: 0 },
+  submissions: {}, genCount: 0, plan: {}, lessonsRead: {},
+};
+let D;
+function load() { try { D = Object.assign(structuredClone(DEFAULT), JSON.parse(localStorage.getItem(KEY) || '{}')); } catch { D = structuredClone(DEFAULT); } }
+function save() { try { localStorage.setItem(KEY, JSON.stringify(D.profile.saveChat ? D : { ...D, chat: [] })); } catch { toast('Imeshindwa kuhifadhi (nafasi ya kivinjari imejaa?)'); } }
+load();
 
-    <!-- Side Drawer Menu -->
-    <aside class="drawer" id="drawer">
-        <div class="drawer-user-card">
-            <div class="user-avatar-circle">K</div>
-            <div class="user-info-text">
-                <div class="user-name">YAHAYA BONIFACE ANDREA</div>
-                <div class="user-email">yahayakitwe@gmail.com</div>
-            </div>
-        </div>
+/* ---------- Zana ---------- */
+const $ = (s, r = document) => r.querySelector(s);
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+const money = (n) => 'TSh ' + Math.round(Number(n) || 0).toLocaleString('en-US');
+const fmt = (ts) => new Date(ts).toLocaleString('sw-TZ', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+const todayKey = () => new Date().toISOString().slice(0, 10);
+const num = (id) => { const v = ($('#' + id) || {}).value; return v === '' || v == null ? NaN : Number(v); };
+const val = (id) => (($('#' + id) || {}).value || '').trim();
+const errBox = (m) => `<div class="msg err" role="alert">${esc(m)}</div>`;
+const okBox = (m) => `<div class="msg ok">${esc(m)}</div>`;
+let toastT;
+function toast(m) { const e = $('#toast'); e.textContent = m; e.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => e.classList.remove('show'), 2200); }
+function notify(title, body) { D.notifs.unshift({ id: uid(), title, body, ts: Date.now(), read: false }); D.notifs = D.notifs.slice(0, 50); save(); bell(); }
+function bell() { const n = D.notifs.filter((x) => !x.read).length; const b = $('#bell'); b.hidden = !n; b.textContent = n; }
+async function copyText(t) { try { await navigator.clipboard.writeText(t); toast('Imenakiliwa'); } catch { toast('Imeshindwa kunakili'); } }
+function download(name, text, type = 'text/plain') {
+  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([text], { type: type + ';charset=utf-8' }));
+  a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+}
+const isPremium = () => !!(CONFIG.DEMO_MODE && D.demoPremium); // Premium halisi huthibitishwa na seva (admin); hapa ni DEMO tu.
 
-        <ul class="drawer-menu">
-            <li>
-                <a href="#" onclick="navigateTo('dashboardScreen')">
-                    <div class="drawer-item-title"><i class="fa-solid fa-house"></i> Nyumbani</div>
-                    <div class="drawer-subtitle">Dashboard</div>
-                </a>
-            </li>
-            <li>
-                <a href="#" onclick="navigateTo('aiChatScreen')">
-                    <div class="drawer-item-title"><i class="fa-solid fa-robot"></i> Uliza KITWE AI</div>
-                    <div class="drawer-subtitle">KITWE AI Chat</div>
-                </a>
-            </li>
-            <li>
-                <a href="#" onclick="navigateTo('ideaGenScreen')">
-                    <div class="drawer-item-title"><i class="fa-solid fa-lightbulb"></i> Jenereta ya Mawazo</div>
-                    <div class="drawer-subtitle">Idea Generator</div>
-                </a>
-            </li>
-            <li>
-                <a href="#" onclick="navigateTo('ideaEvalScreen')">
-                    <div class="drawer-item-title"><i class="fa-solid fa-chart-bar"></i> Tathmini ya Wazo</div>
-                    <div class="drawer-subtitle">Idea Evaluation</div>
-                </a>
-            </li>
-            <li>
-                <a href="#" onclick="navigateTo('savedIdeasScreen')">
-                    <div class="drawer-item-title"><i class="fa-solid fa-folder"></i> Mawazo Yaliyohifadhiwa</div>
-                    <div class="drawer-subtitle">Saved Ideas</div>
-                </a>
-            </li>
-            <li>
-                <a href="#" onclick="navigateTo('favoritesScreen')">
-                    <div class="drawer-item-title"><i class="fa-solid fa-star"></i> Vipendwa</div>
-                    <div class="drawer-subtitle">Favorites</div>
-                </a>
-            </li>
-            <li>
-                <a href="#" onclick="navigateTo('compareIdeasScreen')">
-                    <div class="drawer-item-title"><i class="fa-solid fa-scale-balanced"></i> Linganisha Mawazo</div>
-                    <div class="drawer-subtitle">Compare Ideas</div>
-                </a>
-            </li>
-            <li>
-                <a href="#" onclick="navigateTo('diyLabScreen')">
-                    <div class="drawer-item-title"><i class="fa-solid fa-wrench"></i> KITWE DIY LAB</div>
-                    <div class="drawer-subtitle">DIY Lab</div>
-                </a>
-            </li>
-            <li>
-                <a href="#" onclick="navigateTo('calculatorScreen')">
-                    <div class="drawer-item-title"><i class="fa-solid fa-calculator"></i> Kikokotoo cha Biashara</div>
-                    <div class="drawer-subtitle">Business Calculator</div>
-                </a>
-            </li>
-            <li>
-                <a href="#" onclick="navigateTo('challengesScreen')">
-                    <div class="drawer-item-title"><i class="fa-solid fa-trophy"></i> Changamoto za Ubunifu</div>
-                    <div class="drawer-subtitle">Innovation Challenges</div>
-                </a>
-            </li>
-            <li>
-                <a href="#" onclick="navigateTo('protoPlannerScreen')">
-                    <div class="drawer-item-title"><i class="fa-solid fa-drafting-compass"></i> Mpangaji wa Mfano</div>
-                    <div class="drawer-subtitle">Prototype Planner</div>
-                </a>
-            </li>
-            <li>
-                <a href="#" onclick="navigateTo('progressTrackerScreen')">
-                    <div class="drawer-item-title"><i class="fa-solid fa-chart-line"></i> Maendeleo ya Mfano</div>
-                    <div class="drawer-subtitle">Progress Tracker</div>
-                </a>
-            </li>
-            <li>
-                <a href="#" onclick="navigateTo('businessPlanScreen')">
-                    <div class="drawer-item-title"><i class="fa-solid fa-file-pen"></i> Mpango wa Biashara</div>
-                    <div class="drawer-subtitle">Business Plan</div>
-                </a>
-            </li>
-            <li>
-                <a href="#" onclick="navigateTo('lessonsScreen')">
-                    <div class="drawer-item-title"><i class="fa-solid fa-book-open"></i> Masomo</div>
-                    <div class="drawer-subtitle">Learning Resources</div>
-                </a>
-            </li>
-            <li>
-                <a href="#" onclick="navigateTo('notificationsScreen')">
-                    <div class="drawer-item-title"><i class="fa-solid fa-bell"></i> Arifa</div>
-                    <div class="drawer-subtitle">Notifications</div>
-                </a>
-            </li>
-            <li>
-                <a href="#" onclick="navigateTo('profileScreen')">
-                    <div class="drawer-item-title"><i class="fa-solid fa-user"></i> Wasifu Wangu</div>
-                    <div class="drawer-subtitle">User Profile</div>
-                </a>
-            </li>
-            <li>
-                <a href="#" onclick="navigateTo('paymentScreen')">
-                    <div class="drawer-item-title"><i class="fa-solid fa-credit-card"></i> Usajili na Malipo</div>
-                    <div class="drawer-subtitle">Subscription & Payments</div>
-                </a>
-            </li>
-        </ul>
+/* ---------- AI (kupitia Worker/seva; ufunguo haupo kwenye faili hili) ---------- */
+function simulateReply(messages) {
+  const q = (messages[messages.length - 1].content || '').toLowerCase();
+  const tips = [
+    [/bei|price/, 'Kupanga bei: jumlisha gharama ya kitengo kimoja (vifaa, ufungashaji, usafiri), ongeza faida unayotaka, kisha linganisha na bei za wauzaji wa karibu. Tumia "Kikokotoo cha Biashara" kuhakiki.'],
+    [/mtaji|capital|pesa/, 'Kwa mtaji mdogo, anza na bidhaa MOJA, uza kwa wateja 3–5 kwanza, na weka akiba ya angalau 20% ya mtaji. Tumia "Jenereta ya Mawazo" kupata hatua za kuanza.'],
+    [/wateja|customer|mteja/, 'Wateja wa kwanza: ongea na watu 10 wenye tatizo unalotatua, waonyeshe mfano wako, na uandike walichosema. Wapate kupitia WhatsApp na marafiki kwanza.'],
+    [/soko|masoko|tangaza|market/, 'Masoko ya gharama nafuu: WhatsApp Status, vikundi vya mtaa/chuo, picha nzuri za bidhaa, na ofa ndogo kwa wateja wa kwanza.'],
+    [/cardboard|diy|kifaa|mfano|prototype/, 'Kwa mfano wa gharama ndogo: anza na cardboard, chora vipimo, kata, gundi, jaribu na watu 5, kisha boresha. Angalia "KITWE DIY LAB".'],
+    [/wazo|idea|biashara/, 'Wazo zuri huanza na tatizo halisi. Jiulize: nani anasumbuka, analipa kiasi gani sasa, na mimi nawezaje kuwa nafuu au bora? Kisha tathmini wazo lako kwenye "Tathmini ya Wazo".'],
+  ];
+  const hit = tips.find(([re]) => re.test(q));
+  return '[Jibu la MFANO — si AI halisi]\n' + (hit ? hit[1] : 'Habari! Mimi ni msaidizi wa mfano. Niulize kuhusu bei, mtaji, wateja, masoko, au mawazo ya biashara. AI halisi itaunganishwa baadaye.');
+}
+async function askAI(messages, extraSystem, allowSim) {
+  if (!CONFIG.AI_ENDPOINT && allowSim && CONFIG.SIMULATE_AI) { await new Promise((r) => setTimeout(r, 700)); return simulateReply(messages); }
+  if (!CONFIG.AI_ENDPOINT) throw new Error('AI haijaunganishwa bado. Mwenye programu aweke AI_ENDPOINT (angalia worker-ai.js).');
+  let res;
+  try {
+    res = await fetch(CONFIG.AI_ENDPOINT, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ messages, lang: 'sw', hint: extraSystem || '' }) });
+  } catch { throw new Error('Hakuna mtandao au huduma ya AI haipatikani.'); }
+  const j = await res.json().catch(() => ({}));
+  if (!res.ok || !j.reply) throw new Error(j.error || 'AI imeshindwa kujibu. Jaribu tena.');
+  return j.reply;
+}
 
-        <div class="drawer-footer">
-            <button class="logout-btn" onclick="alert('Umetoka kwenye mfumo.')">Toka (Logout)</button>
-            <div class="brand-version">KITWE GlobalMind · v1.0.0</div>
-        </div>
-    </aside>
+/* ---------- Maudhui tuli ---------- */
+const PAGES = [
+  ['home', '🏠', 'Nyumbani', 'Dashboard'], ['chat', '🤖', 'Uliza KITWE AI', 'KITWE AI Chat'], ['generator', '💡', 'Jenereta ya Mawazo', 'Idea Generator'],
+  ['evaluate', '📊', 'Tathmini ya Wazo', 'Idea Evaluation'], ['saved', '📁', 'Mawazo Yaliyohifadhiwa', 'Saved Ideas'], ['favorites', '⭐', 'Vipendwa', 'Favorites'],
+  ['compare', '⚖️', 'Linganisha Mawazo', 'Compare Ideas'], ['diy', '🛠️', 'KITWE DIY LAB', 'DIY Lab'], ['calculator', '🧮', 'Kikokotoo cha Biashara', 'Business Calculator'],
+  ['challenges', '🏆', 'Changamoto za Ubunifu', 'Innovation Challenges'], ['planner', '📐', 'Mpangaji wa Mfano', 'Prototype Planner'], ['progress', '📈', 'Maendeleo ya Mfano', 'Progress Tracker'],
+  ['bizplan', '📝', 'Mpango wa Biashara', 'Business Plan'], ['lessons', '📚', 'Masomo', 'Learning Resources'], ['notifications', '🔔', 'Arifa', 'Notifications'],
+  ['profile', '👤', 'Wasifu Wangu', 'User Profile'], ['payments', '💳', 'Usajili na Malipo', 'Subscription & Payments'],
+];
+const TITLE = Object.fromEntries(PAGES.map((p) => [p[0], p[2]]));
+const BOTTOM = [['home', '🏠', 'Nyumbani'], ['chat', '🤖', 'AI'], ['generator', '💡', 'Mawazo'], ['diy', '🛠️', 'DIY'], ['_menu', '☰', 'Zaidi']];
 
-    <!-- App Content Screens -->
-    <main>
-        
-        <!-- 1. Dashboard Screen -->
-        <section id="dashboardScreen" class="screen active">
-            <div style="margin-bottom: 12px;">
-                <h2 style="font-size: 18px;">Karibu, YAHAYA 👋</h2>
-                <p style="font-size: 12px; color: var(--text-muted);">Think. Create. Innovate.</p>
-            </div>
+const FACTORS = [
+  ['problem', 'Tatizo halisi', 10, 'Je, watu wanasumbuka na tatizo hili kila siku?', 'Zungumza na watu 10 kuthibitisha tatizo ni la kweli.'],
+  ['payers', 'Wateja tayari kulipa', 20, 'Je, kuna watu wanaoweza kununua leo?', 'Jaribu kuuza kwa wateja 3–5 kabla ya kuwekeza zaidi.'],
+  ['cost', 'Gharama ndogo ya kuanza', 15, '5 = mtaji mdogo sana', 'Punguza mtaji: anza na bidhaa MOJA na kiasi kidogo.'],
+  ['skill', 'Ujuzi ulionao', 15, 'Je, unaweza kutengeneza/kutoa mwenyewe?', 'Jifunze ujuzi muhimu au tafuta mshirika mwenye ujuzi.'],
+  ['competition', 'Ushindani mdogo', 15, '5 = hakuna au wachache', 'Tafuta kitu kinachokutofautisha: bei, ubora, huduma au eneo.'],
+  ['materials', 'Vifaa vinapatikana', 10, 'Je, vifaa vinapatikana karibu nawe?', 'Tafuta wasambazaji wa karibu au vifaa mbadala vya bei nafuu.'],
+  ['growth', 'Uwezo wa kukua', 5, 'Je, unaweza kuuza zaidi baadaye?', 'Fikiria bidhaa/huduma ya pili kwa wateja walewale.'],
+  ['profit', 'Faida', 10, 'Je, bei inazidi gharama kwa kiasi kizuri?', 'Kagua bei na gharama kwa kitengo kwenye Kikokotoo.'],
+];
+function scoreOf(s) { let t = 0; for (const [k, , w] of FACTORS) t += (w * (Number(s[k]) || 0)) / 5; return Math.round(t); }
+function verdict(sc) {
+  if (sc >= 75) return ['good', 'Nzuri — anza majaribio madogo sasa.'];
+  if (sc >= 50) return ['mid', 'Inaahidi — boresha sehemu dhaifu kabla ya kuwekeza.'];
+  return ['low', 'Hatari — usiwekeze bado; thibitisha tatizo na wateja kwanza.'];
+}
 
-            <div class="card card-pending">
-                <div>
-                    <div style="font-size: 12px; font-weight: 600;">Usajili Wako</div>
-                    <span class="badge-pending">INASUBIRI - PENDING</span>
-                </div>
-                <button class="btn-gold" onclick="navigateTo('paymentScreen')">Pata Premium</button>
-            </div>
+const CATEGORIES = ['Chakula na vinywaji', 'Elimu', 'Teknolojia', 'Kilimo na mifugo', 'Huduma za mtaani', 'Biashara ya rejareja', 'Ufundi na urembo', 'Nyingine'];
 
-            <div style="font-size: 12px; font-weight: 700; margin-bottom: 6px;">Viashiria vya leo</div>
-            <div class="usage-grid">
-                <div class="usage-box">Mazungumzo<span>0/5</span></div>
-                <div class="usage-box">Mawazo<span>0/2</span></div>
-                <div class="usage-box">Mpango AI<span>0/1</span></div>
-            </div>
-
-            <div class="card">
-                <div style="font-size: 13px; font-weight: 700; margin-bottom: 10px;">Huduma za Haraka</div>
-                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px;">
-                    <button class="btn-navy" style="font-size: 12px; padding: 10px;" onclick="navigateTo('aiChatScreen')"><i class="fa-solid fa-robot"></i> Uliza AI</button>
-                    <button class="btn-navy" style="font-size: 12px; padding: 10px;" onclick="navigateTo('ideaGenScreen')"><i class="fa-solid fa-lightbulb"></i> Jenereta</button>
-                    <button class="btn-navy" style="font-size: 12px; padding: 10px;" onclick="navigateTo('calculatorScreen')"><i class="fa-solid fa-calculator"></i> Kikokotoo</button>
-                    <button class="btn-navy" style="font-size: 12px; padding: 10px;" onclick="navigateTo('diyLabScreen')"><i class="fa-solid fa-wrench"></i> DIY Lab</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- 2. AI Chat Screen -->
-        <section id="aiChatScreen" class="screen">
-            <div class="screen-title"><i class="fa-solid fa-robot"></i> Uliza KITWE AI</div>
-            <div class="chat-messages" id="chatBox">
-                <div class="message msg-ai">Mambo YAHAYA! Nipo tayari kukusaidia kwenye maswala ya biashara, ubunifu na teknolojia.</div>
-            </div>
-            <div class="chat-input-bar">
-                <input type="text" id="chatInput" class="form-control" placeholder="Andika ujumbe...">
-                <button class="chat-send-btn" onclick="sendMessage()"><i class="fa-solid fa-paper-plane"></i></button>
-            </div>
-        </section>
-
-        <!-- 3. Idea Generator Screen -->
-        <section id="ideaGenScreen" class="screen">
-            <div class="screen-title"><i class="fa-solid fa-lightbulb"></i> Jenereta ya Mawazo 💡</div>
-            <div class="card">
-                <div class="form-group">
-                    <label>Tatizo au kinachokuvutia</label>
-                    <input type="text" class="form-control" placeholder="mf. Changamoto ya usafiri wa wanafunzi">
-                </div>
-                <div class="form-group">
-                    <label>Mtaji ulionao (TSh)</label>
-                    <input type="number" class="form-control" placeholder="mf. 50,000">
-                </div>
-                <div class="form-group">
-                    <label>Eneo / Soko</label>
-                    <input type="text" class="form-control" placeholder="mf. Chuo au mtaani kwenu">
-                </div>
-                <button class="btn-navy" onclick="alert('Wazo linazalishwa kwa AI...')">Tengeneza Mawazo</button>
-            </div>
-        </section>
-
-        <!-- 4. Idea Evaluation Screen -->
-        <section id="ideaEvalScreen" class="screen">
-            <div class="screen-title"><i class="fa-solid fa-chart-bar"></i> Tathmini ya Wazo 📊</div>
-            <div class="card">
-                <div class="form-group">
-                    <label>Jina la wazo</label>
-                    <input type="text" class="form-control" placeholder="Ingiza jina la wazo hapa">
-                </div>
-
-                <div class="slider-group">
-                    <div class="slider-header"><span>Tatizo halisi (10%)</span><b id="v1">3</b></div>
-                    <input type="range" min="1" max="5" value="3" class="slider-control" oninput="calcEval()">
-                </div>
-                <div class="slider-group">
-                    <div class="slider-header"><span>Wateja tayari kulipa (20%)</span><b id="v2">3</b></div>
-                    <input type="range" min="1" max="5" value="3" class="slider-control" oninput="calcEval()">
-                </div>
-                <div class="slider-group">
-                    <div class="slider-header"><span>Gharama ndogo ya kuanza (15%)</span><b id="v3">3</b></div>
-                    <input type="range" min="1" max="5" value="3" class="slider-control" oninput="calcEval()">
-                </div>
-                <div class="slider-group">
-                    <div class="slider-header"><span>Ujuzi ulionao (15%)</span><b id="v4">3</b></div>
-                    <input type="range" min="1" max="5" value="3" class="slider-control" oninput="calcEval()">
-                </div>
-
-                <div class="score-box" id="totalScoreBox">63/100</div>
-                <p style="font-size: 12px; text-align: center; font-weight: 600;" id="evalStatus">Inaahidi - boresha sehemu dhaifu kabla ya kuwekeza.</p>
-                <button class="btn-navy" style="margin-top: 12px;">Hifadhi Tathmini</button>
-            </div>
-        </section>
-
-        <!-- 5. Saved Ideas Screen -->
-        <section id="savedIdeasScreen" class="screen">
-            <div class="screen-title"><i class="fa-solid fa-folder"></i> Mawazo Yaliyohifadhiwa 📁</div>
-            <div class="card" style="text-align: center; color: var(--text-muted); font-size: 13px;">
-                Bado hujahifadhi chochote.
-            </div>
-        </section>
-
-        <!-- 6. Favorites Screen -->
-        <section id="favoritesScreen" class="screen">
-            <div class="screen-title"><i class="fa-solid fa-star"></i> Vipendwa ⭐</div>
-            <div class="card" style="text-align: center; color: var(--text-muted); font-size: 13px;">
-                Hakuna vipendwa bado. Bonyeza ⭐ kwenye wazo.
-            </div>
-        </section>
-
-        <!-- 7. Compare Ideas Screen -->
-        <section id="compareIdeasScreen" class="screen">
-            <div class="screen-title"><i class="fa-solid fa-scale-balanced"></i> Linganisha Mawazo ⚖️</div>
-            <div class="card" style="text-align: center;">
-                <p style="font-size: 13px; font-weight: 600; margin-bottom: 10px;">🔒 Kulinganisha mawazo ni ya Premium</p>
-                <button class="btn-gold" onclick="navigateTo('paymentScreen')">Pata Premium</button>
-            </div>
-        </section>
-
-        <!-- 8. KITWE DIY LAB Screen -->
-        <section id="diyLabScreen" class="screen">
-            <div class="screen-title"><i class="fa-solid fa-wrench"></i> KITWE DIY LAB 🛠️</div>
-            <div class="tab-buttons">
-                <button class="tab-btn active" onclick="switchTab(this, 'diyTab1')">Miradi ya DIY</button>
-                <button class="tab-btn" onclick="switchTab(this, 'diyTab2')">Mwongozo wa AI</button>
-            </div>
-
-            <div id="diyTab1">
-                <div class="accordion-item active">
-                    <div class="accordion-header" onclick="toggleAcc(this)">
-                        <span>▼ Kishikio cha simu cha cardboard</span>
-                    </div>
-                    <div class="accordion-body">
-                        <b>Vifaa:</b> Cardboard ngumu, mkasi, gundi, rula.<br>
-                        <b>Gharama:</b> TSh 0-1,500.<br>
-                        <button class="btn-navy" style="margin-top: 8px; padding: 6px 12px; font-size: 11px;">Anza mradi huu</button>
-                    </div>
-                </div>
-            </div>
-
-            <div id="diyTab2" style="display: none;">
-                <div class="card">
-                    <div class="form-group"><label>Kifaa unachotaka kutengeneza</label><input type="text" class="form-control" placeholder="mf. Kishikio cha simu"></div>
-                    <div class="form-group"><label>Vifaa ulivyonavyo</label><input type="text" class="form-control" placeholder="mf. Cardboard, gundi"></div>
-                    <button class="btn-navy">Tengeneza Mwongozo</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- 9. Business Calculator Screen -->
-        <section id="calculatorScreen" class="screen">
-            <div class="screen-title"><i class="fa-solid fa-calculator"></i> Kikokotoo cha Biashara 🧮</div>
-            <div class="card">
-                <div class="form-group"><label>Mtaji wa kuanzia (TSh)</label><input type="number" id="c_capital" class="form-control" value="10000" oninput="calcBiz()"></div>
-                <div class="form-group"><label>Gharama ya kila kitengo (TSh)</label><input type="number" id="c_cost" class="form-control" value="100" oninput="calcBiz()"></div>
-                <div class="form-group"><label>Bei ya kuuza kila kitengo (TSh)</label><input type="number" id="c_price" class="form-control" value="200" oninput="calcBiz()"></div>
-                <div class="form-group"><label>Idadi ya mauzo kwa mwezi</label><input type="number" id="c_sales" class="form-control" value="70" oninput="calcBiz()"></div>
-                <div class="form-group"><label>Gharama za mwezi (Usafiri, Kodi)</label><input type="number" id="c_overhead" class="form-control" value="10000" oninput="calcBiz()"></div>
-            </div>
-
-            <div class="card">
-                <div style="font-weight: 700; font-size: 13px; margin-bottom: 8px;">Matokeo</div>
-                <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px;"><span>Faida kwa kitengo:</span><b id="r_unit_profit">TSh 100</b></div>
-                <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px;"><span>Asilimia ya faida (Margin):</span><b id="r_margin">50.0%</b></div>
-                <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px;"><span>Mauzo ya mwezi:</span><b id="r_monthly_sales">TSh 14,000</b></div>
-                <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px;"><span>Faida ya mwezi:</span><b id="r_monthly_profit" style="color: var(--danger-red);">TSh -3,000</b></div>
-            </div>
-        </section>
-
-        <!-- 10. Innovation Challenges Screen -->
-        <section id="challengesScreen" class="screen">
-            <div class="screen-title"><i class="fa-solid fa-trophy"></i> Changamoto za Ubunifu 🏆</div>
-            <div class="card">
-                <div style="font-weight: 700; font-size: 13px;">Suluhisho la Cardboard ndani ya TSh 5,000</div>
-                <p style="font-size: 11px; color: var(--text-muted); margin: 6px 0;">Tengeneza kifaa cha kutatua tatizo kwa kutumia cardboard kisichozidi TSh 5,000.</p>
-                <textarea class="form-control" placeholder="Jibu lako..."></textarea>
-                <button class="btn-navy" style="margin-top: 8px;">Wasilisha</button>
-            </div>
-        </section>
-
-        <!-- 11. Prototype Planner Screen -->
-        <section id="protoPlannerScreen" class="screen">
-            <div class="screen-title"><i class="fa-solid fa-drafting-compass"></i> Mpangaji wa Mfano 📐</div>
-            <div class="card">
-                <div class="form-group"><label>Jina la mfano / mradi</label><input type="text" class="form-control" placeholder="mf. Kishikio cha simu"></div>
-                <div class="form-group"><label>Vifaa na vipimo</label><textarea class="form-control"></textarea></div>
-                <button class="btn-navy">Unda Mradi</button>
-            </div>
-        </section>
-
-        <!-- 12. Progress Tracker Screen -->
-        <section id="progressTrackerScreen" class="screen">
-            <div class="screen-title"><i class="fa-solid fa-chart-line"></i> Maendeleo ya Mfano 📈</div>
-            <div class="card">
-                <div style="font-size: 12px; font-weight: 700; margin-bottom: 6px;">Kishikio cha simu cha cardboard</div>
-                <div style="background: #e5e7eb; height: 10px; border-radius: 5px; overflow: hidden; margin-bottom: 10px;">
-                    <div style="background: var(--navy); width: 100%; height: 100%;"></div>
-                </div>
-                <div style="font-size: 11px; color: var(--success-green); font-weight: 700;">100% (9/9 Zimekamilika)</div>
-            </div>
-        </section>
-
-        <!-- 13. Business Plan Screen -->
-        <section id="businessPlanScreen" class="screen">
-            <div class="screen-title"><i class="fa-solid fa-file-pen"></i> Mpango wa Biashara 📝</div>
-            <div class="card">
-                <div class="form-group"><label>Jina la Biashara</label><input type="text" class="form-control" value="Access"></div>
-                <div class="form-group"><label>Tatizo</label><input type="text" class="form-control" value="Uhaba wa elimu"></div>
-                <div style="display: flex; gap: 8px;">
-                    <button class="btn-navy" onclick="window.print()">Chapisha / PDF</button>
-                </div>
-            </div>
-        </section>
-
-        <!-- 14. Learning Resources Screen -->
-        <section id="lessonsScreen" class="screen">
-            <div class="screen-title"><i class="fa-solid fa-book-open"></i> Masomo 📚</div>
-            <div class="accordion-item active">
-                <div class="accordion-header" onclick="toggleAcc(this)"><span>▼ Jinsi ya kuanza biashara ndogo</span></div>
-                <div class="accordion-body">1. Chagua tatizo halisi.<br>2. Anza na bidhaa MOJA.<br>3. Hesabu gharama kwa makini.</div>
-            </div>
-        </section>
-
-        <!-- 15. Notifications Screen -->
-        <section id="notificationsScreen" class="screen">
-            <div class="screen-title"><i class="fa-solid fa-bell"></i> Arifa 🔔</div>
-            <div class="card">
-                <div style="font-weight: 700; font-size: 12px;">Karibu KITWE IDEALAB AI</div>
-                <p style="font-size: 11px; color: var(--text-muted); margin-top: 4px;">Anza na Mazungumzo ya AI au Jenereta ya Mawazo.</p>
-            </div>
-        </section>
-
-        <!-- 16. User Profile Screen -->
-        <section id="profileScreen" class="screen">
-            <div class="screen-title"><i class="fa-solid fa-user"></i> Wasifu Wangu 👤</div>
-            <div class="card">
-                <div class="form-group"><label>Jina</label><input type="text" class="form-control" value="YAHAYA BONIFACE ANDREA"></div>
-                <div class="form-group"><label>Barua pepe</label><input type="text" class="form-control" value="yahayakitwe@gmail.com" readonly></div>
-                <button class="btn-navy">Hifadhi Mabadiliko</button>
-            </div>
-        </section>
-
-        <!-- 17. Payments & Subscriptions Screen -->
-        <section id="paymentScreen" class="screen">
-            <div class="screen-title"><i class="fa-solid fa-credit-card"></i> Usajili na Malipo 💳</div>
-            
-            <div class="offer-card">
-                <div style="font-size: 11px; font-weight: 800; color: var(--gold); letter-spacing: 1px;">SPECIAL LAUNCH OFFER</div>
-                <div class="strike-price">Bei ya kawaida: TSh 900</div>
-                <div class="main-price">TSh 600</div>
-                <div style="font-size: 12px;">kwa miezi 3</div>
-            </div>
-
-            <div style="font-size: 12px; font-weight: 700; margin-bottom: 8px;">1. Lipa kiasi kamili TSh 600 kwa:</div>
-            
-            <div class="payment-method">
-                <div>
-                    <div style="font-weight: 700; font-size: 12px;">Vodacom M-Pesa</div>
-                    <div style="font-size: 13px; color: var(--navy); font-weight: 800;">0796133662</div>
-                    <div style="font-size: 10px; color: var(--text-muted);">Jina: Yahaya Boniface Andrea</div>
-                </div>
-                <button class="copy-btn" onclick="copyText('0796133662')">Nakili</button>
-            </div>
-
-            <div class="payment-method">
-                <div>
-                    <div style="font-weight: 700; font-size: 12px;">Airtel Money</div>
-                    <div style="font-size: 13px; color: var(--navy); font-weight: 800;">0683530583</div>
-                    <div style="font-size: 10px; color: var(--text-muted);">Jina: Amina Adam Kitwe</div>
-                </div>
-                <button class="copy-btn" onclick="copyText('0683530583')">Nakili</button>
-            </div>
-
-            <div class="payment-method">
-                <div>
-                    <div style="font-weight: 700; font-size: 12px;">Halotel Money</div>
-                    <div style="font-size: 13px; color: var(--navy); font-weight: 800;">0610333788</div>
-                    <div style="font-size: 10px; color: var(--text-muted);">Jina: Yahaya Boniface Andrea</div>
-                </div>
-                <button class="copy-btn" onclick="copyText('0610333788')">Nakili</button>
-            </div>
-
-            <div class="card" style="margin-top: 14px;">
-                <div style="font-weight: 700; font-size: 12px; margin-bottom: 8px;">2. Wasilisha namba ya muamala</div>
-                <div class="form-group">
-                    <label>Namba ya muamala (Transaction ID)</label>
-                    <input type="text" class="form-control" placeholder="mf. 0796133662NN">
-                </div>
-                <button class="btn-navy" style="background: var(--gold); color: #000;" onclick="alert('Muamala umewasilishwa! Unasubiri uthibitisho.')">Wasilisha</button>
-            </div>
-        </section>
-
-    </main>
-
-    <!-- Bottom Navigation Bar -->
-    <nav class="bottom-nav">
-        <div class="nav-item active" onclick="navigateTo('dashboardScreen', this)">
-            <i class="fa-solid fa-house"></i>
-            <span>Nyumbani</span>
-        </div>
-        <div class="nav-item" onclick="navigateTo('aiChatScreen', this)">
-            <i class="fa-solid fa-robot"></i>
-            <span>AI</span>
-        </div>
-        <div class="nav-item" onclick="navigateTo('ideaGenScreen', this)">
-            <i class="fa-solid fa-lightbulb"></i>
-            <span>Mawazo</span>
-        </div>
-        <div class="nav-item" onclick="navigateTo('diyLabScreen', this)">
-            <i class="fa-solid fa-wrench"></i>
-            <span>DIY</span>
-        </div>
-        <div class="nav-item" id="openDrawerBottom">
-            <i class="fa-solid fa-bars"></i>
-            <span>Zaidi</span>
-        </div>
-    </nav>
-
-    <script>
-        // Navigation Logic
-        function navigateTo(screenId, navEl = null) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById(screenId).classList.add('active');
-
-            if (navEl) {
-                document.querySelectorAll('.bottom-nav .nav-item').forEach(n => n.classList.remove('active'));
-                navEl.classList.add('active');
-            }
-
-            // Close Drawer
-            closeDrawerFunc();
-            window.scrollTo(0,0);
-        }
-
-        // Drawer Controls
-        const drawer = document.getElementById('drawer');
-        const overlay = document.getElementById('drawerOverlay');
-
-        function openDrawerFunc() {
-            drawer.classList.add('active');
-            overlay.classList.add('active');
-        }
-
-        function closeDrawerFunc() {
-            drawer.classList.remove('active');
-            overlay.classList.remove('active');
-        }
-
-        document.getElementById('openDrawer').addEventListener('click', openDrawerFunc);
-        document.getElementById('openDrawerBottom').addEventListener('click', openDrawerFunc);
-        overlay.addEventListener('click', closeDrawerFunc);
-
-        // Copy Clipboard Helper
-        function copyText(text) {
-            navigator.clipboard.writeText(text);
-            alert("Namba " + text + " imenakiliwa!");
-        }
-
-        // Accordion Toggle Helper
-        function toggleAcc(header) {
-            header.parentElement.classList.toggle('active');
-        }
-
-        // Tabs Toggle Helper
-        function switchTab(btn, tabId) {
-            const parent = btn.parentElement;
-            parent.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-
-            document.getElementById('diyTab1').style.display = 'none';
-            document.getElementById('diyTab2').style.display = 'none';
-            document.getElementById(tabId).style.display = 'block';
-        }
-
-        // Chat Helper
-        function sendMessage() {
-            const input = document.getElementById('chatInput');
-            const box = document.getElementById('chatBox');
-            if(!input.value.trim()) return;
-
-            const userMsg = document.createElement('div');
-            userMsg.className = 'message msg-user';
-            userMsg.innerText = input.value;
-            box.appendChild(userMsg);
-
-            input.value = '';
-            box.scrollTop = box.scrollHeight;
-
-            setTimeout(() => {
-                const aiMsg = document.createElement('div');
-                aiMsg.className = 'message msg-ai';
-                aiMsg.innerText = "Safi sana! Nimepokea ujumbe wako. Nipo hapa kukusaidia.";
-                box.appendChild(aiMsg);
-                box.scrollTop = box.scrollHeight;
-            }, 800);
-        }
-
-        // Business Calculator Logic
-        function calcBiz() {
-            const capital = parseFloat(document.getElementById('c_capital').value) || 0;
-            const cost = parseFloat(document.getElementById('c_cost').value) || 0;
-            const price = parseFloat(document.getElementById('c_price').value) || 0;
-            const sales = parseFloat(document.getElementById('c_sales').value) || 0;
-            const overhead = parseFloat(document.getElementById('c_overhead').value) || 0;
-
-            const unitProfit = price - cost;
-            const margin = price > 0 ? ((unitProfit / price) * 100).toFixed(1) : 0;
-            const monthlySales = price * sales;
-            const monthlyProfit = (unitProfit * sales) - overhead;
-
-            document.getElementById('r_unit_profit').innerText = "TSh " + unitProfit.toLocaleString();
-            document.getElementById('r_margin').innerText = margin + "%";
-            document.getElementById('r_monthly_sales').innerText = "TSh " + monthlySales.toLocaleString();
-            
-            const profitEl = document.getElementById('r_monthly_profit');
-            profitEl.innerText = "TSh " + monthlyProfit.toLocaleString();
-            profitEl.style.color = monthlyProfit < 0 ? 'var(--danger-red)' : 'var(--success-green)';
-        }
-    </script>
-</body>
-</html>
+const DIY = [
+  { id: 'stand', title: 'Kishikio cha simu cha cardboard', mats: 'Cardboard ngumu (karibu 20cm x 20cm), mkasi au kisu, gundi au tepe, rula, penseli.',
+    parts: 'Kata vipande 2 vya 12cm x 8cm (kuta) na kipande 1 cha 12cm x 9cm (msingi). Kata sehemu ya kuinamisha kwa pembe ya takriban 60°.',
+    steps: ['Chora vipimo.', 'Kata kwa uangalifu.', 'Gundi kuta pembeni ya msingi.', 'Acha ikauke dakika 30.', 'Jaribu simu yako — rekebisha upana.'],
+    cost: 'TSh 0–1,500 ukitumia cardboard iliyotumika.', safety: 'Kata mbali na mwili wako; watoto wasimamiwe.' },
+  { id: 'organizer', title: 'Kipanga vitu (organizer) cha mezani cha cardboard', mats: 'Masanduku ya cardboard ya viatu au dawa ya meno, mkasi, gundi, karatasi ya kufunika
