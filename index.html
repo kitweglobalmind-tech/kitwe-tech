@@ -1,222 +1,30 @@
-<!doctype html>
-<html lang="sw">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#002366">
-<title>KITWE IDEALAB AI</title>
-<style>
-:root{--navy:#002366;--royal:#0b3b9c;--gold:#FFD700;--bg:#f2f6ff;--card:#fff;--text:#14213d;--muted:#5b6785;--line:#dde3f0;--good:#14804a;--bad:#c0392b;--nav:62px}
-body.dark{--bg:#0b1226;--card:#141d38;--text:#e8edf9;--muted:#9aa6c4;--line:#27335a}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{margin:0;font-family:system-ui,-apple-system,Roboto,sans-serif;background:var(--bg);color:var(--text);font-size:16px;line-height:1.45;padding-bottom:calc(var(--nav) + env(safe-area-inset-bottom))}
-header{position:sticky;top:0;z-index:30;background:var(--navy);color:#fff;display:flex;align-items:center;gap:10px;padding:10px 12px;padding-top:calc(10px + env(safe-area-inset-top));border-bottom:3px solid var(--gold)}
-header button{background:none;border:0;color:#fff;font-size:1.5rem;padding:4px 8px}
-header .logo{width:30px;height:30px;border-radius:50%;background:var(--navy);border:2px solid var(--gold);color:var(--gold);font-weight:800;display:grid;place-items:center}
-header h1{margin:0;font-size:1rem;flex:1}header h1 span{color:var(--gold)}
-.badge{position:relative}.badge i{position:absolute;top:-2px;right:0;background:var(--gold);color:var(--navy);font-style:normal;font-size:.65rem;font-weight:800;border-radius:99px;min-width:16px;padding:0 4px;text-align:center}
-main{max-width:760px;margin:0 auto;padding:14px}
-h2{color:var(--navy);font-size:1.25rem;margin:4px 0 8px}body.dark h2,body.dark h3{color:var(--gold)}
-h3{color:var(--navy);font-size:1rem;margin:14px 0 6px}
-.sub{color:var(--muted);font-size:.88rem;margin:0 0 10px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:12px}
-label{display:block;font-weight:600;font-size:.85rem;margin:10px 0 4px}
-input,select,textarea{width:100%;font:inherit;padding:12px;border:1.5px solid var(--line);border-radius:10px;background:var(--card);color:var(--text)}
-textarea{min-height:90px;resize:vertical}
-input:focus,select:focus,textarea:focus{outline:3px solid rgba(255,215,0,.6);border-color:var(--navy)}
-input[type=range]{padding:0;accent-color:var(--navy)}
-button{font:inherit;cursor:pointer}
-.btn{border:0;border-radius:12px;padding:12px 18px;font-weight:700;background:var(--navy);color:#fff;min-height:46px}
-body.dark .btn{background:var(--royal)}
-.btn.gold{background:var(--gold);color:var(--navy)}
-.btn.ghost{background:transparent;color:var(--navy);border:1.5px solid var(--navy)}body.dark .btn.ghost{color:var(--gold);border-color:var(--gold)}
-.btn.danger{background:var(--bad)}.btn.sm{padding:7px 12px;min-height:34px;font-size:.85rem;border-radius:9px}
-.btn.block{width:100%;margin-top:12px}.btn:disabled{opacity:.55}
-.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.stat{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center}
-.stat b{display:block;font-size:1.5rem;color:var(--navy)}body.dark .stat b{color:var(--gold)}.stat small{color:var(--muted)}
-.banner{background:linear-gradient(150deg,var(--navy),var(--royal));color:#fff;border-radius:14px;padding:16px;margin-bottom:12px;border-bottom:4px solid var(--gold)}
-.banner h2{color:#fff;margin:0}.banner p{margin:4px 0 0;opacity:.9;font-size:.9rem}
-.msg{padding:11px 13px;border-radius:12px;margin:10px 0;font-size:.9rem}
-.msg.err{background:#fdecea;color:#8a1f14;border:1px solid #f5c2bc}.msg.ok{background:#e6f6ed;color:#0e5d36;border:1px solid #b7e2c8}
-.msg.warn{background:#fff8db;color:#6b5200;border:1px solid #f1df8a}.msg.info{background:#eaf0ff;color:var(--navy);border:1px solid #cdd9f7}
-.tag{display:inline-block;font-size:.7rem;font-weight:700;padding:2px 9px;border-radius:99px;background:#e8eefc;color:var(--navy)}
-.tag.gold{background:var(--gold)}.tag.pend{background:#fff0c2;color:#8a5a00}.tag.good{background:#d9f3e4;color:#0e5d36}.tag.bad{background:#fde0dc;color:#8a1f14}
-.out{white-space:pre-wrap;word-wrap:break-word;background:var(--card);border:1.5px solid var(--gold);border-radius:14px;padding:14px;margin-top:12px}
-.item{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:8px}
-.item .t{display:flex;justify-content:space-between;gap:8px;font-weight:700}
-.meta{color:var(--muted);font-size:.8rem}
-.bar{height:12px;background:var(--line);border-radius:99px;overflow:hidden}.bar i{display:block;height:100%;background:var(--gold);transition:width .3s}
-.score{background:#b36b00;color:#fff;border-radius:12px;text-align:center;font-size:2rem;font-weight:800;padding:12px;margin-top:12px}.score small{font-size:1rem;opacity:.85}
-.score.good{background:var(--good)}.score.low{background:var(--bad)}
-.seg{display:flex;gap:6px;margin-bottom:10px}.seg button{flex:1;border:0;border-radius:10px;padding:11px;font-weight:700;background:#e8eefc;color:var(--navy)}.seg button.on{background:var(--navy);color:#fff}
-details{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:8px}summary{font-weight:700;cursor:pointer}
-details .body{margin-top:8px;font-size:.92rem}details ul,details ol{padding-left:20px;margin:6px 0}
-table{width:100%;border-collapse:collapse;font-size:.88rem}th,td{padding:8px 6px;border-bottom:1px solid var(--line);text-align:left}td.r,th.r{text-align:right}
-.step{display:flex;gap:8px;align-items:center;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px;margin-top:8px}
-.step button.st{border:0;background:none;font-size:1.3rem}.step b{flex:1}.step span{font-size:.78rem;color:var(--muted)}
-.note-in{margin-top:4px}
-.chat{display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
-.bubble{max-width:88%;padding:10px 13px;border-radius:16px;white-space:pre-wrap;word-wrap:break-word}
-.bubble.me{align-self:flex-end;background:var(--navy);color:#fff;border-bottom-right-radius:4px}
-.bubble.bot{align-self:flex-start;background:var(--card);border:1px solid var(--line);border-bottom-left-radius:4px}
-.chips{display:flex;flex-direction:column;gap:6px;margin:8px 0}.chips button{text-align:left;background:var(--card);border:1px solid var(--line);color:var(--navy);border-radius:10px;padding:11px}body.dark .chips button{color:var(--text)}
-.chatbar{position:sticky;bottom:calc(var(--nav) + env(safe-area-inset-bottom) + 4px);background:var(--bg);padding:6px 0}
-.chatbar form{display:flex;gap:8px}.chatbar textarea{min-height:46px;max-height:110px}
-.spin{display:inline-block;width:15px;height:15px;border:3px solid rgba(0,35,102,.25);border-top-color:var(--navy);border-radius:50%;animation:s .8s linear infinite;vertical-align:-3px;margin-right:6px}@keyframes s{to{transform:rotate(360deg)}}
-nav.bottom{position:fixed;left:0;right:0;bottom:0;height:calc(var(--nav) + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom);background:var(--card);border-top:3px solid var(--gold);display:flex;z-index:30}
-nav.bottom button{flex:1;border:0;background:none;color:var(--muted);font-size:.7rem;font-weight:600;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
-nav.bottom button b{font-size:1.3rem;font-weight:400}nav.bottom button.on{color:var(--navy);box-shadow:inset 0 3px 0 var(--gold)}body.dark nav.bottom button.on{color:var(--gold)}
-#side{position:fixed;inset:0;z-index:50;display:none}#side.open{display:block}
-#side .shade{position:absolute;inset:0;background:rgba(0,0,0,.5)}
-#side .panel{position:absolute;left:0;top:0;bottom:0;width:84%;max-width:340px;background:var(--card);overflow:auto;padding:14px;padding-top:calc(14px + env(safe-area-inset-top))}
-#side .who{border-bottom:1px solid var(--line);padding-bottom:10px;margin-bottom:8px}
-#side .who b{display:block}#side .who small{color:var(--muted)}
-#side a{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:11px 8px;border-radius:10px;color:var(--text);text-decoration:none}
-#side a small{color:var(--muted);font-size:.7rem;text-align:right}#side a.on{background:#e8eefc;font-weight:700}body.dark #side a.on{background:#1f2c52}
-#toast{position:fixed;left:50%;bottom:calc(var(--nav) + 18px + env(safe-area-inset-bottom));transform:translateX(-50%) translateY(20px);background:var(--navy);color:#fff;border:2px solid var(--gold);padding:10px 18px;border-radius:99px;font-weight:600;opacity:0;pointer-events:none;transition:.25s;z-index:60;max-width:90vw;text-align:center}
-#toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-.offer{background:linear-gradient(150deg,var(--navy),var(--royal));color:#fff;border:2px solid var(--gold);border-radius:14px;padding:16px;text-align:center;margin-bottom:12px}
-.offer .p{font-size:2.4rem;font-weight:800;color:var(--gold)}.offer s{opacity:.7}
-.acct{display:flex;justify-content:space-between;align-items:center;gap:8px;border:1px solid var(--line);border-radius:12px;padding:12px;margin-bottom:8px}
-.acct b{font-size:1.15rem;color:var(--navy);letter-spacing:.5px}body.dark .acct b{color:var(--gold)}
-@page{size:A4;margin:14mm}
-@media print{header,nav.bottom,#side,#toast,.noprint,form{display:none!important}body{background:#fff;color:#000;padding:0}.out{border:0;padding:0}main{padding:0}}
-</style>
-</head>
-<body>
-<header>
-  <button data-act="menu" aria-label="Menyu">☰</button>
-  <div class="logo">K</div>
-  <h1>KITWE IDEALAB <span>AI</span></h1>
-  <button class="badge" data-go="notifications" aria-label="Arifa">🔔<i id="bell" hidden>0</i></button>
-</header>
-<main id="view"></main>
-<nav class="bottom" id="bottom"></nav>
-<div id="side"><div class="shade" data-act="menu"></div><div class="panel" id="sidePanel"></div></div>
-<div id="toast" role="status" aria-live="polite"></div>
+<!-- Sehemu ya Hali ya Usajili na Malipo (Subscription Status & Reassuring UI) -->
+<div class="subscription-status-card" style="background: #ffffff; border-radius: 12px; padding: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); margin-bottom: 20px; border-left: 5px solid #ffc107;">
+    
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+        <h3 style="margin: 0; color: #0f172a; font-size: 16px;">Hali ya Usajili Wako</h3>
+        <span id="paymentStatusBadge" style="background: #fff3cd; color: #856404; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: bold;">INASUBIRI - PENDING</span>
+    </div>
 
-<script>
-'use strict';
-/* =====================================================================
-   KITWE IDEALAB AI — faili moja. Data zote zinahifadhiwa kwenye simu (localStorage).
-   MIPANGILIO (hariri hapa tu):
-   ===================================================================== */
-const CONFIG = {
-  // Anwani ya Worker/seva ya AI. Acha tupu = AI haijaunganishwa (programu inasema wazi).
-  // Inatarajia: POST {messages:[{role,content}], lang:'sw'}  ->  {reply:'...'}
-  AI_ENDPOINT: '',
-  // Anwani ya seva ya malipo (hiari). Tupu = malipo yanahifadhiwa kwenye simu kama "INASUBIRI" tu.
-  API_BASE: '',
-  FREE_CHAT_PER_DAY: 5,
-  // true = chat inajibu kwa MFANO wa ndani (si AI halisi) pale AI_ENDPOINT haijawekwa. Weka false kuzima.
-  SIMULATE_AI: true,
-  // true = kitufe cha "Thibitisha (DEMO)" kinaonekana kwa majaribio TU. Weka false kwenye programu halisi.
-  DEMO_MODE: false,
-  PRICE: 600, MONTHS: 3, OLD_PRICE: 900,
-  ACCOUNTS: [
-    { id: 'mpesa',   name: 'Vodacom M-Pesa', number: '0796133662', holder: 'Yahaya Boniphace Andrea' },
-    { id: 'airtel',  name: 'Airtel Money',   number: '0683530583', holder: 'Amina Adam Kitwe' },
-    { id: 'halotel', name: 'Halotel Money',  number: '0610333788', holder: 'Yahaya Boniphace Andrea' },
-    { id: 'tigo',    name: 'Tigo Pesa',      number: '',           holder: '' }, // weka namba yako ya Tigo Pesa ili ionekane
-  ].filter((a) => a.number),
-};
+    <!-- Ujumbe Mzuri wa Kisaikolojia na Wa Kuaminika -->
+    <div id="paymentMessageContainer">
+        <p style="color: #475569; font-size: 14px; line-height: 1.5; margin-bottom: 15px;">
+            Asante kwa kufanya malipo! Ombi lako la muamala limewasilishwa kwa mafanikio. Kwa sababu ya usalama na ukaguzi wa kibinadamu, akaunti yako ya <strong>Premium</strong> itafunguliwa ndani ya muda mfupi wa <strong>dakika 5 hadi 10</strong> baada ya namba yako ya muamala kuhakikiwa.
+        </p>
 
-/* ---------- Hifadhi ---------- */
-const KEY = 'kitwe_idealab_v1';
-const DEFAULT = {
-  profile: { name: 'Yahaya Boniphace Andrea', email: 'yahayakitwe@gmail.com', institution: 'TIA Kigoma', dark: true, saveChat: true },
-  ideas: [], evals: [], projects: [], payments: [], notifs: [], chat: [], chatUse: { date: '', n: 0 },
-  submissions: {}, genCount: 0, plan: {}, lessonsRead: {},
-};
-let D;
-function load() { try { D = Object.assign(structuredClone(DEFAULT), JSON.parse(localStorage.getItem(KEY) || '{}')); } catch { D = structuredClone(DEFAULT); } }
-function save() { try { localStorage.setItem(KEY, JSON.stringify(D.profile.saveChat ? D : { ...D, chat: [] })); } catch { toast('Imeshindwa kuhifadhi (nafasi ya kivinjari imejaa?)'); } }
-load();
+        <!-- Hatua za Uthibitisho kwa Ufafanuzi -->
+        <div style="background: #f8fafc; padding: 12px; border-radius: 8px; margin-bottom: 15px; font-size: 13px; color: #334155;">
+            <strong>Hatua za Mfumo:</strong><br>
+            1. Tuma kiasi kamili kupitia namba za hapa chini.<br>
+            2. Weka namba ya muamala (Transaction ID) na ubonyeze Wasilisha.<br>
+            3. Admin anakagua na kuidhinisha (Approval ya haraka).
+        </div>
 
-/* ---------- Zana ---------- */
-const $ = (s, r = document) => r.querySelector(s);
-const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
-const money = (n) => 'TSh ' + Math.round(Number(n) || 0).toLocaleString('en-US');
-const fmt = (ts) => new Date(ts).toLocaleString('sw-TZ', { day: 'numeric', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' });
-const todayKey = () => new Date().toISOString().slice(0, 10);
-const num = (id) => { const v = ($('#' + id) || {}).value; return v === '' || v == null ? NaN : Number(v); };
-const val = (id) => (($('#' + id) || {}).value || '').trim();
-const errBox = (m) => `<div class="msg err" role="alert">${esc(m)}</div>`;
-const okBox = (m) => `<div class="msg ok">${esc(m)}</div>`;
-let toastT;
-function toast(m) { const e = $('#toast'); e.textContent = m; e.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => e.classList.remove('show'), 2200); }
-function notify(title, body) { D.notifs.unshift({ id: uid(), title, body, ts: Date.now(), read: false }); D.notifs = D.notifs.slice(0, 50); save(); bell(); }
-function bell() { const n = D.notifs.filter((x) => !x.read).length; const b = $('#bell'); b.hidden = !n; b.textContent = n; }
-async function copyText(t) { try { await navigator.clipboard.writeText(t); toast('Imenakiliwa'); } catch { toast('Imeshindwa kunakili'); } }
-function download(name, text, type = 'text/plain') {
-  const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([text], { type: type + ';charset=utf-8' }));
-  a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000);
-}
-const isPremium = () => !!(CONFIG.DEMO_MODE && D.demoPremium); // Premium halisi huthibitishwa na seva (admin); hapa ni DEMO tu.
-
-/* ---------- AI (kupitia Worker/seva; ufunguo haupo kwenye faili hili) ---------- */
-function simulateReply(messages) {
-  const q = (messages[messages.length - 1].content || '').toLowerCase();
-  const tips = [
-    [/bei|price/, 'Kupanga bei: jumlisha gharama ya kitengo kimoja (vifaa, ufungashaji, usafiri), ongeza faida unayotaka, kisha linganisha na bei za wauzaji wa karibu. Tumia "Kikokotoo cha Biashara" kuhakiki.'],
-    [/mtaji|capital|pesa/, 'Kwa mtaji mdogo, anza na bidhaa MOJA, uza kwa wateja 3–5 kwanza, na weka akiba ya angalau 20% ya mtaji. Tumia "Jenereta ya Mawazo" kupata hatua za kuanza.'],
-    [/wateja|customer|mteja/, 'Wateja wa kwanza: ongea na watu 10 wenye tatizo unalotatua, waonyeshe mfano wako, na uandike walichosema. Wapate kupitia WhatsApp na marafiki kwanza.'],
-    [/soko|masoko|tangaza|market/, 'Masoko ya gharama nafuu: WhatsApp Status, vikundi vya mtaa/chuo, picha nzuri za bidhaa, na ofa ndogo kwa wateja wa kwanza.'],
-    [/cardboard|diy|kifaa|mfano|prototype/, 'Kwa mfano wa gharama ndogo: anza na cardboard, chora vipimo, kata, gundi, jaribu na watu 5, kisha boresha. Angalia "KITWE DIY LAB".'],
-    [/wazo|idea|biashara/, 'Wazo zuri huanza na tatizo halisi. Jiulize: nani anasumbuka, analipa kiasi gani sasa, na mimi nawezaje kuwa nafuu au bora? Kisha tathmini wazo lako kwenye "Tathmini ya Wazo".'],
-  ];
-  const hit = tips.find(([re]) => re.test(q));
-  return '[Jibu la MFANO — si AI halisi]\n' + (hit ? hit[1] : 'Habari! Mimi ni msaidizi wa mfano. Niulize kuhusu bei, mtaji, wateja, masoko, au mawazo ya biashara. AI halisi itaunganishwa baadaye.');
-}
-async function askAI(messages, extraSystem, allowSim) {
-  if (!CONFIG.AI_ENDPOINT && allowSim && CONFIG.SIMULATE_AI) { await new Promise((r) => setTimeout(r, 700)); return simulateReply(messages); }
-  if (!CONFIG.AI_ENDPOINT) throw new Error('AI haijaunganishwa bado. Mwenye programu aweke AI_ENDPOINT (angalia worker-ai.js).');
-  let res;
-  try {
-    res = await fetch(CONFIG.AI_ENDPOINT, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ messages, lang: 'sw', hint: extraSystem || '' }) });
-  } catch { throw new Error('Hakuna mtandao au huduma ya AI haipatikani.'); }
-  const j = await res.json().catch(() => ({}));
-  if (!res.ok || !j.reply) throw new Error(j.error || 'AI imeshindwa kujibu. Jaribu tena.');
-  return j.reply;
-}
-
-/* ---------- Maudhui tuli ---------- */
-const PAGES = [
-  ['home', '🏠', 'Nyumbani', 'Dashboard'], ['chat', '🤖', 'Uliza KITWE AI', 'KITWE AI Chat'], ['generator', '💡', 'Jenereta ya Mawazo', 'Idea Generator'],
-  ['evaluate', '📊', 'Tathmini ya Wazo', 'Idea Evaluation'], ['saved', '📁', 'Mawazo Yaliyohifadhiwa', 'Saved Ideas'], ['favorites', '⭐', 'Vipendwa', 'Favorites'],
-  ['compare', '⚖️', 'Linganisha Mawazo', 'Compare Ideas'], ['diy', '🛠️', 'KITWE DIY LAB', 'DIY Lab'], ['calculator', '🧮', 'Kikokotoo cha Biashara', 'Business Calculator'],
-  ['challenges', '🏆', 'Changamoto za Ubunifu', 'Innovation Challenges'], ['planner', '📐', 'Mpangaji wa Mfano', 'Prototype Planner'], ['progress', '📈', 'Maendeleo ya Mfano', 'Progress Tracker'],
-  ['bizplan', '📝', 'Mpango wa Biashara', 'Business Plan'], ['lessons', '📚', 'Masomo', 'Learning Resources'], ['notifications', '🔔', 'Arifa', 'Notifications'],
-  ['profile', '👤', 'Wasifu Wangu', 'User Profile'], ['payments', '💳', 'Usajili na Malipo', 'Subscription & Payments'],
-];
-const TITLE = Object.fromEntries(PAGES.map((p) => [p[0], p[2]]));
-const BOTTOM = [['home', '🏠', 'Nyumbani'], ['chat', '🤖', 'AI'], ['generator', '💡', 'Mawazo'], ['diy', '🛠️', 'DIY'], ['_menu', '☰', 'Zaidi']];
-
-const FACTORS = [
-  ['problem', 'Tatizo halisi', 10, 'Je, watu wanasumbuka na tatizo hili kila siku?', 'Zungumza na watu 10 kuthibitisha tatizo ni la kweli.'],
-  ['payers', 'Wateja tayari kulipa', 20, 'Je, kuna watu wanaoweza kununua leo?', 'Jaribu kuuza kwa wateja 3–5 kabla ya kuwekeza zaidi.'],
-  ['cost', 'Gharama ndogo ya kuanza', 15, '5 = mtaji mdogo sana', 'Punguza mtaji: anza na bidhaa MOJA na kiasi kidogo.'],
-  ['skill', 'Ujuzi ulionao', 15, 'Je, unaweza kutengeneza/kutoa mwenyewe?', 'Jifunze ujuzi muhimu au tafuta mshirika mwenye ujuzi.'],
-  ['competition', 'Ushindani mdogo', 15, '5 = hakuna au wachache', 'Tafuta kitu kinachokutofautisha: bei, ubora, huduma au eneo.'],
-  ['materials', 'Vifaa vinapatikana', 10, 'Je, vifaa vinapatikana karibu nawe?', 'Tafuta wasambazaji wa karibu au vifaa mbadala vya bei nafuu.'],
-  ['growth', 'Uwezo wa kukua', 5, 'Je, unaweza kuuza zaidi baadaye?', 'Fikiria bidhaa/huduma ya pili kwa wateja walewale.'],
-  ['profit', 'Faida', 10, 'Je, bei inazidi gharama kwa kiasi kizuri?', 'Kagua bei na gharama kwa kitengo kwenye Kikokotoo.'],
-];
-function scoreOf(s) { let t = 0; for (const [k, , w] of FACTORS) t += (w * (Number(s[k]) || 0)) / 5; return Math.round(t); }
-function verdict(sc) {
-  if (sc >= 75) return ['good', 'Nzuri — anza majaribio madogo sasa.'];
-  if (sc >= 50) return ['mid', 'Inaahidi — boresha sehemu dhaifu kabla ya kuwekeza.'];
-  return ['low', 'Hatari — usiwekeze bado; thibitisha tatizo na wateja kwanza.'];
-}
-
-const CATEGORIES = ['Chakula na vinywaji', 'Elimu', 'Teknolojia', 'Kilimo na mifugo', 'Huduma za mtaani', 'Biashara ya rejareja', 'Ufundi na urembo', 'Nyingine'];
-
-const DIY = [
-  { id: 'stand', title: 'Kishikio cha simu cha cardboard', mats: 'Cardboard ngumu (karibu 20cm x 20cm), mkasi au kisu, gundi au tepe, rula, penseli.',
-    parts: 'Kata vipande 2 vya 12cm x 8cm (kuta) na kipande 1 cha 12cm x 9cm (msingi). Kata sehemu ya kuinamisha kwa pembe ya takriban 60°.',
-    steps: ['Chora vipimo.', 'Kata kwa uangalifu.', 'Gundi kuta pembeni ya msingi.', 'Acha ikauke dakika 30.', 'Jaribu simu yako — rekebisha upana.'],
-    cost: 'TSh 0–1,500 ukitumia cardboard iliyotumika.', safety: 'Kata mbali na mwili wako; watoto wasimamiwe.' },
-  { id: 'organizer', title: 'Kipanga vitu (organizer) cha mezani cha cardboard', mats: 'Masanduku ya cardboard ya viatu au dawa ya meno, mkasi, gundi, karatasi ya kufunika
+        <!-- Kitufe cha Msaada wa Haraka kupitia WhatsApp iliyowekwa namba yako 0796133662 -->
+        <a href="https://wa.me/255796133662?text=Habari%20Admin,%20Nimelipia%20TSh%20600%20kwenye%20KITWE%20IDEALAB%20AI%20na%20nimewasilisha%20namba%20ya%20muamala,%20naomba%20msaada%20wa%20kufunguliwa%20Premium." 
+           target="_blank" 
+           style="display: block; text-align: center; background: #25D366; color: white; padding: 12px; border-radius: 8px; text-decoration: none; font-weight: bold; font-size: 14px; box-shadow: 0 2px 6px rgba(37, 211, 102, 0.3);">
+            💬 Wasiliana na Admin kupitia WhatsApp (Msaada wa Haraka)
+        </a>
+    </div>
+</div>
