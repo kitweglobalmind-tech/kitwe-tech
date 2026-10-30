@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KITWE IDEALAB AI</title>
-    <!-- Tailwind CSS kwa ajili ya muonekano wa kisasa na responsive -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
@@ -12,229 +11,225 @@
             theme: {
                 extend: {
                     colors: {
-                        royalBlue: '#1e40af',
-                        navyBlue: '#0f172a',
-                        goldAccent: '#f59e0b'
+                        brandDark: '#0f172a',
+                        brandBlue: '#1e3a8a',
+                        brandGold: '#f59e0b'
                     }
                 }
             }
         }
     </script>
 </head>
-<body class="bg-slate-100 text-slate-800 font-sans antialiased pb-20">
+<body class="bg-slate-50 text-slate-800 font-sans pb-24">
 
-    <!-- TOP HEADER -->
-    <header class="bg-navyBlue text-white sticky top-0 z-50 shadow-md">
+    <!-- HEADER / TOP BAR -->
+    <header class="bg-[#0f172a] text-white sticky top-0 z-40 shadow">
         <div class="flex items-center justify-between px-4 py-3">
-            <button id="menuToggle" class="text-white text-xl focus:outline-none">
+            <button onclick="toggleSidebar()" class="text-white text-xl focus:outline-none p-1">
                 <i class="fa-solid fa-bars"></i>
             </button>
             <div class="flex items-center space-x-2">
-                <span class="bg-goldAccent text-navyBlue font-bold w-8 h-8 rounded-full flex items-center justify-center text-sm">K</span>
-                <span class="font-bold tracking-wide text-sm sm:text-base">KITWE IDEALAB AI</span>
+                <span class="bg-[#f59e0b] text-[#0f172a] font-bold w-7 h-7 rounded-full flex items-center justify-center text-xs">K</span>
+                <span class="font-bold tracking-wider text-sm">KITWE IDEALAB AI</span>
             </div>
-            <button id="notifBtn" class="text-white text-lg relative focus:outline-none">
+            <button onclick="switchTab('payments')" class="text-white text-lg relative focus:outline-none p-1">
                 <i class="fa-solid fa-bell"></i>
-                <span class="absolute -top-1 -right-1 bg-goldAccent text-navyBlue text-xs w-4 h-4 rounded-full flex items-center justify-center font-bold">1</span>
+                <span class="absolute top-0 right-0 bg-[#f59e0b] text-[#0f172a] text-[9px] w-4 h-4 rounded-full flex items-center justify-center font-bold">1</span>
             </button>
         </div>
     </header>
 
     <!-- SIDEBAR NAVIGATION MENU -->
-    <div id="sidebarOverlay" class="fixed inset-0 bg-black/50 z-50 hidden"></div>
-    <aside id="sidebar" class="fixed top-0 left-0 bottom-0 w-72 bg-navyBlue text-white z-50 transform -translate-x-full transition-transform duration-300 flex flex-col justify-between shadow-2xl">
+    <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/50 z-50 hidden transition-opacity"></div>
+    <aside id="sidebar" class="fixed top-0 left-0 bottom-0 w-72 bg-[#0f172a] text-white z-50 transform -translate-x-full transition-transform duration-300 flex flex-col justify-between shadow-2xl">
         <div>
-            <!-- Profile Info ndani ya Sidebar -->
-            <div class="p-4 bg-royalBlue/50 border-b border-slate-700 flex items-center space-x-3">
-                <div class="bg-goldAccent text-navyBlue font-bold w-10 h-10 rounded-full flex items-center justify-center">K</div>
-                <div>
-                    <h4 class="font-bold text-sm">YAHAYA BONIFACE ANDREA</h4>
-                    <p class="text-xs text-slate-300">yahayakitwe@gmail.com</p>
+            <!-- User Profile Header in Sidebar -->
+            <div class="p-4 bg-blue-950 border-b border-slate-800 flex items-center space-x-3">
+                <div class="bg-[#f59e0b] text-[#0f172a] font-bold w-10 h-10 rounded-full flex items-center justify-center text-sm">K</div>
+                <div class="overflow-hidden">
+                    <h4 class="font-bold text-xs truncate">YAHAYA BONIFACE ANDREA</h4>
+                    <p class="text-[11px] text-slate-400 truncate">yahayakitwe@gmail.com</p>
                 </div>
             </div>
-            <!-- Menu Items -->
-            <nav class="p-2 space-y-1 overflow-y-auto max-h-[calc(100vh-140px)] text-sm">
-                <a href="#" onclick="switchTab('nyumbani')" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-royalBlue transition"><i class="fa-solid fa-house w-5"></i><span>Nyumbani</span></a>
-                <a href="#" onclick="switchTab('aiChat')" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-royalBlue transition"><i class="fa-solid fa-robot w-5"></i><span>Uliza KITWE AI</span></a>
-                <a href="#" onclick="switchTab('generator')" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-royalBlue transition"><i class="fa-solid fa-lightbulb w-5"></i><span>Jenereta ya Mawazo</span></a>
-                <a href="#" onclick="switchTab('evaluation')" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-royalBlue transition"><i class="fa-solid fa-chart-line w-5"></i><span>Tathmini ya Wazo</span></a>
-                <a href="#" onclick="switchTab('saved')" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-royalBlue transition"><i class="fa-solid fa-bookmark w-5"></i><span>Mawazo Yaliyohifadhiwa</span></a>
-                <a href="#" onclick="switchTab('diyLab')" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-royalBlue transition"><i class="fa-solid fa-screwdriver-wrench w-5"></i><span>KITWE DIY Lab</span></a>
-                <a href="#" onclick="switchTab('calculator')" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-royalBlue transition"><i class="fa-solid fa-calculator w-5"></i><span>Kikokotoo cha Biashara</span></a>
-                <a href="#" onclick="switchTab('challenges')" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-royalBlue transition"><i class="fa-solid fa-trophy w-5"></i><span>Changamoto za Ubunifu</span></a>
-                <a href="#" onclick="switchTab('payments')" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-royalBlue transition bg-royalBlue/40 text-goldAccent font-semibold"><i class="fa-solid fa-wallet w-5"></i><span>Usajili na Malipo</span></a>
-                <a href="#" onclick="switchTab('adminPanel')" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-royalBlue transition text-goldAccent"><i class="fa-solid fa-lock w-5"></i><span>Admin Panel</span></a>
+            <!-- Sidebar Links -->
+            <nav class="p-2 space-y-1 overflow-y-auto max-h-[calc(100vh-140px)] text-xs">
+                <a href="#" onclick="switchTab('nyumbani')" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-blue-900 transition"><i class="fa-solid fa-house w-5 text-blue-400"></i><span>Nyumbani</span> <span class="ml-auto text-[10px] text-slate-400">Dashboard</span></a>
+                <a href="#" onclick="switchTab('aiChat')" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-blue-900 transition"><i class="fa-solid fa-robot w-5 text-blue-400"></i><span>Uliza KITWE AI</span> <span class="ml-auto text-[10px] text-slate-400">AI Chat</span></a>
+                <a href="#" onclick="switchTab('generator')" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-blue-900 transition"><i class="fa-solid fa-lightbulb w-5 text-blue-400"></i><span>Jenereta ya Mawazo</span> <span class="ml-auto text-[10px] text-slate-400">Idea Gen</span></a>
+                <a href="#" onclick="switchTab('evaluation')" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-blue-900 transition"><i class="fa-solid fa-chart-line w-5 text-blue-400"></i><span>Tathmini ya Wazo</span> <span class="ml-auto text-[10px] text-slate-400">Evaluation</span></a>
+                <a href="#" onclick="switchTab('diyLab')" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-blue-900 transition"><i class="fa-solid fa-screwdriver-wrench w-5 text-blue-400"></i><span>KITWE DIY Lab</span> <span class="ml-auto text-[10px] text-slate-400">DIY Lab</span></a>
+                <a href="#" onclick="switchTab('calculator')" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-blue-900 transition"><i class="fa-solid fa-calculator w-5 text-blue-400"></i><span>Kikokotoo cha Biashara</span> <span class="ml-auto text-[10px] text-slate-400">Calculator</span></a>
+                <a href="#" onclick="switchTab('challenges')" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-blue-900 transition"><i class="fa-solid fa-trophy w-5 text-blue-400"></i><span>Changamoto za Ubunifu</span> <span class="ml-auto text-[10px] text-slate-400">Challenges</span></a>
+                <a href="#" onclick="switchTab('payments')" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-blue-900 transition bg-blue-900/50 text-amber-400 font-semibold"><i class="fa-solid fa-wallet w-5 text-amber-400"></i><span>Usajili na Malipo</span> <span class="ml-auto text-[10px] text-amber-400">Payments</span></a>
+                <a href="#" onclick="switchTab('adminPanel')" class="flex items-center space-x-3 px-3 py-2.5 rounded-lg hover:bg-blue-900 transition text-amber-400 font-semibold"><i class="fa-solid fa-lock w-5 text-amber-400"></i><span>Admin Panel</span> <span class="ml-auto text-[10px] text-amber-400">Admin</span></a>
             </nav>
         </div>
-        <div class="p-4 border-t border-slate-700">
-            <button onclick="alert('Umetoka kwenye akaunti!')" class="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg text-sm font-semibold transition">Toka (Logout)</button>
-            <p class="text-[10px] text-center text-slate-400 mt-2">KITWE GlobalMind - v1.0.0</p>
+        <div class="p-4 border-t border-slate-800">
+            <button onclick="alert('Umetoka kwenye akaunti kwa salama.')" class="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg text-xs font-semibold transition">Toka (Logout)</button>
+            <p class="text-[9px] text-center text-slate-500 mt-2">KITWE GlobalMind - v1.0.0</p>
         </div>
     </aside>
 
-    <!-- MAIN CONTENT CONTAINER -->
-    <main class="p-4 max-w-xl mx-auto">
+    <!-- MAIN CONTAINER -->
+    <main class="max-w-md mx-auto p-4 space-y-4">
 
         <!-- 1. NYUMBANI (DASHBOARD) -->
         <section id="nyumbaniTab" class="tab-content space-y-4">
-            <div class="bg-gradient-to-r from-royalBlue to-navyBlue text-white p-5 rounded-2xl shadow-md">
-                <h2 class="text-xl font-bold mb-1">Karibu, Yahaya Boniphace! 👋</h2>
-                <p class="text-xs text-slate-200">Simamia mawazo yako ya kibunifu na biashara kwa urahisi kupitia KITWE IDEALAB AI.</p>
+            <div class="bg-[#0f172a] text-white p-5 rounded-2xl shadow relative overflow-hidden">
+                <div class="relative z-10">
+                    <h2 class="text-base font-bold mb-1">Karibu, Yahaya Boniphace! 👋</h2>
+                    <p class="text-xs text-slate-300">Simamia mawazo yako ya kibunifu na biashara kwa urahisi kupitia KITWE IDEALAB AI.</p>
+                </div>
+                <div class="absolute -right-4 -bottom-4 text-white/5 text-7xl font-bold"><i class="fa-solid fa-lightbulb"></i></div>
             </div>
+
             <div class="grid grid-cols-2 gap-3">
                 <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
-                    <p class="text-xs text-slate-500">Mawazo Yaliyotengenezwa</p>
-                    <h3 class="text-2xl font-bold text-royalBlue mt-1" id="statIdeas">0</h3>
+                    <p class="text-[11px] text-slate-500 font-medium">Mawazo Yaliyotengenezwa</p>
+                    <h3 class="text-xl font-bold text-[#1e3a8a] mt-1" id="statIdeasCount">0</h3>
                 </div>
                 <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200">
-                    <p class="text-xs text-slate-500">Hali ya Akaunti</p>
-                    <h3 class="text-lg font-bold text-amber-600 mt-1" id="statStatus">Free</h3>
+                    <p class="text-[11px] text-slate-500 font-medium">Hali ya Akaunti</p>
+                    <h3 class="text-base font-bold text-amber-600 mt-1" id="statAccountStatus">Free</h3>
                 </div>
             </div>
-            <button onclick="switchTab('generator')" class="w-full bg-royalBlue text-white py-3 rounded-xl font-semibold shadow hover:bg-blue-800 transition">Anza Kutengeneza Wazo Mpya 🚀</button>
+
+            <button onclick="switchTab('generator')" class="w-full bg-[#1e3a8a] hover:bg-blue-900 text-white py-3 rounded-xl font-semibold text-xs shadow transition flex items-center justify-center space-x-2">
+                <span>Anza Kutengeneza Wazo Mpya</span> <i class="fa-solid fa-arrow-right"></i>
+            </button>
         </section>
 
         <!-- 2. ULIZA KITWE AI -->
         <section id="aiChatTab" class="tab-content hidden space-y-3">
-            <h2 class="text-lg font-bold text-navyBlue">Uliza KITWE AI 🤖</h2>
-            <div class="bg-white h-80 rounded-xl p-3 border border-slate-200 overflow-y-auto flex flex-col space-y-2 text-sm" id="chatBox">
-                <div class="bg-slate-100 p-3 rounded-lg max-w-[85%] self-start">Habari Yahaya! Niko tayari kukusaidia kwenye biashara, coding, na ubunifu wako leo. Niambie nikuandalie nini?</div>
+            <h2 class="text-sm font-bold text-[#0f172a]">Uliza KITWE AI 🤖</h2>
+            <div class="bg-white h-80 rounded-xl p-3 border border-slate-200 overflow-y-auto flex flex-col space-y-2 text-xs" id="chatContainer">
+                <div class="bg-slate-100 p-2.5 rounded-lg max-w-[85%] self-start text-slate-700">Habari Yahaya! Niko tayari kukusaidia kwenye biashara, ubunifu wa miradi, na masomo yako leo. Niambie nikuandalie nini?</div>
             </div>
             <div class="flex space-x-2">
-                <input type="text" id="chatInput" placeholder="Andika swali lako hapa..." class="flex-1 border border-slate-300 rounded-xl px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-royalBlue">
-                <button onclick="sendAIChat()" class="bg-royalBlue text-white px-4 py-2 rounded-xl text-sm font-semibold hover:bg-blue-800">Tuma</button>
+                <input type="text" id="chatInputBox" placeholder="Andika ujumbe wako..." class="flex-1 border border-slate-300 rounded-xl px-3 py-2 text-xs focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]">
+                <button onclick="sendChatMessage()" class="bg-[#1e3a8a] text-white px-4 py-2 rounded-xl text-xs font-semibold hover:bg-blue-900">Tuma</button>
             </div>
         </section>
 
         <!-- 3. JENERETA YA MAWAZO -->
-        <section id="generatorTab" class="tab-content hidden space-y-4">
-            <h2 class="text-lg font-bold text-navyBlue">Jenereta ya Mawazo 💡</h2>
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 space-y-3">
+        <section id="generatorTab" class="tab-content hidden space-y-3">
+            <h2 class="text-sm font-bold text-[#0f172a]">Jenereta ya Mawazo 💡</h2>
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 space-y-3 text-xs">
                 <div>
-                    <label class="text-xs font-semibold text-slate-600">Weka Tatizo au Dhana ya Biashara</label>
-                    <input type="text" id="genProblem" placeholder="Mf: Uhaba wa vifaa vya kusomea vya bei nafuu..." class="w-full mt-1 border border-slate-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-royalBlue focus:outline-none">
+                    <label class="font-semibold text-slate-600">Andika Tatizo au Wazo Lako</label>
+                    <input type="text" id="genProblemInput" placeholder="Mf: Vifaa vya kusomea vya cardboard..." class="w-full mt-1 border border-slate-300 rounded-lg p-2 text-xs focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]">
                 </div>
                 <div>
-                    <label class="text-xs font-semibold text-slate-600">Mtaji Unaopatikana (TSh)</label>
-                    <input type="number" id="genCapital" placeholder="5000" class="w-full mt-1 border border-slate-300 rounded-lg p-2 text-sm focus:ring-2 focus:ring-royalBlue focus:outline-none">
+                    <label class="font-semibold text-slate-600">Mtaji Unaopatikana (TSh)</label>
+                    <input type="number" id="genCapitalInput" placeholder="5000" class="w-full mt-1 border border-slate-300 rounded-lg p-2 text-xs focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]">
                 </div>
-                <button onclick="generateIdea()" class="w-full bg-royalBlue text-white py-2.5 rounded-xl text-sm font-semibold hover:bg-blue-800 shadow">Tengeneza Wazo</button>
+                <button onclick="executeGenerateIdea()" class="w-full bg-[#1e3a8a] hover:bg-blue-900 text-white py-2.5 rounded-xl font-semibold shadow transition">Tengeneza Wazo</button>
             </div>
-            <div id="genResult" class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 hidden space-y-2">
-                <h3 class="font-bold text-royalBlue text-base">Matokeo ya Wazo Lako:</h3>
-                <div id="genResultContent" class="text-xs text-slate-700 space-y-1"></div>
+            <div id="genResultCard" class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 hidden space-y-2 text-xs">
+                <h3 class="font-bold text-[#1e3a8a] text-sm">Matokeo ya Uchambuzi wa Wazo:</h3>
+                <div id="genResultBody" class="text-slate-700 space-y-1"></div>
             </div>
         </section>
 
         <!-- 4. TATHMINI YA WAZO -->
-        <section id="evaluationTab" class="tab-content hidden space-y-4">
-            <h2 class="text-lg font-bold text-navyBlue">Tathmini ya Wazo 📊</h2>
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 space-y-3">
-                <input type="text" id="evalTitle" placeholder="Jina la Wazo au Biashara" class="w-full border border-slate-300 rounded-lg p-2 text-sm focus:outline-none">
-                <button onclick="evaluateIdea()" class="w-full bg-royalBlue text-white py-2.5 rounded-xl text-sm font-semibold">Fanya Tathmini</button>
+        <section id="evaluationTab" class="tab-content hidden space-y-3">
+            <h2 class="text-sm font-bold text-[#0f172a]">Tathmini ya Wazo 📊</h2>
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 space-y-3 text-xs">
+                <input type="text" id="evalTitleInput" placeholder="Jina la Wazo au Mradi..." class="w-full border border-slate-300 rounded-lg p-2 text-xs focus:outline-none">
+                <button onclick="executeEvaluation()" class="w-full bg-[#1e3a8a] text-white py-2.5 rounded-xl font-semibold">Fanya Tathmini Sasa</button>
             </div>
-            <div id="evalResult" class="bg-white p-4 rounded-xl shadow-sm hidden"></div>
+            <div id="evalResultCard" class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 hidden text-xs space-y-1"></div>
         </section>
 
-        <!-- 5. MAWAZO YALIYOHIFADHIWA -->
-        <section id="savedTab" class="tab-content hidden space-y-3">
-            <h2 class="text-lg font-bold text-navyBlue">Mawazo Yaliyohifadhiwa 🔖</h2>
-            <div id="savedList" class="space-y-2">
-                <p class="text-xs text-slate-500 bg-white p-3 rounded-xl border border-slate-200">Hakuna wazo lililohifadhiwa kwa sasa.</p>
-            </div>
-        </section>
-
-        <!-- 6. KITWE DIY LAB -->
+        <!-- 5. KITWE DIY LAB -->
         <section id="diyLabTab" class="tab-content hidden space-y-3">
-            <h2 class="text-lg font-bold text-navyBlue">KITWE DIY Lab 🛠️</h2>
+            <h2 class="text-sm font-bold text-[#0f172a]">KITWE DIY Lab 🛠️</h2>
             <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 text-xs space-y-2">
-                <h3 class="font-bold text-royalBlue text-sm">Uundaji wa Vifaa vya Cardboard (Under TSh 5,000)</h3>
-                <p class="text-slate-600">Jifunze kutengeneza study organizer na vifaa vya kielektroniki kwa kutumia cardboard, LEDs, na hot glue.</p>
+                <h3 class="font-bold text-[#1e3a8a] text-sm">Uundaji wa Vifaa vya Cardboard (Under TSh 5,000)</h3>
+                <p class="text-slate-600">Jifunze kutengeneza study organizer, mabegi ya kisasa ya cardboard, na mifumo rahisi ya usalama kwa kutumia rasilimali za chini.</p>
             </div>
         </section>
 
-        <!-- 7. KIKOKOTOO CHA BIASHARA -->
-        <section id="calculatorTab" class="tab-content hidden space-y-4">
-            <h2 class="text-lg font-bold text-navyBlue">Kikokotoo cha Biashara 🧮</h2>
+        <!-- 6. KIKOKOTOO CHA BIASHARA -->
+        <section id="calculatorTab" class="tab-content hidden space-y-3">
+            <h2 class="text-sm font-bold text-[#0f172a]">Kikokotoo cha Biashara 🧮</h2>
             <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 space-y-3 text-xs">
                 <div>
                     <label class="font-semibold text-slate-600">Gharama za Uzalishaji (TSh)</label>
-                    <input type="number" id="calcCost" placeholder="2000" class="w-full mt-1 border border-slate-300 rounded-lg p-2 text-sm">
+                    <input type="number" id="calcCostInput" placeholder="2000" class="w-full mt-1 border border-slate-300 rounded-lg p-2 text-xs">
                 </div>
                 <div>
                     <label class="font-semibold text-slate-600">Bei ya Kuuzia (TSh)</label>
-                    <input type="number" id="calcPrice" placeholder="5000" class="w-full mt-1 border border-slate-300 rounded-lg p-2 text-sm">
+                    <input type="number" id="calcPriceInput" placeholder="5000" class="w-full mt-1 border border-slate-300 rounded-lg p-2 text-xs">
                 </div>
-                <button onclick="calculateBusiness()" class="w-full bg-royalBlue text-white py-2 rounded-xl font-semibold text-sm">Hesabu Faida</button>
-                <div id="calcResult" class="font-bold text-royalBlue text-sm mt-2"></div>
+                <button onclick="executeCalculation()" class="w-full bg-[#1e3a8a] text-white py-2.5 rounded-xl font-semibold">Hesabu Faida</button>
+                <div id="calcResultBox" class="font-bold text-[#1e3a8a] text-xs pt-1"></div>
             </div>
         </section>
 
-        <!-- 8. CHANGAMOTO ZA UBUNIFU -->
-        <section id="challengesTab" class="tab-content hidden space-y-4">
-            <h2 class="text-lg font-bold text-navyBlue">Changamoto za Ubunifu 🏆</h2>
-            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 space-y-3">
-                <h3 class="font-bold text-sm text-royalBlue">Suluhisho la Cardboard ndani ya TSh 5,000</h3>
-                <p class="text-xs text-slate-600">Tengeneza kifaa cha kutatua tatizo kwa kutumia cardboard kisichozidi TSh 5,000.</p>
-                <textarea id="challengeAnswer" rows="3" placeholder="Andika jibu lako hapa..." class="w-full border border-slate-300 rounded-lg p-2 text-xs focus:outline-none focus:ring-2 focus:ring-royalBlue"></textarea>
-                <button onclick="submitChallenge()" class="w-full bg-royalBlue text-white py-2.5 rounded-xl text-sm font-semibold hover:bg-blue-800 shadow">Wasilisha</button>
-                <div id="challengeMsg" class="text-xs font-semibold text-center text-emerald-600 hidden">Asante! Jibu lako limewasilishwa kikamilifu.</div>
+        <!-- 7. CHANGAMOTO ZA UBUNIFU -->
+        <section id="challengesTab" class="tab-content hidden space-y-3">
+            <h2 class="text-sm font-bold text-[#0f172a]">Changamoto za Ubunifu 🏆</h2>
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 space-y-3 text-xs">
+                <h3 class="font-bold text-sm text-[#1e3a8a]">Suluhisho la Cardboard ndani ya TSh 5,000</h3>
+                <p class="text-slate-600">Tengeneza kifaa cha kutatua tatizo kwa kutumia cardboard kisichozidi TSh 5,000.</p>
+                <textarea id="challengeAnsInput" rows="3" placeholder="Andika jibu au suluhisho lako hapa..." class="w-full border border-slate-300 rounded-lg p-2 text-xs focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]"></textarea>
+                <button onclick="executeSubmitChallenge()" class="w-full bg-[#1e3a8a] text-white py-2.5 rounded-xl font-semibold shadow hover:bg-blue-900">Wasilisha</button>
+                <div id="challengeSuccessMsg" class="font-semibold text-center text-emerald-600 hidden">Asante! Jibu lako limewasilishwa kikamilifu.</div>
             </div>
         </section>
 
-        <!-- 9. USAJILI NA MALIPO (SUBSCRIPTION & PAYMENTS) -->
+        <!-- 8. USAJILI NA MALIPO (SUBSCRIPTION & PAYMENTS) -->
         <section id="paymentsTab" class="tab-content hidden space-y-4">
-            <h2 class="text-lg font-bold text-navyBlue flex items-center justify-between">
-                <span>Usajili na Malipo 💳</span>
-            </h2>
+            <h2 class="text-sm font-bold text-[#0f172a]">Usajili na Malipo 💳</h2>
 
-            <!-- Kadi ya Hali ya Sasa (Pending Reassuring UI) -->
-            <div class="bg-white rounded-2xl p-4 shadow-sm border-l-4 border-amber-500 space-y-3">
+            <!-- Subscription Status Card -->
+            <div class="bg-white rounded-2xl p-4 shadow-sm border-l-4 border-amber-500 space-y-3 text-xs">
                 <div class="flex justify-between items-center">
-                    <h3 class="font-bold text-slate-800 text-sm">Hali ya Usajili Wako</h3>
+                    <h3 class="font-bold text-slate-800">Hali ya Usajili Wako</h3>
                     <span id="paymentStatusBadge" class="bg-amber-100 text-amber-800 px-2.5 py-1 rounded-full text-[10px] font-bold">INASUBIRI - PENDING</span>
                 </div>
-                <p class="text-xs text-slate-600 leading-relaxed">
+                <p class="text-slate-600 leading-relaxed">
                     Asante kwa kufanya malipo! Ombi lako la muamala limewasilishwa. Akaunti yako ya <strong>Premium</strong> itafunguliwa ndani ya dakika 5 hadi 10 baada ya namba ya muamala kuhakikiwa.
                 </p>
-                <div class="bg-slate-50 p-2.5 rounded-lg text-[11px] text-slate-700 space-y-1">
+                <div class="bg-slate-50 p-2.5 rounded-lg text-slate-700 space-y-1">
                     <strong>Hatua za Mfumo:</strong>
                     <p>1. Tuma kiasi kamili kupitia namba za hapa chini.</p>
                     <p>2. Weka namba ya muamala na ubonyeze Wasilisha.</p>
                 </div>
-                <!-- Kitufe cha WhatsApp yenye namba yako 0796133662 -->
+                <!-- WhatsApp Button with your number 0796133662 -->
                 <a href="https://wa.me/255796133662?text=Habari%20Admin,%20Nimelipia%20TSh%20600%20kwenye%20KITWE%20IDEALAB%20AI%20na%20nimewasilisha%20namba%20ya%20muamala,%20naomba%20msaada%20wa%20kufunguliwa%20Premium." 
                    target="_blank" 
-                   class="block text-center bg-emerald-600 text-white py-2.5 rounded-xl text-xs font-bold shadow hover:bg-emerald-700 transition">
+                   class="block text-center bg-emerald-600 text-white py-2.5 rounded-xl font-bold shadow hover:bg-emerald-700 transition">
                     💬 Wasiliana na Admin kupitia WhatsApp (0796133662)
                 </a>
             </div>
 
-            <!-- Namba za Malipo -->
+            <!-- Payment Numbers -->
             <div class="bg-white p-4 rounded-2xl shadow-sm space-y-3 text-xs">
-                <h3 class="font-bold text-royalBlue text-sm">Lipa kiasi kamili TSh 600 kwa:</h3>
+                <h3 class="font-bold text-[#1e3a8a] text-sm">Lipa kiasi kamili TSh 600 kwa:</h3>
                 <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 flex justify-between items-center">
                     <div>
-                        <p class="font-bold text-slate-800">Vodacom M-Pesa: <span class="text-royalBlue">0796133662</span></p>
+                        <p class="font-bold text-slate-800">Vodacom M-Pesa: <span class="text-[#1e3a8a]">0796133662</span></p>
                         <p class="text-[10px] text-slate-500">Jina: Yahaya Boniphace Andrea</p>
                     </div>
-                    <button onclick="navigator.clipboard.writeText('0796133662'); alert('Namba imenakiliwa!');" class="bg-slate-200 px-3 py-1.5 rounded-lg text-[11px] font-bold">Nakili</button>
+                    <button onclick="navigator.clipboard.writeText('0796133662'); alert('Namba imenakiliwa!');" class="bg-slate-200 px-3 py-1.5 rounded-lg font-bold">Nakili</button>
                 </div>
                 <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 flex justify-between items-center">
                     <div>
-                        <p class="font-bold text-slate-800">Airtel Money: <span class="text-royalBlue">0683530583</span></p>
+                        <p class="font-bold text-slate-800">Airtel Money: <span class="text-[#1e3a8a]">0683530583</span></p>
                         <p class="text-[10px] text-slate-500">Jina: Amina Adam Kitwe</p>
                     </div>
-                    <button onclick="navigator.clipboard.writeText('0683530583'); alert('Namba imenakiliwa!');" class="bg-slate-200 px-3 py-1.5 rounded-lg text-[11px] font-bold">Nakili</button>
+                    <button onclick="navigator.clipboard.writeText('0683530583'); alert('Namba imenakiliwa!');" class="bg-slate-200 px-3 py-1.5 rounded-lg font-bold">Nakili</button>
                 </div>
             </div>
 
-            <!-- Fomu ya Kuwasilisha Namba ya Muamala -->
+            <!-- Transaction Form -->
             <div class="bg-white p-4 rounded-2xl shadow-sm space-y-3 text-xs">
-                <h3 class="font-bold text-navyBlue text-sm">Wasilisha namba ya muamala</h3>
+                <h3 class="font-bold text-[#0f172a] text-sm">Wasilisha namba ya muamala</h3>
                 <div>
                     <label class="text-slate-600 font-semibold">Mtandao uliolipia</label>
-                    <select id="payNetwork" class="w-full mt-1 border border-slate-300 rounded-lg p-2 text-xs bg-white">
+                    <select id="payNetworkSelect" class="w-full mt-1 border border-slate-300 rounded-lg p-2 bg-white">
                         <option>Vodacom M-Pesa</option>
                         <option>Airtel Money</option>
                         <option>Halotel Money</option>
@@ -242,32 +237,27 @@
                 </div>
                 <div>
                     <label class="text-slate-600 font-semibold">Namba ya Muamala (Transaction ID)</label>
-                    <input type="text" id="payTxId" placeholder="Mf: DJSLY363W3" class="w-full mt-1 border border-slate-300 rounded-lg p-2 text-xs uppercase">
+                    <input type="text" id="payTxIdInput" placeholder="Mf: DJSLY363W3" class="w-full mt-1 border border-slate-300 rounded-lg p-2 uppercase">
                 </div>
-                <button onclick="submitPayment()" class="w-full bg-goldAccent text-navyBlue font-bold py-2.5 rounded-xl text-xs shadow hover:bg-amber-400 transition">Wasilisha Muamala</button>
+                <button onclick="executeSubmitPayment()" class="w-full bg-[#f59e0b] text-[#0f172a] font-bold py-2.5 rounded-xl shadow hover:bg-amber-400 transition">Wasilisha Muamala</button>
             </div>
         </section>
 
-        <!-- 10. ADMIN PANEL (Neno la siri: Kitwe-Yakhee na Jicho la Password) -->
+        <!-- 9. ADMIN PANEL (Password: Kitwe-Yakhee with Eye Toggle) -->
         <section id="adminPanelTab" class="tab-content hidden space-y-4">
-            <h2 class="text-lg font-bold text-navyBlue">Admin Panel 🔒</h2>
-            <div id="adminLoginBox" class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 space-y-3 text-xs">
-                <p class="text-slate-600">Weka neno la siri la admin kuingia kwenye mfumo wa udhibiti:</p>
+            <h2 class="text-sm font-bold text-[#0f172a]">Admin Panel 🔒</h2>
+            
+            <div id="adminLoginCard" class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 space-y-3 text-xs">
+                <p class="text-slate-600">Weka neno la siri la admin kuingia:</p>
                 <div class="relative">
-                    <input type="password" id="adminPasswordInput" placeholder="Weka password..." class="w-full border border-slate-300 rounded-lg p-2 text-xs pr-10 focus:outline-none focus:ring-2 focus:ring-royalBlue">
+                    <input type="password" id="adminPasswordBox" placeholder="Weka password..." class="w-full border border-slate-300 rounded-lg p-2 pr-10 focus:outline-none focus:ring-2 focus:ring-[#1e3a8a]">
                     <button type="button" onclick="toggleAdminPassword()" class="absolute right-3 top-2.5 text-slate-500 hover:text-slate-800 focus:outline-none">
-                        <i id="eyeIcon" class="fa-solid fa-eye"></i>
+                        <i id="adminEyeIcon" class="fa-solid fa-eye"></i>
                     </button>
                 </div>
-                <button onclick="verifyAdminLogin()" class="w-full bg-royalBlue text-white py-2.5 rounded-xl font-semibold">Ingia Admin</button>
-                <p id="adminErrorMsg" class="text-red-600 font-bold hidden">Neno la siri sio sahihi! Jaribu tena.</p>
+                <button onclick="executeAdminLogin()" class="w-full bg-[#1e3a8a] text-white py-2.5 rounded-xl font-semibold">Ingia Admin</button>
+                <p id="adminErrorText" class="text-red-600 font-bold hidden">Neno la siri sio sahihi!</p>
             </div>
 
-            <div id="adminDashboardBox" class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 space-y-3 hidden text-xs">
-                <div class="flex justify-between items-center border-b pb-2">
-                    <h3 class="font-bold text-emerald-600 text-sm">Karibu kwenye Admin Panel ✅</h3>
-                    <button onclick="logoutAdmin()" class="text-red-600 font-bold text-[11px]">Toka</button>
-                </div>
-                <div>
-                    <h4 class="font-bold text-slate-700 mb-1">Miamala Iliyowasilishwa na Wateja:</h4>
-                    <div id="adminTxList"
+            <div id="adminDashboardCard" class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 space-y-3 hidden text-xs">
+                <div class="flex justi
