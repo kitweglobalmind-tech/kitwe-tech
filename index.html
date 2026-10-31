@@ -34,6 +34,11 @@ main{flex:1;overflow-y:auto;padding:15px;padding-bottom:80px}.page{display:none;
 .ticker-item { color: var(--white); font-size: 0.85rem; font-weight: bold; padding-right: 50px; }
 .ticker-item span { color: var(--gold); text-shadow: 0 0 8px rgba(245,158,11,0.5); }
 @keyframes tickerMove { 0% { transform: translateX(20%); } 100% { transform: translateX(-100%); } }
+
+/* ADMIN LIVE USERS */
+.user-status-item { display: flex; justify-content: space-between; align-items: center; padding: 8px; border-bottom: 1px solid #e5e7eb; font-size: 0.85rem; }
+.dot-online { width: 10px; height: 10px; background-color: var(--success); border-radius: 50%; display: inline-block; margin-right: 5px; }
+.dot-offline { width: 10px; height: 10px; background-color: var(--text-light); border-radius: 50%; display: inline-block; margin-right: 5px; }
 </style>
 </head>
 <body>
@@ -41,7 +46,7 @@ main{flex:1;overflow-y:auto;padding:15px;padding-bottom:80px}.page{display:none;
 <div class="sidebar" id="sidebar">
 <div class="sidebar-header"><div class="sidebar-user"><div class="avatar" id="side-avatar">Y</div><div class="sidebar-user-info"><h4 id="side-name">Yahaya Boniphace Andrea</h4><p id="side-email">yahayakitwe@gmail.com</p></div></div></div>
 <ul class="sidebar-menu" id="sidebar-menu"></ul>
-<div class="sidebar-footer"><button class="btn btn-outline btn-block" onclick="alert('Umetoka kwenye mfumo kwa mafanikio.')">Toka (Logout)</button><p class="text-center text-sm" style="margin-top:15px;color:#9ca3af;">KITWE GlobalMind · v1.0.0</p></div>
+<div class="sidebar-footer"><button class="btn btn-outline btn-block" onclick="logoutUser()">Toka (Logout)</button><p class="text-center text-sm" style="margin-top:15px;color:#9ca3af;">KITWE GlobalMind · v1.0.1</p></div>
 </div>
 <header><div class="header-left"><div class="menu-icon" onclick="toggleSidebar()">☰</div><div class="logo"><div style="background:var(--gold);color:var(--navy-blue);width:28px;height:28px;border-radius:50%;display:flex;justify-content:center;align-items:center;font-weight:bold;">K</div>KITWE IDEALAB <span>AI</span></div></div><div class="bell-icon" onclick="navigate('notifications')">🔔</div></header>
 <main>
@@ -71,7 +76,7 @@ main{flex:1;overflow-y:auto;padding:15px;padding-bottom:80px}.page{display:none;
 
 <!-- 3. IDEA GENERATOR -->
 <section id="page-generator" class="page">
-<h3>Jenereta ya Mawazo ya Biashara 💡</h3><p class="text-sm" style="margin-bottom:15px;">AI inapendekeza mawazo kulingana na mtaji na ujuzi wako. Gharama ni makadirio. Leo: 0/2</p>
+<h3>Jenereta ya Mawazo ya Biashara 💡</h3><p class="text-sm" style="margin-bottom:15px;">AI inapendekeza mawazo kulingana na mtaji na ujuzi wako. Gharama ni makadirio. Leo: <span id="gen-limit">0/2</span></p>
 <div class="card">
 <div class="form-group"><label>Tatizo gani unataka kutatua?</label><input type="text" id="gen-problem" class="form-control" placeholder="mf. cardbaord, wanafunzi, kilimo"></div>
 <div class="form-group"><label>Mtaji wako</label><input type="number" id="gen-capital" class="form-control" placeholder="mf. 20000"></div>
@@ -157,7 +162,11 @@ main{flex:1;overflow-y:auto;padding:15px;padding-bottom:80px}.page{display:none;
 <!-- 11. PROTOTYPE PLANNER -->
 <section id="page-planner" class="page">
 <h3>Mpangi wa Mfano 📐</h3>
-<div class="card"><div class="form-group"><label>Jina la Bidhaa/Mfano</label><input type="text" id="plan-name" class="form-control" placeholder="mf. Kifaa cha kusafisha maji"></div><div class="form-group"><label>Vifaa Vinavyohitajika</label><textarea id="plan-mats" class="form-control" placeholder="mf. Chupa, mchanga..."></textarea></div><button class="btn btn-primary btn-block" onclick="savePlan()">Hifadhi Mpango</button></div>
+<div class="card">
+<div class="form-group"><label>Jina la Bidhaa/Mfano</label><input type="text" id="plan-name" class="form-control" placeholder="mf. Kifaa cha kusafisha maji"></div>
+<div class="form-group"><label>Vifaa Vinavyohitajika</label><textarea id="plan-mats" class="form-control" placeholder="mf. Chupa, mchanga, pamba"></textarea></div>
+<button class="btn btn-primary btn-block" onclick="savePlan()">Hifadhi Mpango</button>
+</div>
 <div id="plan-list" class="mt-2"></div>
 </section>
 
@@ -175,7 +184,13 @@ main{flex:1;overflow-y:auto;padding:15px;padding-bottom:80px}.page{display:none;
 <!-- 13. BUSINESS PLAN -->
 <section id="page-businessplan" class="page">
 <h3>Mpango wa Biashara 📝</h3>
-<div class="card"><p class="text-sm" style="margin-bottom:15px;">Tengeneza mpango wako wa biashara hatua kwa hatua.</p><div class="form-group"><label>Dhumuni la Biashara</label><textarea id="biz-purpose" class="form-control" placeholder="Tunataka kutatua tatizo gani?"></textarea></div><div class="form-group"><label>Lengo la Muda Mfupi</label><input type="text" id="biz-goal" class="form-control" placeholder="mf. Kupata wateja 50 kwa mwezi"></div><button class="btn btn-primary btn-block" onclick="saveBizPlan()">Hifadhi Mpango</button><div id="biz-plan-result" class="mt-2"></div></div>
+<div class="card">
+<p class="text-sm" style="margin-bottom:15px;">Tengeneza mpango wako wa biashara hatua kwa hatua.</p>
+<div class="form-group"><label>Dhumuni la Biashara</label><textarea id="biz-purpose" class="form-control" placeholder="Tunataka kutatua tatizo gani?"></textarea></div>
+<div class="form-group"><label>Lengo la Muda Mfupi</label><input type="text" id="biz-goal" class="form-control" placeholder="mf. Kupata wateja 50 kwa mwezi"></div>
+<button class="btn btn-primary btn-block" onclick="saveBizPlan()">Hifadhi Mpango</button>
+<div id="biz-plan-result" class="mt-2"></div>
+</div>
 </section>
 
 <!-- 14. LEARNING HUB -->
@@ -268,7 +283,10 @@ main{flex:1;overflow-y:auto;padding:15px;padding-bottom:80px}.page{display:none;
 <button class="btn btn-gold btn-block" onclick="submitPayment()">Wasilisha</button>
 </div>
 <div class="card">
-<h4 style="font-size:.9rem;margin-bottom:10px;">Historia ya malipo</h4>
+<div class="flex-between" style="margin-bottom:10px;">
+<h4 style="font-size:.9rem;">Historia ya malipo</h4>
+<button class="btn btn-danger" style="padding:5px 10px;font-size:0.75rem;" onclick="clearMyPayments()">Futa Historia</button>
+</div>
 <div id="pay-history-list"><p class="text-sm">Bado hakuna malipo yaliyowasilishwa.</p></div>
 </div>
 </section>
@@ -289,7 +307,25 @@ main{flex:1;overflow-y:auto;padding:15px;padding-bottom:80px}.page{display:none;
 </div>
 <div id="admin-panel-box" class="hidden">
 <div class="flex-between" style="margin-bottom:10px;"><h4>Malipo na Watumiaji</h4><button class="btn btn-danger" style="padding:5px 10px;font-size:.8rem;" onclick="logoutAdmin()">Toka</button></div>
-<div id="admin-tx-list"><p class="text-sm">Hakuna malipo yaliyowasilishwa bado.</p></div>
+
+<!-- ADMIN LIVE USERS SECTION -->
+<div class="card" style="padding:10px;background:#f8fafc;">
+<h4 style="font-size:.85rem;margin-bottom:10px;color:var(--royal-blue);">Watumiaji Waliopo (Live Users)</h4>
+<div class="user-status-item">
+<span><span class="dot-online"></span> Wewe (Admin)</span>
+<span style="color:var(--success);font-weight:bold;">Mtandaoni</span>
+</div>
+<div class="user-status-item">
+<span><span class="dot-online"></span> Mteja #1 (Mfano)</span>
+<span style="color:var(--success);font-weight:bold;">Mtandaoni</span>
+</div>
+<div class="user-status-item" style="border-bottom:none;">
+<span><span class="dot-offline"></span> Mteja #2 (Mfano)</span>
+<span style="color:var(--text-light);">Ametoka</span>
+</div>
+</div>
+
+<div id="admin-tx-list" style="margin-top:15px;"><p class="text-sm">Hakuna malipo yaliyowasilishwa bado.</p></div>
 </div>
 </section>
 
@@ -297,11 +333,11 @@ main{flex:1;overflow-y:auto;padding:15px;padding-bottom:80px}.page{display:none;
 
 <!-- BOTTOM NAVIGATION -->
 <div class="bottom-nav">
-<div class="nav-item active" onclick="navigate('dashboard')"><span>🏠</span>Nyumbani</div>
-<div class="nav-item" onclick="navigate('chat')"><span>🤖</span>AI</div>
-<div class="nav-item" onclick="navigate('generator')"><span>💡</span>Mawazo</div>
-<div class="nav-item" onclick="navigate('diy')"><span>🛠️</span>DIY</div>
-<div class="nav-item" onclick="toggleSidebar()"><span>☰</span>Zaidi</div>
+<div class="nav-item active" id="bnav-dashboard" onclick="navigate('dashboard')"><span>🏠</span>Nyumbani</div>
+<div class="nav-item" id="bnav-chat" onclick="navigate('chat')"><span>🤖</span>AI</div>
+<div class="nav-item" id="bnav-generator" onclick="navigate('generator')"><span>💡</span>Mawazo</div>
+<div class="nav-item" id="bnav-diy" onclick="navigate('diy')"><span>🛠️</span>DIY</div>
+<div class="nav-item" id="bnav-more" onclick="toggleSidebar()"><span>☰</span>Zaidi</div>
 </div>
 
 <script>
@@ -327,9 +363,10 @@ const menuItems = [
 {id:'admin', icon:'🔒', name:'Admin Panel', en:'Admin', color:'var(--danger)'}
 ];
 
-// State
+// State (Premium inaisha baada ya siku 90)
 let state = {
 isPremium: localStorage.getItem('kitwe_premium') === 'true',
+premiumExpiry: localStorage.getItem('kitwe_premium_expiry') ? parseInt(localStorage.getItem('kitwe_premium_expiry')) : null,
 ideasCount: parseInt(localStorage.getItem('kitwe_ideas_count') || '0'),
 chatsCount: parseInt(localStorage.getItem('kitwe_chats_count') || '0'),
 payments: JSON.parse(localStorage.getItem('kitwe_payments') || '[]'),
@@ -342,8 +379,22 @@ userName: localStorage.getItem('kitwe_user_name') || 'Yahaya Boniphace Andrea',
 userPic: localStorage.getItem('kitwe_user_pic') || null
 };
 
+// Angalia kama Premium imeisha muda wake
+function checkPremiumExpiry() {
+    if (state.isPremium && state.premiumExpiry) {
+        if (Date.now() > state.premiumExpiry) {
+            state.isPremium = false;
+            state.premiumExpiry = null;
+            localStorage.setItem('kitwe_premium', 'false');
+            localStorage.removeItem('kitwe_premium_expiry');
+            updateDashboardState();
+        }
+    }
+}
+
 // ================= INITIALIZATION =================
 document.addEventListener('DOMContentLoaded', () => {
+    checkPremiumExpiry();
     renderSidebar();
     renderServices();
     updateDashboardState();
@@ -403,15 +454,21 @@ if (page) page.classList.add('active');
 const navLi = document.getElementById('nav-' + pageId);
 if (navLi) navLi.classList.add('active');
 
-const bottomNavs = document.querySelectorAll('.bottom-nav .nav-item');
-if (pageId === 'dashboard') bottomNavs[0].classList.add('active');
-else if (pageId === 'chat') bottomNavs[1].classList.add('active');
-else if (pageId === 'generator') bottomNavs[2].classList.add('active');
-else if (pageId === 'diy') bottomNavs[3].classList.add('active');
-else bottomNavs[4].classList.add('active');
+const bnav = document.getElementById('bnav-' + pageId);
+if (bnav) {
+    bnav.classList.add('active');
+} else {
+    document.getElementById('bnav-more').classList.add('active');
+}
 
-if (window.innerWidth < 768) toggleSidebar();
+if (document.getElementById('sidebar').classList.contains('open')) {
+    toggleSidebar();
+}
 document.querySelector('main').scrollTop = 0;
+}
+
+function logoutUser() {
+    alert('Umetoka kwenye mfumo kwa mafanikio.');
 }
 
 // ================= DASHBOARD & STATE =================
@@ -443,9 +500,15 @@ btn.onclick = () => navigate('payments');
 }
 
 function updateStats() {
-document.getElementById('stat-chats').innerText = `${state.chatsCount}/5`;
-document.getElementById('stat-ideas').innerText = `${state.ideasCount}/2`;
-document.getElementById('chat-limit').innerText = `${state.chatsCount}/5`;
+    if(state.isPremium) {
+        document.getElementById('stat-chats').innerText = `Unlimited`;
+        document.getElementById('stat-ideas').innerText = `Unlimited`;
+        document.getElementById('chat-limit').innerText = `Unlimited`;
+    } else {
+        document.getElementById('stat-chats').innerText = `${state.chatsCount}/5`;
+        document.getElementById('stat-ideas').innerText = `${state.ideasCount}/2`;
+        document.getElementById('chat-limit').innerText = `${state.chatsCount}/5`;
+    }
 }
 
 // ================= AI CHAT =================
@@ -453,7 +516,9 @@ function handleChatEnter(e) { if (e.key === 'Enter') sendChatMessage(); }
 function sendChatSuggestion(text) { document.getElementById('chat-input').value = text; sendChatMessage(); }
 function clearChat() {
 document.getElementById('chat-messages').innerHTML = `<div class="chat-bubble ai">Habari! Mimi ni KITWE AI. Nikusaidie nini leo?</div>`;
-state.chatsCount = 0; localStorage.setItem('kitwe_chats_count', 0); updateStats();
+if(!state.isPremium){
+    state.chatsCount = 0; localStorage.setItem('kitwe_chats_count', 0); updateStats();
+}
 }
 
 function sendChatMessage() {
@@ -472,9 +537,11 @@ chatBox.innerHTML += `<div class="chat-bubble user">${msg}</div>`;
 input.value = '';
 chatBox.scrollTop = chatBox.scrollHeight;
 
-state.chatsCount++;
-localStorage.setItem('kitwe_chats_count', state.chatsCount);
-updateStats();
+if(!state.isPremium) {
+    state.chatsCount++;
+    localStorage.setItem('kitwe_chats_count', state.chatsCount);
+    updateStats();
+}
 
 setTimeout(() => {
 let reply = "Nimekuelewa. Ili nikusaidie vizuri zaidi, unaweza kuniambia mtaji wako au tatizo unalotaka kutatua?";
@@ -525,9 +592,11 @@ document.getElementById('gen-result-content').innerHTML = `
 <button class="btn btn-primary" style="margin-top:10px;" onclick="saveIdeaNow('${problem}', ${capital}, '${area}')">Hifadhi Wazo</button>
 `;
 
-state.ideasCount++;
-localStorage.setItem('kitwe_ideas_count', state.ideasCount);
-updateStats();
+if(!state.isPremium){
+    state.ideasCount++;
+    localStorage.setItem('kitwe_ideas_count', state.ideasCount);
+    updateStats();
+}
 }
 
 function saveIdeaNow(title, cap, area) {
@@ -762,6 +831,8 @@ function updateProfile() {
 function copyNumber(num) {
     navigator.clipboard.writeText(num).then(() => {
         alert('Namba ' + num + ' imenakiliwa!');
+    }).catch(() => {
+        alert('Imeshindikana kunakili. Tafadhali andika namba mwenyewe: ' + num);
     });
 }
 
@@ -811,6 +882,23 @@ function renderPaymentsHistory() {
             <p class="text-sm">Tarehe: ${p.date}</p>
         </div>
     `).join('');
+}
+
+function clearMyPayments() {
+    if (confirm('Je, una uhakika unataka kufuta historia ya malipo yako yote? Hii itakurudisha kwenye mpango wa Bure.')) {
+        state.payments = [];
+        state.isPremium = false;
+        state.premiumExpiry = null;
+        localStorage.removeItem('kitwe_payments');
+        localStorage.setItem('kitwe_premium', 'false');
+        localStorage.removeItem('kitwe_premium_expiry');
+        
+        renderPaymentsHistory();
+        renderAdminList();
+        updateDashboardState();
+        updateStats();
+        alert('Historia imefutwa! Sasa uko kwenye mpango wa Bure na unaweza kujaribu tena.');
+    }
 }
 
 // ================= ADMIN PANEL =================
@@ -870,13 +958,23 @@ function approvePay(index) {
     localStorage.setItem('kitwe_payments', JSON.stringify(state.payments));
 
     state.isPremium = true;
+    const expiryDate = Date.now() + (90 * 24 * 60 * 60 * 1000); 
+    state.premiumExpiry = expiryDate;
+    
     localStorage.setItem('kitwe_premium', 'true');
+    localStorage.setItem('kitwe_premium_expiry', expiryDate);
+
+    state.chatsCount = 0;
+    state.ideasCount = 0;
+    localStorage.setItem('kitwe_chats_count', 0);
+    localStorage.setItem('kitwe_ideas_count', 0);
 
     renderPaymentsHistory();
     renderAdminList();
     updateDashboardState();
+    updateStats();
 
-    alert('✓ Malipo yameidhinishwa! Mtumiaji sasa ni Premium.');
+    alert('✓ Malipo yameidhinishwa! Mtumiaji sasa ni Premium kwa miezi 3 (AI Unlimited).');
 }
 
 function rejectPay(index) {
