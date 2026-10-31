@@ -22,71 +22,944 @@ main{flex:1;overflow-y:auto;padding:15px;padding-bottom:80px}.page{display:none;
 .admin-tx-card{border:1px solid #e5e7eb;padding:10px;border-radius:8px;margin-bottom:10px;background:#f9fafb}.admin-tx-card.pending{border-left:4px solid var(--gold)}
 .hub-card{background:#1e293b;border:1px solid #334155;border-radius:8px;padding:15px;margin-bottom:15px;color:#e2e8f0}.hub-title{color:var(--gold);margin-bottom:10px;font-size:1.1rem}.hub-text{font-size:.9rem;line-height:1.5;color:#cbd5e1}
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--white);display:flex;justify-content:space-around;padding:10px 0;border-top:1px solid #e5e7eb;z-index:100}.nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--text-light);font-size:.7rem;cursor:pointer}.nav-item.active{color:var(--royal-blue);font-weight:bold}.nav-item i{font-size:1.2rem}
+.profile-pic{width:80px;height:80px;border-radius:50%;object-fit:cover;margin:0 auto 15px;display:block;border:3px solid var(--gold)}
+.progress-container{width:100%;background-color:#e5e7eb;border-radius:20px;margin-top:10px;height:15px;overflow:hidden}.progress-bar{height:100%;background-color:var(--success);width:0%;transition:width 0.3s ease}
 </style>
 </head>
 <body>
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 <div class="sidebar" id="sidebar">
-<div class="sidebar-header"><div class="sidebar-user"><div class="avatar">Y</div><div class="sidebar-user-info"><h4>Yahaya Boniphace Andrea</h4><p>yahayakitwe@gmail.com</p></div></div></div>
+<div class="sidebar-header"><div class="sidebar-user"><div class="avatar" id="side-avatar">Y</div><div class="sidebar-user-info"><h4 id="side-name">Yahaya Boniphace Andrea</h4><p id="side-email">yahayakitwe@gmail.com</p></div></div></div>
 <ul class="sidebar-menu" id="sidebar-menu"></ul>
-<div class="sidebar-footer"><button class="btn btn-outline btn-block" onclick="alert('Umetoka')">Toka (Logout)</button><p class="text-center text-sm" style="margin-top:15px;color:#9ca3af;">KITWE GlobalMind · v1.0.0</p></div>
+<div class="sidebar-footer"><button class="btn btn-outline btn-block" onclick="alert('Umetoka kwenye mfumo kwa mafanikio.')">Toka (Logout)</button><p class="text-center text-sm" style="margin-top:15px;color:#9ca3af;">KITWE GlobalMind · v1.0.0</p></div>
 </div>
 <header><div class="header-left"><div class="menu-icon" onclick="toggleSidebar()">☰</div><div class="logo"><div style="background:var(--gold);color:var(--navy-blue);width:28px;height:28px;border-radius:50%;display:flex;justify-content:center;align-items:center;font-weight:bold;">K</div>KITWE IDEALAB <span>AI</span></div></div><div class="bell-icon" onclick="navigate('notifications')">🔔</div></header>
 <main>
-<section id="page-dashboard" class="page active"><div class="welcome-text"><h2>Karibu, YAHAYA 👋</h2><p>Think. Create. Innovate.</p></div><div class="card" id="dash-sub-banner"><div class="flex-between"><h4>Usajili wako</h4><span class="status-badge" id="dash-status-badge">INASUBIRI • PENDING</span></div><p class="text-sm" id="dash-status-text">Malipo yanasubiri uthibitisho wa admin.</p><button class="btn btn-gold" style="margin-top:10px;font-size:.8rem;" onclick="navigate('payments')">Pata Premium</button></div><div class="card"><div class="stats-grid"><div class="stat-item"><div class="stat-val" id="stat-chats">0/5</div><div class="stat-label">Mazungumzo</div></div><div class="stat-item"><div class="stat-val" id="stat-ideas">0/2</div><div class="stat-label">Mawazo</div></div><div class="stat-item"><div class="stat-val">0/1</div><div class="stat-label">Mpango</div></div></div></div><h4 style="font-size:.9rem;margin:10px 0;">Huduma</h4><div class="services-grid" id="services-grid"></div></section>
-<section id="page-chat" class="page"><h3>Uliza KITWE AI</h3><p class="text-sm">Leo: <span id="chat-limit">0/5</span></p><div class="chat-container"><div class="chat-messages" id="chat-messages"><div class="chat-bubble ai">Habari! Mimi ni KITWE AI. Nikusaidie nini leo?</div></div><div class="chat-suggestions"><button class="suggestion-btn" onclick="sendChatSuggestion('Mambo!')">Mambo!</button><button class="suggestion-btn" onclick="sendChatSuggestion('Nina mtaji wa TSh 20,000. Nipe wazo la biashara.')">TSh 20,000 wazo</button></div><div class="chat-input-area"><input id="chat-input" class="form-control" placeholder="Andika ujumbe..." onkeypress="handleChatEnter(event)"><button class="btn btn-primary" onclick="sendChatMessage()">➤</button><button class="btn btn-outline" onclick="clearChat()">Mpya</button></div></div></section>
-<section id="page-generator" class="page"><h3>Jenereta ya Mawazo 💡</h3><div class="card"><div class="form-group"><label>Tatizo gani?</label><input id="gen-problem" class="form-control" placeholder="mf. cardboard"></div><div class="form-group"><label>Mtaji</label><input id="gen-capital" class="form-control" placeholder="20000"></div><div class="form-group"><label>Eneo</label><input id="gen-area" class="form-control" placeholder="Dar"></div><div class="form-group"><label>Ujuzi</label><input id="gen-skill" class="form-control" placeholder="kuchora"></div><button class="btn btn-primary btn-block" onclick="generateIdea()">Tengeneza mawazo</button></div><div id="gen-result-container" class="hidden"><div class="generated-idea" id="gen-result-content"></div></div></section>
-<section id="page-evaluation" class="page"><h3>Tathmini ya Wazo 📊</h3><div class="card"><div class="form-group"><label>Jina la wazo</label><input id="eval-name" class="form-control"></div><div class="slider-group"><div class="slider-header"><span>Tatizo (10%)</span><span id="val-tatizo">3</span></div><input type="range" min="1" max="5" value="3" id="eval-tatizo" oninput="document.getElementById('val-tatizo').innerText=this.value"></div><div class="slider-group"><div class="slider-header"><span>Wateja (20%)</span><span id="val-wateja">3</span></div><input type="range" min="1" max="5" value="3" id="eval-wateja" oninput="document.getElementById('val-wateja').innerText=this.value"></div><div class="slider-group"><div class="slider-header"><span>Gharama (15%)</span><span id="val-gharama">3</span></div><input type="range" min="1" max="5" value="3" id="eval-gharama" oninput="document.getElementById('val-gharama').innerText=this.value"></div><div class="slider-group"><div class="slider-header"><span>Ujuzi (15%)</span><span id="val-ujuzi">3</span></div><input type="range" min="1" max="5" value="3" id="eval-ujuzi" oninput="document.getElementById('val-ujuzi').innerText=this.value"></div><div class="slider-group"><div class="slider-header"><span>Ushindani (15%)</span><span id="val-ushindani">3</span></div><input type="range" min="1" max="5" value="3" id="eval-ushindani" oninput="document.getElementById('val-ushindani').innerText=this.value"></div><div class="slider-group"><div class="slider-header"><span>Vifaa (10%)</span><span id="val-vifaa">3</span></div><input type="range" min="1" max="5" value="3" id="eval-vifaa" oninput="document.getElementById('val-vifaa').innerText=this.value"></div><div class="slider-group"><div class="slider-header"><span>Kukua (5%)</span><span id="val-ukua">3</span></div><input type="range" min="1" max="5" value="3" id="eval-ukua" oninput="document.getElementById('val-ukua').innerText=this.value"></div><div class="slider-group"><div class="slider-header"><span>Faida (10%)</span><span id="val-faida">3</span></div><input type="range" min="1" max="5" value="3" id="eval-faida" oninput="document.getElementById('val-faida').innerText=this.value"></div><button class="btn btn-primary btn-block" onclick="calculateEvaluation()">Hesabu Tathmini</button></div><div id="eval-result-box" class="hidden"><div class="result-box" id="eval-score">0/100</div><p class="text-center text-sm" id="eval-message"></p></div></section>
-<section id="page-saved" class="page"><h3>Mawazo Yaliyohifadhiwa 📁</h3><div class="card"><div id="saved-list"></div></div><button class="btn btn-gold btn-block">Linganisha (0)</button></section>
-<section id="page-favorites" class="page"><h3>Vipendwa ⭐</h3><div class="card"><div id="fav-list"></div></div></section>
-<section id="page-compare" class="page"><h3>Linganisha Mawazo ⚖️</h3><div class="card text-center"><p>🔒 Premium</p><button class="btn btn-gold" onclick="navigate('payments')">Pata Premium</button></div></section>
-<section id="page-diy" class="page"><h3>KITWE DIY LAB 🛠️</h3><div class="card"><h4 class="hub-title">Taa ya Cardboard TSh 5,000</h4><p class="hub-text">Vifaa: Kadibodi, LED 5, Betri 9V, Switch, Waya. Faida TSh 3,000 kwa kila taa.</p></div></section>
-<section id="page-calculator" class="page"><h3>Kikokotoo cha Biashara 🧮</h3><div class="card"><div class="form-group"><label>Gharama</label><input id="calc-cost" class="form-control" type="number"></div><div class="form-group"><label>Bei</label><input id="calc-price" class="form-control" type="number"></div><div class="form-group"><label>Idadi</label><input id="calc-qty" class="form-control" type="number" value="1"></div><button class="btn btn-primary btn-block" onclick="calculateBiz()">Hesabu Faida</button></div><div id="calc-result-box" class="hidden result-box" style="background:var(--success);color:white;"><p>Faida: TSh <span id="calc-profit">0</span></p><p>Margin: <span id="calc-margin">0</span>%</p></div></section>
-<section id="page-challenges" class="page"><h3>Changamoto za Ubunifu 🏆</h3><div class="card"><p style="font-weight:bold;">Changamoto ya Wiki: Plastiki</p><div class="form-group"><label>Wazo lako hapa</label><textarea id="chal-input" class="form-control"></textarea></div><button class="btn btn-gold btn-block" id="btnWasilishaChallenge" onclick="submitChallenge()">Wasilisha</button><div id="chal-feedback"></div><div id="chal-list"></div></div></section>
-<section id="page-planner" class="page"><h3>Mpangi wa Mfano 📐</h3><div class="card"><div class="form-group"><label>Jina la Bidhaa</label><input id="plan-name" class="form-control"></div><div class="form-group"><label>Vifaa</label><textarea id="plan-mats" class="form-control"></textarea></div><button class="btn btn-primary btn-block" id="btnTengenezaMfano" onclick="savePlan()">Tengeneza Wazo / Hifadhi Mpango</button><div id="plan-list"></div></div></section>
-<section id="page-tracker" class="page"><h3>Maendeleo ya Mfano 📈</h3><div class="card"><p class="text-sm" style="margin-bottom:10px;">Fuatilia hatua za mradi wako - Maelezo ya mbele:</p><label style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><input type="checkbox" checked> Utafiti wa Soko - Uliofanyika</label><label style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><input type="checkbox"> Kununua Malighafi - TSh 5,000</label><label style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><input type="checkbox"> Kujenga Mfano - Prototype</label><label style="display:flex;align-items:center;gap:10px;margin-bottom:10px;"><input type="checkbox"> Kuanza Uuzaji - Sokoni</label></div></section>
-<section id="page-businessplan" class="page"><h3>Mpango wa Biashara 📝 - Maelezo ya mbele kamili</h3><div class="card"><div class="form-group"><label>Jina la Biashara</label><input id="biz-name" class="form-control" placeholder="mf. KITWE Light"></div><div class="form-group"><label>Dhumuni la Biashara</label><textarea id="biz-purpose" class="form-control" placeholder="Tunataka kutatua tatizo gani?"></textarea></div><div class="form-group"><label>Lengo la Muda Mfupi</label><input id="biz-goal" type="text" class="form-control" placeholder="mf. Kupata wateja 50 kwa mwezi"></div><button class="btn btn-primary btn-block" onclick="genBizPlan()">Hifadhi Mpango</button><div id="biz-result"></div></div></section>
-<section id="page-learning" class="page"><div class="hub-card"><h3 class="hub-title" style="text-align:center;">AI LEARNING HUB - Maelezo ya mbele</h3><p style="font-weight:bold;color:var(--gold);margin-top:15px;">Somo la 1: Nini maana ya Artificial Intelligence (AI)?</p><p class="text-sm" style="margin-bottom:15px;">Karibu kwenye somo lako la kwanza kabisa!</p><div style="background:#0f172a;border:1px solid #334155;padding:15px;border-radius:8px;margin-bottom:15px;"><p style="font-weight:bold;color:var(--gold);margin-bottom:5px;">🤖 AI ni Nini?</p><p style="font-size:.9rem;line-height:1.5;color:#cbd5e1;">Artificial Intelligence (Akili Bandia) ni uwezo wa kompyuta, simu, au mfumo wa kiteknolojia kufikiri, kujifunza, na kufanya maamuzi kama binadamu.</p></div><p style="font-weight:bold;margin-bottom:10px;color:var(--white);">Mifano Halisi Tunayotumia Kila Siku:</p><ul style="padding-left:20px;list-style-type:disc;color:#cbd5e1;font-size:.9rem;line-height:1.6;"><li>Utabiri wa Maneno (Autocorrect)</li><li>Mitandao ya Kijamii (TikTok/Instagram)</li><li>Mratibu wa Sauti (Google Assistant/Siri)</li></ul><button class="btn btn-gold" style="margin-top:20px;" onclick="navigate('dashboard')">← Rudi Ukurasa Mkuu</button></div></section>
-<section id="page-notifications" class="page"><h3>Arifa 🔔</h3><div class="card"><h4 style="font-size:.9rem;">Karibu KITWE IDEALAB AI</h4><p class="text-sm">Anza na Mazungumzo ya AI au Jenereta ya Mawazo.</p><p class="text-sm" style="font-size:.7rem;color:#9ca3af;margin-top:5px;">16 Oct 2026, 17:30</p></div></section>
-<section id="page-profile" class="page"><h3>Wasifu Wangu 👤</h3><div class="card text-center" style="padding:30px 15px;"><div class="avatar" style="width:80px;height:80px;font-size:2rem;margin:0 auto 15px;">Y</div><h3>Yahaya Boniphace Andrea</h3><p class="text-sm">yahayakitwe@gmail.com</p><p class="text-sm" style="margin-top:10px;color:var(--gold);font-weight:bold;">Free Member</p></div></section>
-<section id="page-payments" class="page"><h3>Usajili na Malipo 💳 - Maelezo ya mbele</h3><div class="card" style="background:var(--royal-blue);color:white;text-align:center;"><p style="color:var(--gold);font-weight:bold;font-size:.85rem;">SPECIAL LAUNCH OFFER</p><p style="font-size:.9rem;margin:5px 0;">Bei ya kawaida: <strike>TSh 900</strike></p><p style="font-size:2rem;font-weight:bold;color:var(--gold);">TSh 600</p><p style="font-size:.85rem;">kwa miezi 3</p></div><div class="card"><h4 style="font-size:.9rem;margin-bottom:10px;">1. Lipa kiasi kamili TSh 600 kwa:</h4><div class="payment-method"><div class="pm-info"><h4>Vodacom M-Pesa</h4><p>0796133662</p><small>Jina: Yahaya Boniphace Andrea</small></div><button class="btn btn-outline" style="padding:5px 10px;font-size:.8rem;" onclick="copyNumber('0796133662')">Nakili</button></div><div class="payment-method"><div class="pm-info"><h4>Airtel Money</h4><p>0683530583</p><small>Jina: Amina Adam Kitwe</small></div><button class="btn btn-outline" style="padding:5px 10px;font-size:.8rem;" onclick="copyNumber('0683530583')">Nakili</button></div><div class="payment-method"><div class="pm-info"><h4>Halotel Money</h4><p>0610333788</p><small>Jina: Yahaya Boniphace Andrea</small></div><button class="btn btn-outline" style="padding:5px 10px;font-size:.8rem;" onclick="copyNumber('0610333788')">Nakili</button></div><p class="text-sm" style="margin-top:10px;color:var(--danger);font-weight:bold;">USITUME PIN yako kwa mtu yeyote!</p></div><div class="card"><h4 style="font-size:.9rem;margin-bottom:10px;">2. Wasilisha namba ya muamala - Maelezo ya mbele</h4><div class="form-group"><label>Mtandao uliolipia</label><select id="pay-network" class="form-control"><option>Vodacom M-Pesa</option><option>Airtel Money</option><option>Halotel Money</option></select></div><div class="form-group"><label>Namba ya muamala (Transaction ID)</label><input type="text" id="pay-txid" class="form-control" placeholder="Herufi/Namba 6-24"></div><div class="form-group"><label>Namba ya simu uliyolipia (hiari)</label><input type="text" id="pay-phone" class="form-control" placeholder="mf. 0712345678"></div><button class="btn btn-gold btn-block" id="btnWasilishaMalipo" onclick="submitPayment()">Wasilisha - Thibitisha Malipo</button></div><div class="card"><h4 style="font-size:.9rem;margin-bottom:10px;">Historia ya malipo</h4><div id="pay-history-list"><p class="text-sm">Bado hakuna malipo yaliyowasilishwa.</p></div></div></section>
-<section id="page-admin" class="page"><h3>Admin Panel 🔒 - Maelezo ya mbele</h3><div id="admin-login-box" class="card"><p class="text-sm" style="margin-bottom:15px;">Ingiza password kuona malipo ya wateja na kuidhinisha Premium.</p><div class="form-group"><label>Password</label><div style="display:flex;gap:10px;"><input type="password" id="admin-pass" class="form-control" placeholder="********"><button class="btn btn-outline" onclick="togglePass()" style="padding:0 15px;">👁️</button></div></div><button class="btn btn-primary btn-block" onclick="loginAdmin()">Ingia</button></div><div id="admin-panel-box" class="hidden"><div class="flex-between" style="margin-bottom:10px;"><h4>Malipo Yaliyowasilishwa</h4><button class="btn btn-danger" style="padding:5px 10px;font-size:.8rem;" onclick="logoutAdmin()">Toka</button></div><div id="admin-tx-list"><p class="text-sm">Hakuna malipo yaliyowasilishwa bado.</p></div></div></section>
+
+<!-- 1. DASHBOARD -->
+<section id="page-dashboard" class="page active">
+<div class="welcome-text"><h2>Karibu, <span id="dash-name">YAHAYA</span> 👋</h2><p>Think. Create. Innovate.</p></div>
+<div class="card" id="dash-sub-banner"><div class="flex-between" style="margin-bottom:10px;"><h4 style="font-size:.9rem;">Usajili wako</h4><span class="status-badge" id="dash-status-badge">INASUBIRI • PENDING</span></div><p class="text-sm" id="dash-status-text">Malipo yako yanasubiri uthibitisho wa admin. Utafunguliwa Premium baada ya kuthibitishwa.</p><button class="btn btn-gold" style="margin-top:10px;font-size:.8rem;" onclick="navigate('payments')">Pata Premium</button></div>
+<div class="card"><h4 style="font-size:.9rem;margin-bottom:10px;">Matumizi ya AI leo</h4><div class="stats-grid"><div class="stat-item"><div class="stat-val" id="stat-chats">0/5</div><div class="stat-label">Mazungumzo</div></div><div class="stat-item"><div class="stat-val" id="stat-ideas">0/2</div><div class="stat-label">Mawazo</div></div><div class="stat-item"><div class="stat-val">0/1</div><div class="stat-label">Mpango wa AI</div></div></div></div>
+<h4 style="font-size:.9rem;margin-bottom:10px;margin-top:15px;">Huduma</h4>
+<div class="services-grid" id="services-grid"></div>
+<div class="card" style="margin-top:15px;"><div class="flex-between" style="margin-bottom:10px;"><h4 style="font-size:.9rem;">Arifa za hivi karibuni</h4><a href="#" class="text-sm" onclick="navigate('notifications')">Zote →</a></div><p class="text-sm">Karibu KITWE IDEALAB AI</p><p class="text-sm" style="font-size:.7rem;color:#9ca3af;margin-top:5px;">Leo</p></div>
+</section>
+
+<!-- 2. AI CHAT -->
+<section id="page-chat" class="page">
+<div class="flex-between" style="margin-bottom:10px;"><h3>Uliza KITWE AI</h3><div><button class="btn btn-outline" style="padding:5px 10px;font-size:.8rem;" onclick="loadChatHistory()">Historia</button><button class="btn btn-outline" style="padding:5px 10px;font-size:.8rem;margin-left:5px;" onclick="clearChat()">Mpya</button></div></div>
+<p class="text-sm" style="margin-bottom:15px;">Kiswahili, English au Swanglish. Leo: <span id="chat-limit">0/5</span> · Historia inahifadhiwa.</p>
+<div class="chat-container">
+<div class="chat-messages" id="chat-messages"><div class="chat-bubble ai">Habari! Mimi ni KITWE AI. Nikusaidie nini leo? Unaweza kuuliza kuhusu biashara, sayansi, au teknolojia.</div></div>
+<div class="chat-suggestions"><button class="suggestion-btn" onclick="sendChatSuggestion('Mambo!')">Mambo!</button><button class="suggestion-btn" onclick="sendChatSuggestion('Nina mtaji wa TSh 20,000. Nipe wazo la biashara.')">Nina mtaji wa TSh 20,000. Nipe wazo la biashara.</button><button class="suggestion-btn" onclick="sendChatSuggestion('Nieleze photosynthesis kwa Kiswahili rahisi.')">Nieleze photosynthesis kwa Kiswahili rahisi.</button></div>
+<div class="chat-input-area"><input type="text" id="chat-input" class="form-control" placeholder="Andika ujumbe..." onkeypress="handleChatEnter(event)"><button class="btn btn-primary" onclick="sendChatMessage()">➤</button></div>
+</div>
+</section>
+
+<!-- 3. IDEA GENERATOR -->
+<section id="page-generator" class="page">
+<h3>Jenereta ya Mawazo ya Biashara 💡</h3><p class="text-sm" style="margin-bottom:15px;">AI inapendekeza mawazo kulingana na mtaji na ujuzi wako. Gharama ni makadirio. Leo: 0/2</p>
+<div class="card">
+<div class="form-group"><label>Tatizo gani unataka kutatua?</label><input type="text" id="gen-problem" class="form-control" placeholder="mf. cardbaord, wanafunzi, kilimo"></div>
+<div class="form-group"><label>Mtaji wako</label><input type="number" id="gen-capital" class="form-control" placeholder="mf. 20000"></div>
+<div class="form-group"><label>Eneo</label><input type="text" id="gen-area" class="form-control" placeholder="mf. Dar es Salaam"></div>
+<div class="form-group"><label>Ujuzi ulionao</label><input type="text" id="gen-skill" class="form-control" placeholder="mf. kuchora, kushona"></div>
+<button class="btn btn-primary btn-block" onclick="generateIdea()">Tengeneza mawazo</button>
+</div>
+<div id="gen-result-container" class="hidden"><h4 style="margin-bottom:10px;">Mawazo yaliyochaguliwa na KITWE</h4><div class="generated-idea" id="gen-result-content"></div></div>
+</section>
+
+<!-- 4. IDEA EVALUATION -->
+<section id="page-evaluation" class="page">
+<h3>Tathmini ya Wazo 📊</h3><p class="text-sm" style="margin-bottom:15px;">Jibu kwa kweli (1 = dhaifu, 5 = nzuri sana). Alama inahesabiwa kwa uzito wa kila kigezo.</p>
+<div class="card">
+<div class="form-group"><label>Jina la wazo</label><input type="text" id="eval-name" class="form-control" placeholder="Andika jina la wazo lako"></div>
+<div class="slider-group"><div class="slider-header"><span>Tatizo halisi (10%)</span><span id="val-tatizo">3</span></div><input type="range" min="1" max="5" value="3" id="eval-tatizo" oninput="document.getElementById('val-tatizo').innerText=this.value"></div>
+<div class="slider-group"><div class="slider-header"><span>Wateja tayari kulipa (20%)</span><span id="val-wateja">3</span></div><input type="range" min="1" max="5" value="3" id="eval-wateja" oninput="document.getElementById('val-wateja').innerText=this.value"></div>
+<div class="slider-group"><div class="slider-header"><span>Gharama ndogo (15%)</span><span id="val-gharama">3</span></div><input type="range" min="1" max="5" value="3" id="eval-gharama" oninput="document.getElementById('val-gharama').innerText=this.value"></div>
+<div class="slider-group"><div class="slider-header"><span>Ujuzi ulionao (15%)</span><span id="val-ujuzi">3</span></div><input type="range" min="1" max="5" value="3" id="eval-ujuzi" oninput="document.getElementById('val-ujuzi').innerText=this.value"></div>
+<div class="slider-group"><div class="slider-header"><span>Ushindani mdogo (15%)</span><span id="val-ushindani">3</span></div><input type="range" min="1" max="5" value="3" id="eval-ushindani" oninput="document.getElementById('val-ushindani').innerText=this.value"></div>
+<div class="slider-group"><div class="slider-header"><span>Vifaa vinapatikana (10%)</span><span id="val-vifaa">3</span></div><input type="range" min="1" max="5" value="3" id="eval-vifaa" oninput="document.getElementById('val-vifaa').innerText=this.value"></div>
+<div class="slider-group"><div class="slider-header"><span>Uwezo wa kukua (5%)</span><span id="val-ukua">3</span></div><input type="range" min="1" max="5" value="3" id="eval-ukua" oninput="document.getElementById('val-ukua').innerText=this.value"></div>
+<div class="slider-group"><div class="slider-header"><span>Faida (10%)</span><span id="val-faida">3</span></div><input type="range" min="1" max="5" value="3" id="eval-faida" oninput="document.getElementById('val-faida').innerText=this.value"></div>
+<button class="btn btn-primary btn-block" onclick="calculateEvaluation()">Hesabu Tathmini</button>
+</div>
+<div id="eval-result-box" class="hidden"><div class="result-box" id="eval-score">0/100</div><p class="text-center text-sm" style="margin-top:10px;font-weight:bold;" id="eval-message"></p></div>
+</section>
+
+<!-- 5. SAVED IDEAS -->
+<section id="page-saved" class="page">
+<h3>Mawazo Yaliyohifadhiwa 📁</h3><p class="text-sm" style="margin-bottom:15px;">Mpango wa bure: hadi vitu 8. Teua kwa kisanduku kisha boneya "Linganisha".</p>
+<div class="card" id="saved-list-container"></div>
+<button class="btn btn-gold btn-block" onclick="compareIdeas()">Linganisha Zilizochaguliwa</button>
+<div id="compare-result" class="hidden" style="margin-top:15px;padding:15px;background:#f0fdf4;border-radius:8px;"></div>
+</section>
+
+<!-- 6. FAVORITES -->
+<section id="page-favorites" class="page">
+<h3>Vipendwa ⭐</h3><p class="text-sm" style="margin-bottom:15px;">Mawazo uliyoyapa nyota (Star).</p>
+<div class="card" id="fav-list-container"><p class="text-sm">Hakuna vipendwa bado. Bonyeza ☆ kwenye wazo lolote.</p></div>
+</section>
+
+<!-- 7. COMPARE IDEAS -->
+<section id="page-compare" class="page">
+<h3>Linganisha Mawazo ⚖️</h3>
+<div class="card text-center" id="compare-premium-box"><p style="font-size:2rem;margin-bottom:10px;">🔒</p><p style="font-weight:bold;margin-bottom:5px;">Kulinganisha mawazo ni ya Premium</p><p class="text-sm" style="margin-bottom:15px;">Lipia Premium kufungua huduma hii.</p><button class="btn btn-gold" onclick="navigate('payments')">Pata Premium</button></div>
+<div id="actual-compare-area" class="hidden"><p class="text-sm">Nenda kwenye "Mawazo Yaliyohifadhiwa" kuchagua na kulinganisha.</p></div>
+</section>
+
+<!-- 8. DIY LAB -->
+<section id="page-diy" class="page">
+<h3>KITWE DIY LAB 🛠️</h3><p class="text-sm" style="margin-bottom:15px;">Chagua mradi ili kuona vifaa na maelekezo.</p>
+<div class="card" id="diy-projects">
+<select class="form-control" onchange="showDiy(this.value)">
+<option value="">-- Chagua Mradi --</option>
+<option value="taa">Taa ya Cardboard (TSh 5,000)</option>
+<option value="maji">Kichujio cha Maji (TSh 3,000)</option>
+<option value="sabuni">Sabuni ya Maji (TSh 2,500)</option>
+</select>
+<div id="diy-details" style="margin-top:15px;display:none;padding:15px;background:#f9fafb;border-radius:8px;"></div>
+</div>
+</section>
+
+<!-- 9. BUSINESS CALCULATOR -->
+<section id="page-calculator" class="page">
+<h3>Kikokotoo cha Biashara 🧮</h3>
+<div class="card">
+<div class="form-group"><label>Gharama ya Bidhaa</label><input type="number" id="calc-cost" class="form-control" placeholder="mf. 5000"></div>
+<div class="form-group"><label>Bei ya Kuuza</label><input type="number" id="calc-price" class="form-control" placeholder="mf. 8000"></div>
+<div class="form-group"><label>Idadi ya Bidhaa</label><input type="number" id="calc-qty" class="form-control" placeholder="mf. 10" value="1"></div>
+<button class="btn btn-primary btn-block" onclick="calculateBiz()">Hesabu Faida</button>
+</div>
+<div id="calc-result-box" class="hidden result-box" style="background:var(--success);color:white;"><p style="font-size:1rem;">Faida: TSh <span id="calc-profit">0</span></p><p style="font-size:.9rem;margin-top:5px;">Margin: <span id="calc-margin">0</span>%</p></div>
+</section>
+
+<!-- 10. CHALLENGES -->
+<section id="page-challenges" class="page">
+<h3>Changamoto za Ubunifu 🏆</h3>
+<div class="card"><p style="font-weight:bold;margin-bottom:5px;">Changamoto ya Wiki: Kupunguza Uchafu wa Plastiki</p><p class="text-sm" style="margin-bottom:15px;">Wasilisha wazo lako la jinsi ya kutumia plastic chakavu.</p><div class="form-group"><label>Wazo lako hapa</label><textarea id="chal-input" class="form-control" placeholder="Andika suluhisho lako..."></textarea></div><button class="btn btn-gold btn-block" onclick="submitChallenge()">Wasilisha</button></div>
+<div id="chal-history" class="mt-2"></div>
+</section>
+
+<!-- 11. PROTOTYPE PLANNER -->
+<section id="page-planner" class="page">
+<h3>Mpangi wa Mfano 📐</h3>
+<div class="card"><div class="form-group"><label>Jina la Bidhaa/Mfano</label><input type="text" id="plan-name" class="form-control" placeholder="mf. Kifaa cha kusafisha maji"></div><div class="form-group"><label>Vifaa Vinavyohitajika</label><textarea id="plan-mats" class="form-control" placeholder="mf. Chupa, mchanga..."></textarea></div><button class="btn btn-primary btn-block" onclick="savePlan()">Hifadhi Mpango</button></div>
+<div id="plan-list" class="mt-2"></div>
+</section>
+
+<!-- 12. PROGRESS TRACKER -->
+<section id="page-tracker" class="page">
+<h3>Maendeleo ya Mfano 📈</h3>
+<div class="card">
+<p class="text-sm" style="margin-bottom:10px;">Fuatilia hatua za mradi wako.</p>
+<div id="tracker-list"></div>
+<div class="progress-container"><div class="progress-bar" id="progress-bar"></div></div>
+<p class="text-center text-sm" style="margin-top:10px;" id="progress-text">0% Imekamilika</p>
+</div>
+</section>
+
+<!-- 13. BUSINESS PLAN -->
+<section id="page-businessplan" class="page">
+<h3>Mpango wa Biashara 📝</h3>
+<div class="card"><p class="text-sm" style="margin-bottom:15px;">Tengeneza mpango wako wa biashara hatua kwa hatua.</p><div class="form-group"><label>Dhumuni la Biashara</label><textarea id="biz-purpose" class="form-control" placeholder="Tunataka kutatua tatizo gani?"></textarea></div><div class="form-group"><label>Lengo la Muda Mfupi</label><input type="text" id="biz-goal" class="form-control" placeholder="mf. Kupata wateja 50 kwa mwezi"></div><button class="btn btn-primary btn-block" onclick="saveBizPlan()">Hifadhi Mpango</button><div id="biz-plan-result" class="mt-2"></div></div>
+</section>
+
+<!-- 14. LEARNING HUB -->
+<section id="page-learning" class="page">
+<div class="hub-card">
+<h3 class="hub-title" style="text-align:center;">AI LEARNING HUB</h3>
+<p style="font-weight:bold;color:var(--gold);margin-top:15px;">Somo la 1: Nini maana ya Artificial Intelligence (AI)?</p>
+<p class="text-sm" style="margin-bottom:15px;">Karibu kwenye somo lako la kwanza kabisa!</p>
+<div style="background:#0f172a;border:1px solid #334155;padding:15px;border-radius:8px;margin-bottom:15px;">
+<p style="font-weight:bold;color:var(--gold);margin-bottom:5px;">🤖 AI ni Nini?</p>
+<p style="font-size:.9rem;line-height:1.5;color:#cbd5e1;">Artificial Intelligence (Akili Bandia) ni uwezo wa kompyuta kufikiri, kujifunza, na kufanya maamuzi kama binadamu.</p>
+</div>
+<button class="btn btn-gold" onclick="navigate('dashboard')">← Rudi Ukurasa Mkuu</button>
+</div>
+
+<!-- SEHEMU MPYA: KUANDIKA NOTES/UPOLOAD -->
+<div class="card">
+<h4 style="font-size:.9rem;margin-bottom:10px;">Andika Notes Zako / Upload</h4>
+<div class="form-group">
+<textarea id="learning-note" class="form-control" placeholder="Andika hapa..."></textarea>
+</div>
+<button class="btn btn-primary btn-block" onclick="saveLearningNote()">Hifadhi Note</button>
+<div id="learning-notes-list" style="margin-top:15px;"></div>
+</div>
+</section>
+
+<!-- 15. NOTIFICATIONS -->
+<section id="page-notifications" class="page">
+<h3>Arifa 🔔</h3>
+<div class="card">
+<h4 style="font-size:.9rem;margin-bottom:5px;">Karibu KITWE IDEALAB AI</h4>
+<p class="text-sm">Anza na Mazungumzo ya AI au Jenereta ya Mawazo.</p>
+<p class="text-sm" style="font-size:.7rem;color:#9ca3af;margin-top:5px;">Leo</p>
+</div>
+</section>
+
+<!-- 16. PROFILE (Imeboreshwa) -->
+<section id="page-profile" class="page">
+<h3>Wasifu Wangu 👤</h3>
+<div class="card text-center" style="padding:30px 15px;">
+<img src="" id="profile-img" class="profile-pic hidden" alt="Profile">
+<div class="avatar" id="profile-avatar" style="width:80px;height:80px;font-size:2rem;margin:0 auto 15px;">Y</div>
+<h3 id="profile-display-name">Yahaya Boniphace Andrea</h3>
+<p class="text-sm" id="profile-display-email">yahayakitwe@gmail.com</p>
+<p class="text-sm" style="margin-top:10px;color:var(--gold);font-weight:bold;" id="profile-status">Free Member</p>
+</div>
+<div class="card">
+<div class="form-group">
+<label>Badilisha Jina</label>
+<input type="text" id="edit-name-input" class="form-control" placeholder="Jina lako kamili">
+</div>
+<div class="form-group">
+<label>Weka Picha (Profile Picture)</label>
+<input type="file" id="profile-pic-input" class="form-control" accept="image/*" onchange="uploadProfilePic(event)">
+</div>
+<button class="btn btn-primary btn-block" onclick="updateProfile()">Hifadhi Taarifa</button>
+</div>
+</section>
+
+<!-- 17. PAYMENTS (MALIPO) -->
+<section id="page-payments" class="page">
+<h3>Usajili na Malipo 💳</h3>
+<div class="card" style="background:var(--royal-blue);color:white;text-align:center;">
+<p style="color:var(--gold);font-weight:bold;font-size:.85rem;">SPECIAL LAUNCH OFFER</p>
+<p style="font-size:.9rem;margin:5px 0;">Bei ya kawaida: <strike>TSh 900</strike></p>
+<p style="font-size:2rem;font-weight:bold;color:var(--gold);">TSh 600</p>
+<p style="font-size:.85rem;">kwa miezi 3</p>
+</div>
+<div class="card">
+<h4 style="font-size:.9rem;margin-bottom:10px;">1. Lipa kiasi kamili TSh 600 kwa:</h4>
+<div class="payment-method">
+<div class="pm-info"><h4>Vodacom M-Pesa</h4><p>0796133662</p><small>Jina: Yahaya Boniphace Andrea</small></div>
+<button class="btn btn-outline" style="padding:5px 10px;font-size:.8rem;" onclick="copyNumber('0796133662')">Nakili</button>
+</div>
+<div class="payment-method">
+<div class="pm-info"><h4>Airtel Money</h4><p>0683530583</p><small>Jina: Amina Adam Kitwe</small></div>
+<button class="btn btn-outline" style="padding:5px 10px;font-size:.8rem;" onclick="copyNumber('0683530583')">Nakili</button>
+</div>
+<div class="payment-method">
+<div class="pm-info"><h4>Halotel Money</h4><p>0610333788</p><small>Jina: Yahaya Boniphace Andrea</small></div>
+<button class="btn btn-outline" style="padding:5px 10px;font-size:.8rem;" onclick="copyNumber('0610333788')">Nakili</button>
+</div>
+<p class="text-sm" style="margin-top:10px;color:var(--danger);font-weight:bold;">USITUME PIN yako kwa mtu yeyote!</p>
+</div>
+<div class="card">
+<h4 style="font-size:.9rem;margin-bottom:10px;">2. Wasilisha namba ya muamala</h4>
+<div class="form-group"><label>Mtandao uliolipia</label><select id="pay-network" class="form-control"><option>Vodacom M-Pesa</option><option>Airtel Money</option><option>Halotel Money</option></select></div>
+<div class="form-group"><label>Namba ya muamala (Transaction ID)</label><input type="text" id="pay-txid" class="form-control" placeholder="Herufi/Namba 6-24"></div>
+<div class="form-group"><label>Namba ya simu uliyolipia (hiari)</label><input type="text" id="pay-phone" class="form-control" placeholder="mf. 0712345678"></div>
+<button class="btn btn-gold btn-block" onclick="submitPayment()">Wasilisha</button>
+</div>
+<div class="card">
+<h4 style="font-size:.9rem;margin-bottom:10px;">Historia ya malipo</h4>
+<div id="pay-history-list"><p class="text-sm">Bado hakuna malipo yaliyowasilishwa.</p></div>
+</div>
+</section>
+
+<!-- 18. ADMIN PANEL -->
+<section id="page-admin" class="page">
+<h3>Admin Panel 🔒</h3>
+<div id="admin-login-box" class="card">
+<p class="text-sm" style="margin-bottom:15px;">Ingiza password kuona malipo ya wateja na kuidhinisha Premium.</p>
+<div class="form-group">
+<label>Password</label>
+<div style="display:flex;gap:10px;">
+<input type="password" id="admin-pass" class="form-control" placeholder="********">
+<button class="btn btn-outline" onclick="togglePass()" style="padding:0 15px;">👁️</button>
+</div>
+</div>
+<button class="btn btn-primary btn-block" onclick="loginAdmin()">Ingia</button>
+</div>
+<div id="admin-panel-box" class="hidden">
+<div class="flex-between" style="margin-bottom:10px;"><h4>Malipo na Watumiaji</h4><button class="btn btn-danger" style="padding:5px 10px;font-size:.8rem;" onclick="logoutAdmin()">Toka</button></div>
+<div id="admin-tx-list"><p class="text-sm">Hakuna malipo yaliyowasilishwa bado.</p></div>
+</div>
+</section>
+
 </main>
-<div class="bottom-nav"><div class="nav-item active" onclick="navigate('dashboard')"><span>🏠</span>Nyumbani</div><div class="nav-item" onclick="navigate('chat')"><span>🤖</span>AI</div><div class="nav-item" onclick="navigate('generator')"><span>💡</span>Mawazo</div><div class="nav-item" onclick="navigate('diy')"><span>🛠️</span>DIY</div><div class="nav-item" onclick="toggleSidebar()"><span>☰</span>Zaidi</div></div>
+
+<!-- BOTTOM NAVIGATION -->
+<div class="bottom-nav">
+<div class="nav-item active" onclick="navigate('dashboard')"><span>🏠</span>Nyumbani</div>
+<div class="nav-item" onclick="navigate('chat')"><span>🤖</span>AI</div>
+<div class="nav-item" onclick="navigate('generator')"><span>💡</span>Mawazo</div>
+<div class="nav-item" onclick="navigate('diy')"><span>🛠️</span>DIY</div>
+<div class="nav-item" onclick="toggleSidebar()"><span>☰</span>Zaidi</div>
+</div>
+
 <script>
-const menuItems=[{id:'dashboard',icon:'🏠',name:'Nyumbani',en:'Dashboard'},{id:'chat',icon:'🤖',name:'Uliza KITWE AI',en:'KITWE AI Chat'},{id:'generator',icon:'💡',name:'Jenereta ya Mawazo',en:'Idea Generator'},{id:'evaluation',icon:'📊',name:'Tathmini ya Wazo',en:'Idea Evaluation'},{id:'saved',icon:'📁',name:'Mawazo Yaliyohifadhiwa',en:'Saved Ideas'},{id:'favorites',icon:'⭐',name:'Vipendwa',en:'Favorites'},{id:'compare',icon:'⚖️',name:'Linganisha Mawazo',en:'Compare Ideas'},{id:'diy',icon:'🛠️',name:'KITWE DIY LAB',en:'DIY Lab'},{id:'calculator',icon:'🧮',name:'Kikokotoo cha Biashara',en:'Business Calculator'},{id:'challenges',icon:'🏆',name:'Changamoto za Ubunifu',en:'Innovation Challenges'},{id:'planner',icon:'📐',name:'Mpangi wa Mfano',en:'Prototype Planner'},{id:'tracker',icon:'📈',name:'Maendeleo ya Mfano',en:'Progress Tracker'},{id:'businessplan',icon:'📝',name:'Mpango wa Biashara',en:'Business Plan'},{id:'learning',icon:'📚',name:'Masomo',en:'Learning Resources'},{id:'notifications',icon:'🔔',name:'Arifa',en:'Notifications'},{id:'profile',icon:'👤',name:'Wasifu Wangu',en:'User Profile'},{id:'payments',icon:'💳',name:'Usajili na Malipo',en:'Subscription & Payments'},{id:'admin',icon:'🔒',name:'Admin Panel',en:'Admin',color:'var(--danger)'}];
-let state={isPremium:localStorage.getItem('kitwe_premium')==='true',ideasCount:parseInt(localStorage.getItem('kitwe_ideas_count')||'0'),chatsCount:parseInt(localStorage.getItem('kitwe_chats_count')||'0'),payments:JSON.parse(localStorage.getItem('kitwe_payments')||'[]'),ideas:JSON.parse(localStorage.getItem('kitwe_ideas')||'[]'),favs:JSON.parse(localStorage.getItem('kitwe_favs')||'[]'),challenges:JSON.parse(localStorage.getItem('kitwe_chal')||'[]'),plans:JSON.parse(localStorage.getItem('kitwe_plans')||'[]')};
-document.addEventListener('DOMContentLoaded',()=>{renderSidebar();renderServices();updateDashboardState();updateStats();renderPaymentsHistory();renderAdminList();renderChal();renderPlansList();renderSaved();});
-function renderSidebar(){const ul=document.getElementById('sidebar-menu');ul.innerHTML=menuItems.map(item=>`<li onclick="navigate('${item.id}')" id="nav-${item.id}" ${item.color?`style="color:${item.color}"`:''}>${item.icon} ${item.name} <span class="en">${item.en}</span></li>`).join('')}
-function renderServices(){const grid=document.getElementById('services-grid');const services=menuItems.filter(m=>!['admin','profile','payments','notifications'].includes(m.id));grid.innerHTML=services.map(item=>`<div class="service-card" onclick="navigate('${item.id}')"><div class="service-icon">${item.icon}</div><div class="service-name">${item.name}</div></div>`).join('')}
-function toggleSidebar(){document.getElementById('sidebar').classList.toggle('open');document.getElementById('overlay').classList.toggle('active')}
-function navigate(pageId){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.sidebar-menu li').forEach(li=>li.classList.remove('active'));document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));const page=document.getElementById('page-'+pageId);if(page)page.classList.add('active');const navLi=document.getElementById('nav-'+pageId);if(navLi)navLi.classList.add('active');const bottomNavs=document.querySelectorAll('.bottom-nav .nav-item');if(pageId==='dashboard')bottomNavs[0].classList.add('active');else if(pageId==='chat')bottomNavs[1].classList.add('active');else if(pageId==='generator')bottomNavs[2].classList.add('active');else if(pageId==='diy')bottomNavs[3].classList.add('active');else bottomNavs[4].classList.add('active');document.querySelector('main').scrollTop=0}
-function updateDashboardState(){const badge=document.getElementById('dash-status-badge');const text=document.getElementById('dash-status-text');const btn=document.getElementById('dash-sub-banner').querySelector('button');if(state.isPremium){badge.innerText='PREMIUM • ACTIVE';badge.className='status-badge premium';text.innerText='Hongera! Akaunti yako ni Premium. Unafurahia huduma zote.';btn.style.display='none'}else if(state.payments.some(p=>p.status==='PENDING')){badge.innerText='INASUBIRI • PENDING';badge.className='status-badge';text.innerText='Malipo yako yanasubiri uthibitisho wa admin. Utafunguliwa Premium baada ya kuthibitishwa.';btn.innerText='Angalia Hali';btn.onclick=()=>navigate('payments')}else{badge.innerText='BURE • FREE';badge.className='status-badge';badge.style.background='#e5e7eb';badge.style.color='#374151';text.innerText='Uko kwenye mpango wa bure. Pata Premium kufungua huduma zote.';btn.innerText='Pata Premium';btn.onclick=()=>navigate('payments')}}
-function updateStats(){document.getElementById('stat-chats').innerText=`${state.chatsCount}/5`;document.getElementById('stat-ideas').innerText=`${state.ideasCount}/2`;document.getElementById('chat-limit').innerText=`${state.chatsCount}/5`}
-function handleChatEnter(e){if(e.key==='Enter')sendChatMessage()}
-function sendChatSuggestion(text){document.getElementById('chat-input').value=text;sendChatMessage()}
-function clearChat(){document.getElementById('chat-messages').innerHTML=`<div class="chat-bubble ai">Habari! Mimi ni KITWE AI. Nikusaidie nini leo?</div>`;state.chatsCount=0;localStorage.setItem('kitwe_chats_count',0);updateStats()}
-function sendChatMessage(){const input=document.getElementById('chat-input');const msg=input.value.trim();if(!msg)return;if(state.chatsCount>=5&&!state.isPremium){alert('Umefikia kikomo cha bure cha mazungumzo 5 kwa leo. Pata Premium kuendelea.');navigate('payments');return}const chatBox=document.getElementById('chat-messages');chatBox.innerHTML+=`<div class="chat-bubble user">${msg}</div>`;input.value='';chatBox.scrollTop=chatBox.scrollHeight;state.chatsCount++;localStorage.setItem('kitwe_chats_count',state.chatsCount);updateStats();setTimeout(()=>{let reply="Nimekuelewa. Ili nikusaidie vizuri zaidi, unaweza kuniambia mtaji wako au tatizo unalotaka kutatua?";const lowerMsg=msg.toLowerCase();if(lowerMsg.includes('mambo')||lowerMsg.includes('habari'))reply="Poa sana! Karibu KITWE IDEALAB AI. Leo nikusaidie nini kwenye biashara yako?";else if(lowerMsg.includes('mtaji')||lowerMsg.includes('biashara'))reply="Kwa mtaji huo, wazo zuri ni kuuza bidhaa za msingi au kutoa huduma ndogo. Nenda kwenye 'Jenereta ya Mawazo' kwa maelezo zaidi!";else if(lowerMsg.includes('photosynthesis'))reply="Photosynthesis ni mchakato ambao mimea hutumia mwanga wa jua, maji, na hewa (CO2) kutengeneza chakula chao (glucose) na kutoa oksijeni.";chatBox.innerHTML+=`<div class="chat-bubble ai">${reply}</div>`;chatBox.scrollTop=chatBox.scrollHeight;if(state.chatsCount>=5&&!state.isPremium){chatBox.innerHTML+=`<div class="chat-bubble ai" style="background:#fef3c7;color:#b45309;">Kikomo chako cha bure kimefika. Pata Premium kuendelea kuzungumza nami.</div>`}},1000)}
-function generateIdea(){const problem=document.getElementById('gen-problem').value;const capital=document.getElementById('gen-capital').value;const area=document.getElementById('gen-area').value;const skill=document.getElementById('gen-skill').value;if(!problem||!capital)return alert('Tafadhali jaza tatizo na mtaji wako!');if(state.ideasCount>=2&&!state.isPremium){alert('Umefikia kikomo cha bure cha mawazo 2 kwa leo. Pata Premium kuendelea.');navigate('payments');return}document.getElementById('gen-result-container').classList.remove('hidden');document.getElementById('gen-result-content').innerHTML=`<h4>Wazo: Huduma ya ${problem}</h4><p><b>Eneo:</b> ${area||'Tanzania'}</p><p><b>Mtaji:</b> TSh ${capital}</p><p><b>Ujuzi:</b> ${skill||'Ujuzi wa kawaida'}</p><hr style="margin:10px 0;border:0;border-top:1px solid #bbf7d0;"><p><b>Hatua za Kuanza:</b></p><ul style="padding-left:15px;font-size:.9rem;line-height:1.6;"><li>Fanya utafiti mdogo wa soko eneo la ${area||'husika'}.</li><li>Nunua vifaa vya msingi kwa kutumia mtaji wako.</li><li>Tangaza huduma kwa marafiki na mitandao ya kijamii.</li><li>Anza kutoa huduma na rekodi faida.</li></ul><button class="btn btn-primary" style="margin-top:10px;" onclick="saveIdeaNow('${problem}')">Hifadhi Wazo</button>`;state.ideasCount++;localStorage.setItem('kitwe_ideas_count',state.ideasCount);updateStats()}
-function saveIdeaNow(title){const cap=document.getElementById('gen-capital').value||5000;const area=document.getElementById('gen-area').value||'Kigoma';state.ideas.unshift({id:Date.now(),title:title.slice(0,30),cap,area});localStorage.setItem('kitwe_ideas',JSON.stringify(state.ideas));renderSaved();alert('Wazo limehifadhiwa kwenye Mawazo Yaliyohifadhiwa!')}
-function calculateEvaluation(){const weights={tatizo:0.10,wateja:0.20,gharama:0.15,ujuzi:0.15,ushindani:0.15,vifaa:0.10,ukua:0.05,faida:0.10};let total=0;for(const key in weights){const val=parseInt(document.getElementById('eval-'+key).value);total+=(val/5)*weights[key]*100}const finalScore=Math.round(total);document.getElementById('eval-result-box').classList.remove('hidden');document.getElementById('eval-score').innerText=finalScore+'/100';let msg='';if(finalScore>=80)msg='Wazo zuri sana! Endelea kulifanyia kazi.';else if(finalScore>=60)msg='Wazo zuri, lakini kuna sehemu unapaswa kuboresha.';else if(finalScore>=40)msg='Wazo linawezekana lakini linahitaji marekebisho makubwa.';else msg='Inaonekana kuna changamoto. Tafuta ushauri zaidi au badilisha mkakati.';document.getElementById('eval-message').innerText=msg}
-function calculateBiz(){const cost=parseFloat(document.getElementById('calc-cost').value)||0;const price=parseFloat(document.getElementById('calc-price').value)||0;const qty=parseFloat(document.getElementById('calc-qty').value)||1;if(cost<=0||price<=0)return alert('Weka gharama na bei kwa usahihi.');const profitPerItem=price-cost;const totalProfit=profitPerItem*qty;const margin=(profitPerItem/price)*100;document.getElementById('calc-result-box').classList.remove('hidden');document.getElementById('calc-profit').innerText=totalProfit.toLocaleString();document.getElementById('calc-margin').innerText=margin.toFixed(1)}
-function submitChallenge(){const val=document.getElementById('chal-input').value.trim();if(!val){document.getElementById('chal-feedback').innerHTML='<p style="color:red;" class="text-sm">Tafadhali andika suluhisho</p>';return}const btn=document.getElementById('btnWasilishaChallenge');btn.innerText='Inawasilisha...';btn.disabled=true;setTimeout(()=>{state.challenges.unshift({text:val,date:new Date().toISOString()});localStorage.setItem('kitwe_chal',JSON.stringify(state.challenges));document.getElementById('chal-feedback').innerHTML='<div style="background:#d1fae5;padding:10px;border-radius:8px;color:#065f46;"><b>✓ Hongera! Suluhisho limewasilishwa!</b><p class="text-sm">Asante Yahaya - Wasilisha button inafanya kazi 100%</p></div>';document.getElementById('chal-input').value='';btn.innerText='Wasilisha';btn.disabled=false;renderChal()},800)}
-function renderChal(){const el=document.getElementById('chal-list');if(!el)return;el.innerHTML=state.challenges.map(c=>`<div class="admin-tx-card"><p class="text-sm">${c.text}</p><small class="text-sm">${new Date(c.date).toLocaleString()}</small></div>`).join('')}
-function savePlan(){const name=document.getElementById('plan-name').value;const mats=document.getElementById('plan-mats').value;if(!name)return alert('Jaza jina la bidhaa');const btn=document.getElementById('btnTengenezaMfano');btn.innerText='Inahifadhi...';setTimeout(()=>{state.plans.unshift({name,mats,date:Date.now()});localStorage.setItem('kitwe_plans',JSON.stringify(state.plans));renderPlansList();btn.innerText='Tengeneza Wazo / Hifadhi Mpango';alert('Mpango wako wa mfano umehifadhiwa kikamilifu!');},700)}
-function renderPlansList(){const el=document.getElementById('plan-list');if(!el)return;el.innerHTML=state.plans.map(p=>`<div class="admin-tx-card"><b>${p.name}</b><p class="text-sm">${p.mats}</p></div>`).join('')}
-function genBizPlan(){const name=document.getElementById('biz-name').value||'Biashara Yangu';const purpose=document.getElementById('biz-purpose').value||'Kutatua tatizo';const goal=document.getElementById('biz-goal').value||'Kupata wateja 50';document.getElementById('biz-result').innerHTML=`<div class="card" style="background:#f0fdf4;margin-top:10px;"><h4>${name}</h4><p class="text-sm"><b>Dhumuni:</b> ${purpose}</p><p class="text-sm"><b>Lengo:</b> ${goal}</p><p class="text-sm"><b>Financial:</b> Mtaji 5k, bei 8k, faida 3k</p></div>`}
-function renderSaved(){const el=document.getElementById('saved-list');if(!el)return;if(state.ideas.length===0){el.innerHTML='<p class="text-sm">Bado hujahifadhi chochote.</p>';return}el.innerHTML=state.ideas.map(i=>`<div class="admin-tx-card"><div class="flex-between"><b>${i.title}</b><button class="btn btn-danger" style="padding:4px 8px;font-size:0.7rem;" onclick="delIdea(${i.id})">X</button></div><p class="text-sm">TSh ${i.cap} - ${i.area}</p></div>`).join('')}
-function delIdea(id){state.ideas=state.ideas.filter(i=>i.id!==id);localStorage.setItem('kitwe_ideas',JSON.stringify(state.ideas));renderSaved()}
-function copyNumber(n){navigator.clipboard.writeText(n);alert('Namba '+n+' imenakiliwa - Nakili button inafanya kazi!')}
-function submitPayment(){const network=document.getElementById('pay-network').value;const txid=document.getElementById('pay-txid').value.trim();const phone=document.getElementById('pay-phone').value.trim();if(txid.length<5){alert('Weka Transaction ID sahihi (6-24)');return}const btn=document.getElementById('btnWasilishaMalipo');btn.innerText='Inawasilisha...';btn.disabled=true;setTimeout(()=>{state.payments.unshift({network,txid,phone,status:'PENDING',date:new Date().toISOString()});localStorage.setItem('kitwe_payments',JSON.stringify(state.payments));renderPaymentsHistory();renderAdminList();updateDashboardState();alert('✓ Malipo Yamewasilishwa! Ref: '+txid);btn.innerText='Wasilisha - Thibitisha Malipo';btn.disabled=false;document.getElementById('pay-txid').value='';document.getElementById('pay-phone').value='';},1200)}
-function renderPaymentsHistory(){const el=document.getElementById('pay-history-list');if(!el)return;if(state.payments.length===0){el.innerHTML='<p class="text-sm">Bado hakuna malipo yaliyowasilishwa.</p>';return}el.innerHTML=state.payments.map(p=>`<div class="payment-method"><div class="pm-info"><h4>${p.txid}</h4><p class="text-sm">${p.network} - ${p.phone}</p><small>${new Date(p.date).toLocaleString()}</small></div><span class="status-badge ${p.status==='APPROVED'?'premium':''}">${p.status}</span></div>`).join('')}
-function loginAdmin(){const pass=document.getElementById('admin-pass').value;if(pass==='kitwe2026'){document.getElementById('admin-login-box').classList.add('hidden');document.getElementById('admin-panel-box').classList.remove('hidden');renderAdminList()}else alert('Password sio sahihi! Tumia: kitwe2026')}
-function logoutAdmin(){document.getElementById('admin-login-box').classList.remove('hidden');document.getElementById('admin-panel-box').classList.add('hidden')}
-function togglePass(){const inp=document.getElementById('admin-pass');inp.type=inp.type==='password'?'text':'password'}
-function renderAdminList(){const el=document.getElementById('admin-tx-list');if(!el)return;if(state.payments.length===0){el.innerHTML='<p class="text-sm">Hakuna malipo yaliyowasilishwa bado.</p>';return}el.innerHTML=state.payments.map((p,i)=>`<div class="admin-tx-card pending"><div class="flex-between"><div><b>${p.txid}</b><p class="text-sm">${p.network} - ${p.phone} - ${p.status}</p><small>${new Date(p.date).toLocaleString()}</small></div><div style="display:flex;gap:5px;"><button class="btn btn-gold" style="padding:6px 10px;font-size:0.7rem;" onclick="approvePay(${i})">Approve</button><button class="btn btn-danger" style="padding:6px 10px;font-size:0.7rem;" onclick="rejectPay(${i})">Reject</button></div></div></div>`).join('')}
-function approvePay(i){state.payments[i].status='APPROVED';localStorage.setItem('kitwe_premium','true');state.isPremium=true;localStorage.setItem('kitwe_payments',JSON.stringify(state.payments));renderPaymentsHistory();renderAdminList();updateDashboardState();alert('✓ Approved! Mtumiaji sasa ni Premium')}
-function rejectPay(i){state.payments[i].status='REJECTED';localStorage.setItem('kitwe_payments',JSON.stringify(state.payments));renderPaymentsHistory();renderAdminList()}
+// ================= DATA & STATE MANAGEMENT =================
+const menuItems = [
+{id:'dashboard', icon:'🏠', name:'Nyumbani', en:'Dashboard'},
+{id:'chat', icon:'🤖', name:'Uliza KITWE AI', en:'KITWE AI Chat'},
+{id:'generator', icon:'💡', name:'Jenereta ya Mawazo', en:'Idea Generator'},
+{id:'evaluation', icon:'📊', name:'Tathmini ya Wazo', en:'Idea Evaluation'},
+{id:'saved', icon:'📁', name:'Mawazo Yaliyohifadhiwa', en:'Saved Ideas'},
+{id:'favorites', icon:'⭐', name:'Vipendwa', en:'Favorites'},
+{id:'compare', icon:'⚖️', name:'Linganisha Mawazo', en:'Compare Ideas'},
+{id:'diy', icon:'🛠️', name:'KITWE DIY LAB', en:'DIY Lab'},
+{id:'calculator', icon:'🧮', name:'Kikokotoo cha Biashara', en:'Business Calculator'},
+{id:'challenges', icon:'🏆', name:'Changamoto za Ubunifu', en:'Innovation Challenges'},
+{id:'planner', icon:'📐', name:'Mpangi wa Mfano', en:'Prototype Planner'},
+{id:'tracker', icon:'📈', name:'Maendeleo ya Mfano', en:'Progress Tracker'},
+{id:'businessplan', icon:'📝', name:'Mpango wa Biashara', en:'Business Plan'},
+{id:'learning', icon:'📚', name:'Masomo', en:'Learning Resources'},
+{id:'notifications', icon:'🔔', name:'Arifa', en:'Notifications'},
+{id:'profile', icon:'👤', name:'Wasifu Wangu', en:'User Profile'},
+{id:'payments', icon:'💳', name:'Usajili na Malipo', en:'Subscription & Payments'},
+{id:'admin', icon:'🔒', name:'Admin Panel', en:'Admin', color:'var(--danger)'}
+];
+
+// State
+let state = {
+isPremium: localStorage.getItem('kitwe_premium') === 'true',
+ideasCount: parseInt(localStorage.getItem('kitwe_ideas_count') || '0'),
+chatsCount: parseInt(localStorage.getItem('kitwe_chats_count') || '0'),
+payments: JSON.parse(localStorage.getItem('kitwe_payments') || '[]'),
+ideas: JSON.parse(localStorage.getItem('kitwe_ideas') || '[]'),
+favs: JSON.parse(localStorage.getItem('kitwe_favs') || '[]'),
+challenges: JSON.parse(localStorage.getItem('kitwe_chal') || '[]'),
+plans: JSON.parse(localStorage.getItem('kitwe_plans') || '[]'),
+notes: JSON.parse(localStorage.getItem('kitwe_notes') || '[]'),
+userName: localStorage.getItem('kitwe_user_name') || 'Yahaya Boniphace Andrea',
+userPic: localStorage.getItem('kitwe_user_pic') || null
+};
+
+function renderSidebar() {
+const ul = document.getElementById('sidebar-menu');
+ul.innerHTML = menuItems.map(item => `
+<li onclick="navigate('${item.id}')" id="nav-${item.id}" ${item.color ? `style="color:${item.color}"` : ''}>
+${item.icon} ${item.name} <span class="en">${item.en}</span>
+</li>
+`).join('');
+}
+
+function renderServices() {
+const grid = document.getElementById('services-grid');
+const services = menuItems.filter(m => !['admin', 'profile', 'payments', 'notifications'].includes(m.id));
+grid.innerHTML = services.map(item => `
+<div class="service-card" onclick="navigate('${item.id}')">
+<div class="service-icon">${item.icon}</div>
+<div class="service-name">${item.name}</div>
+</div>
+`).join('');
+}
+
+// ================= NAVIGATION =================
+function toggleSidebar() {
+document.getElementById('sidebar').classList.toggle('open');
+document.getElementById('overlay').classList.toggle('active');
+}
+
+function navigate(pageId) {
+document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+document.querySelectorAll('.sidebar-menu li').forEach(li => li.classList.remove('active'));
+document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+const page = document.getElementById('page-' + pageId);
+if (page) page.classList.add('active');
+
+const navLi = document.getElementById('nav-' + pageId);
+if (navLi) navLi.classList.add('active');
+
+const bottomNavs = document.querySelectorAll('.bottom-nav .nav-item');
+if (pageId === 'dashboard') bottomNavs[0].classList.add('active');
+else if (pageId === 'chat') bottomNavs[1].classList.add('active');
+else if (pageId === 'generator') bottomNavs[2].classList.add('active');
+else if (pageId === 'diy') bottomNavs[3].classList.add('active');
+else bottomNavs[4].classList.add('active');
+
+if (window.innerWidth < 768) toggleSidebar();
+document.querySelector('main').scrollTop = 0;
+}
+
+// ================= DASHBOARD & STATE =================
+function updateDashboardState() {
+const badge = document.getElementById('dash-status-badge');
+const text = document.getElementById('dash-status-text');
+const btn = document.getElementById('dash-sub-banner').querySelector('button');
+
+if (state.isPremium) {
+badge.innerText = 'PREMIUM • ACTIVE';
+badge.className = 'status-badge premium';
+text.innerText = 'Hongera! Akaunti yako ni Premium. Unafurahia huduma zote.';
+btn.style.display = 'none';
+} else if (state.payments.some(p => p.status === 'PENDING')) {
+badge.innerText = 'INASUBIRI • PENDING';
+badge.className = 'status-badge';
+text.innerText = 'Malipo yako yanasubiri uthibitisho wa admin. Utafunguliwa Premium baada ya kuthibitishwa.';
+btn.innerText = 'Angalia Hali';
+btn.onclick = () => navigate('payments');
+} else {
+badge.innerText = 'BURE • FREE';
+badge.className = 'status-badge';
+badge.style.background = '#e5e7eb';
+badge.style.color = '#374151';
+text.innerText = 'Uko kwenye mpango wa bure. Pata Premium kufungua huduma zote.';
+btn.innerText = 'Pata Premium';
+btn.onclick = () => navigate('payments');
+}
+}
+
+function updateStats() {
+document.getElementById('stat-chats').innerText = `${state.chatsCount}/5`;
+document.getElementById('stat-ideas').innerText = `${state.ideasCount}/2`;
+document.getElementById('chat-limit').innerText = `${state.chatsCount}/5`;
+}
+
+// ================= AI CHAT =================
+function handleChatEnter(e) { if (e.key === 'Enter') sendChatMessage(); }
+function sendChatSuggestion(text) { document.getElementById('chat-input').value = text; sendChatMessage(); }
+function clearChat() {
+document.getElementById('chat-messages').innerHTML = `<div class="chat-bubble ai">Habari! Mimi ni KITWE AI. Nikusaidie nini leo?</div>`;
+state.chatsCount = 0; localStorage.setItem('kitwe_chats_count', 0); updateStats();
+}
+
+function sendChatMessage() {
+const input = document.getElementById('chat-input');
+const msg = input.value.trim();
+if (!msg) return;
+
+if (state.chatsCount >= 5 && !state.isPremium) {
+alert('Umefikia kikomo cha bure cha mazungumzo 5 kwa leo. Pata Premium kuendelea.');
+navigate('payments');
+return;
+}
+
+const chatBox = document.getElementById('chat-messages');
+chatBox.innerHTML += `<div class="chat-bubble user">${msg}</div>`;
+input.value = '';
+chatBox.scrollTop = chatBox.scrollHeight;
+
+state.chatsCount++;
+localStorage.setItem('kitwe_chats_count', state.chatsCount);
+updateStats();
+
+setTimeout(() => {
+let reply = "Nimekuelewa. Ili nikusaidie vizuri zaidi, unaweza kuniambia mtaji wako au tatizo unalotaka kutatua?";
+const lowerMsg = msg.toLowerCase();
+
+if (lowerMsg.includes('mambo') || lowerMsg.includes('habari')) reply = "Poa sana! Karibu KITWE IDEALAB AI. Leo nikusaidie nini kwenye biashara yako?";
+else if (lowerMsg.includes('mtaji') || lowerMsg.includes('biashara')) reply = "Kwa mtaji huo, wazo zuri ni kuuza bidhaa za msingi au kutoa huduma ndogo. Nenda kwenye 'Jenereta ya Mawazo' kwa maelezo zaidi!";
+else if (lowerMsg.includes('photosynthesis')) reply = "Photosynthesis ni mchakato ambao mimea hutumia mwanga wa jua, maji, na hewa (CO2) kutengeneza chakula chao (glucose) na kutoa oksijeni.";
+
+chatBox.innerHTML += `<div class="chat-bubble ai">${reply}</div>`;
+chatBox.scrollTop = chatBox.scrollHeight;
+
+if (state.chatsCount >= 5 && !state.isPremium) {
+chatBox.innerHTML += `<div class="chat-bubble ai" style="background:#fef3c7;color:#b45309;">Kikomo chako cha bure kimefika. Pata Premium kuendelea kuzungumza nami.</div>`;
+}
+}, 1000);
+}
+
+// ================= IDEA GENERATOR =================
+function generateIdea() {
+const problem = document.getElementById('gen-problem').value;
+const capital = document.getElementById('gen-capital').value;
+const area = document.getElementById('gen-area').value;
+const skill = document.getElementById('gen-skill').value;
+
+if (!problem || !capital) return alert('Tafadhali jaza tatizo na mtaji wako!');
+
+if (state.ideasCount >= 2 && !state.isPremium) {
+alert('Umefikia kikomo cha bure cha mawazo 2 kwa leo. Pata Premium kuendelea.');
+navigate('payments');
+return;
+}
+
+document.getElementById('gen-result-container').classList.remove('hidden');
+document.getElementById('gen-result-content').innerHTML = `
+<h4>Wazo: Huduma ya ${problem}</h4>
+<p><b>Eneo:</b> ${area || 'Tanzania'}</p>
+<p><b>Mtaji:</b> TSh ${capital}</p>
+<p><b>Ujuzi:</b> ${skill || 'Ujuzi wa kawaida'}</p>
+<hr style="margin:10px 0;border:0;border-top:1px solid #bbf7d0;">
+<p><b>Hatua za Kuanza:</b></p>
+<ul style="padding-left:15px;font-size:.9rem;line-height:1.6;">
+<li>Fanya utafiti mdogo wa soko eneo la ${area || 'husika'}.</li>
+<li>Nunua vifaa vya msingi kwa kutumia mtaji wako.</li>
+<li>Tangaza huduma kwa marafiki na mitandao ya kijamii.</li>
+<li>Anza kutoa huduma na rekodi faida.</li>
+</ul>
+<button class="btn btn-primary" style="margin-top:10px;" onclick="saveIdeaNow('${problem}', ${capital}, '${area}')">Hifadhi Wazo</button>
+`;
+
+state.ideasCount++;
+localStorage.setItem('kitwe_ideas_count', state.ideasCount);
+updateStats();
+}
+
+function saveIdeaNow(title, cap, area) {
+state.ideas.unshift({id: Date.now(), title: title, cap: cap, area: area});
+localStorage.setItem('kitwe_ideas', JSON.stringify(state.ideas));
+renderSaved();
+alert('Wazo limehifadhiwa kwenye Mawazo Yaliyohifadhiwa!');
+}
+
+// ================= IDEA EVALUATION =================
+function calculateEvaluation() {
+const weights = { tatizo:0.10, wateja:0.20, gharama:0.15, ujuzi:0.15, ushindani:0.15, vifaa:0.10, ukua:0.05, faida:0.10 };
+let total = 0;
+for (const key in weights) {
+const val = parseInt(document.getElementById('eval-' + key).value);
+total += (val / 5) * weights[key] * 100;
+}
+const finalScore = Math.round(total);
+document.getElementById('eval-result-box').classList.remove('hidden');
+document.getElementById('eval-score').innerText = finalScore + '/100';
+
+let msg = '';
+if (finalScore >= 80) msg = 'Wazo zuri sana! Endelea kulifanyia kazi.';
+else if (finalScore >= 60) msg = 'Wazo zuri, lakini kuna sehemu unapaswa kuboresha.';
+else if (finalScore >= 40) msg = 'Wazo linawezekana lakini linahitaji marekebisho makubwa.';
+else msg = 'Inaonekana kuna changamoto. Tafuta ushauri zaidi au badilisha mkakati.';
+document.getElementById('eval-message').innerText = msg;
+}
+
+// ================= BUSINESS CALCULATOR =================
+function calculateBiz() {
+const cost = parseFloat(document.getElementById('calc-cost').value) || 0;
+const price = parseFloat(document.getElementById('calc-price').value) || 0;
+const qty = parseFloat(document.getElementById('calc-qty').value) || 1;
+
+if (cost <= 0 || price <= 0) return alert('Weka gharama na bei kwa usahihi.');
+
+const profitPerItem = price - cost;
+const totalProfit = profitPerItem * qty;
+const margin = (profitPerItem / price) * 100;
+
+document.getElementById('calc-result-box').classList.remove('hidden');
+document.getElementById('calc-profit').innerText = totalProfit.toLocaleString();
+document.getElementById('calc-margin').innerText = margin.toFixed(1);
+}
+
+// ================= CHALLENGES =================
+function submitChallenge() {
+const val = document.getElementById('chal-input').value.trim();
+if (!val) return alert('Tafadhali andika wazo lako kwanza!');
+state.challenges.unshift({text: val, date: new Date().toLocaleString()});
+localStorage.setItem('kitwe_chal', JSON.stringify(state.challenges));
+alert('Hongera! Wazo lako limewasilishwa kikamilifu.');
+document.getElementById('chal-input').value = '';
+renderChal();
+}
+
+function renderChal() {
+const el = document.getElementById('chal-history');
+if (!el) return;
+el.innerHTML = state.challenges.map(c => `<div class="admin-tx-card"><p class="text-sm">${c.text}</p><small class="text-sm">${c.date}</small></div>`).join('');
+}
+
+// ================= PLANNER =================
+function savePlan() {
+const name = document.getElementById('plan-name').value;
+const mats = document.getElementById('plan-mats').value;
+if (!name) return alert('Jaza jina la bidhaa');
+state.plans.unshift({name: name, mats: mats});
+localStorage.setItem('kitwe_plans', JSON.stringify(state.plans));
+renderPlansList();
+alert('Mpango wako umehifadhiwa!');
+}
+
+function renderPlansList() {
+const el = document.getElementById('plan-list');
+if (!el) return;
+el.innerHTML = state.plans.map(p => `<div class="admin-tx-card"><b>${p.name}</b><p class="text-sm">${p.mats}</p></div>`).join('');
+}
+
+// ================= LEARNING HUB =================
+function saveLearningNote() {
+const note = document.getElementById('learning-note').value.trim();
+if (!note) return alert('Andika kitu kwanza!');
+state.notes.unshift({text: note, date: new Date().toLocaleString()});
+localStorage.setItem('kitwe_notes', JSON.stringify(state.notes));
+document.getElementById('learning-note').value = '';
+renderLearningNotes();
+alert('Note imehifadhiwa!');
+}
+
+function renderLearningNotes() {
+const el = document.getElementById('learning-notes-list');
+if (!el) return;
+el.innerHTML = state.notes.map(n => `<div class="admin-tx-card"><p class="text-sm">${n.text}</p><small class="text-sm">${n.date}</small></div>`).join('');
+}
+
+// ================= SAVED & FAVORITES =================
+function renderSaved() {
+const el = document.getElementById('saved-list-container');
+if (!el) return;
+if (state.ideas.length === 0) {
+el.innerHTML = '<p class="text-sm">Bado hujahifadhi chochote.</p>';
+return;
+}
+el.innerHTML = state.ideas.map(i => `
+<div class="admin-tx-card">
+<div class="flex-between">
+<label style="display:flex;align-items:center;gap:10px;">
+<input type="checkbox" class="compare-check" value="${i.id}">
+<b>${i.title}</b>
+</label>
+<div>
+<button class="btn btn-outline" style="padding:4px 8px;font-size:0.7rem;" onclick="toggleFav(${i.id})">${state.favs.includes(i.id) ? '★' : '☆'}</button>
+<button class="btn btn-danger" style="padding:4px 8px;font-size:0.7rem;" onclick="delIdea(${i.id})">X</button>
+</div>
+</div>
+<p class="text-sm">Mtaji: TSh ${i.cap} | Eneo: ${i.area}</p>
+</div>
+`).join('');
+}
+
+function delIdea(id) {
+state.ideas = state.ideas.filter(i => i.id !== id);
+state.favs = state.favs.filter(fid => fid !== id);
+localStorage.setItem('kitwe_ideas', JSON.stringify(state.ideas));
+localStorage.setItem('kitwe_favs', JSON.stringify(state.favs));
+renderSaved();
+}
+
+function toggleFav(id) {
+if (state.favs.includes(id)) {
+state.favs = state.favs.filter(fid => fid !== id);
+} else {
+state.favs.push(id);
+}
+localStorage.setItem('kitwe_favs', JSON.stringify(state.favs));
+renderSaved();
+renderFavs();
+}
+
+function renderFavs() {
+const el = document.getElementById('fav-list-container');
+if (!el) return;
+if (state.favs.length === 0) {
+el.innerHTML = '<p class="text-sm">Hakuna vipendwa bado.</p>';
+return;
+}
+el.innerHTML = state.ideas.filter(i => state.favs.includes(i.id)).map(i => `
+<div class="admin-tx-card">
+<b>${i.title}</b>
+<p class="text-sm">TSh ${i.cap}</p>
+</div>
+`).join('');
+}
+
+function compareIdeas() {
+const checks = document.querySelectorAll('.compare-check:checked');
+if (checks.length < 2) return alert('Chagua mawazo angalau mawili kulinganisha!');
+if (checks.length > 2 && !state.isPremium) return alert('Kulinganisha zaidi ya 2 ni kwa Premium. Pata Premium kwanza.');
+
+const selected = Array.from(checks).map(c => state.ideas.find(i => i.id == c.value));
+let html = '<h4>Matokeo ya Ulinganisho</h4>';
+selected.forEach(i => {
+html += `<div style="margin-top:10px;padding:10px;border:1px solid #ccc;border-radius:5px;">
+<b>${i.title}</b><br>
+Mtaji: TSh ${i.cap} | Eneo: ${i.area}
+</div>`;
+});
+const el = document.getElementById('compare-result');
+el.classList.remove('hidden');
+el.innerHTML = html;
+}
+
+// ================= DIY LAB =================
+function showDiy(val) {
+const el = document.getElementById('diy-details');
+if (!val) { el.style.display = 'none'; return; }
+el.style.display = 'block';
+if (val === 'taa') {
+el.innerHTML = `<b>Taa ya Cardboard (TSh 5,000)</b><p>Vifaa: Kadibodi, LED 5, Betri 9V, Switch, Waya.<br>Faida: TSh 3,000 kwa kila taa.</p>`;
+} else if (val === 'maji') {
+el.innerHTML = `<b>Kichujio cha Maji (TSh 3,000)</b><p>Vifaa: Chupa, Mchanga, Kokoto, Pamba.<br>Faida: TSh 2,000 kwa kichujio kimoja.</p>`;
+} else {
+el.innerHTML = `<b>Sabuni ya Maji (TSh 2,500)</b><p>Vifaa: Mafuta ya kupikia, Soda ya kufulia (Caustic Soda), Maji, Rangi.<br>Faida: TSh 4,000 kwa lita moja.</p>`;
+}
+}
+
+// ================= PROFILE =================
+function loadProfileData() {
+document.getElementById('side-name').innerText = state.userName;
+document.getElementById('profile-display-name').innerText = state.userName;
+document.getElementById('dash-name').innerText = state.userName.split(' ')[0];
+document.getElementById('edit-name-input').value = state.userName;
+
+if (state.userPic) {
+const img = document.getElementById('profile-img');
+img.src = state.userPic;
+img.classList.remove('hidden');
+document.getElementById('profile-avatar').classList.add('hidden');
+document.getElementById('side-avatar').style.background = `url(${state.userPic}) center/cover`;
+document.getElementById('side-avatar').innerText = '';
+}
+}
+
+function uploadProfilePic(event) {
+const file = event.target.files[0];
+if (file) {
+const reader = new FileReader();
+reader.onload = function(e) {
+state.userPic = e.target.result;
+localStorage.setItem('kitwe_user_pic', state.userPic);
+loadProfileData();
+alert('Picha imewekwa kikamilifu!');
+};
+reader.readAsDataURL(file);
+}
+}
+
+function updateProfile() {
+const newName = document.getElementById('edit-name-input').value.trim();
+if (newName) {
+state.userName = newName;
+localStorage.setItem('kitwe_user_name', newName);
+loadProfileData();
+alert('Jina limehifadhiwa!');
+}
+}
+
+// ================= PAYMENTS & SUBSCRIPTION =================
+function copyNumber(num) {
+navigator.clipboard.writeText(num).then(() => {
+alert('Namba ' + num + ' imenakiliwa!');
+});
+}
+
+function submitPayment() {
+const txid = document.getElementById('pay-txid').value.trim();
+const network = document.getElementById('pay-network').value;
+const phone = document.getElementById('pay-phone').value.trim();
+
+if (txid.length < 6) return alert('Tafadhali weka namba sahihi ya muamala (Transaction ID).');
+
+const newPayment = {
+id: Date.now(),
+txid: txid,
+network: network,
+phone: phone || 'Hakuna',
+date: new Date().toLocaleString(),
+status: 'PENDING'
+};
+
+state.payments.push(newPayment);
+localStorage.setItem('kitwe_payments', JSON.stringify(state.payments));
+
+document.getElementById('pay-txid').value = '';
+document.getElementById('pay-phone').value = '';
+
+alert('Malipo yamewasilishwa kikamilifu! Admin atahakiki na kukufungulia Premium hivi karibuni.');
+renderPaymentsHistory();
+updateDashboardState();
+navigate('dashboard');
+}
+
+function renderPaymentsHistory() {
+const list = document.getElementById('pay-history-list');
+if (state.payments.length === 0) {
+list.innerHTML = '<p class="text-sm">Bado hakuna malipo yaliyowasilishwa.</p>';
+return;
+}
+
+list.innerHTML = state.payments.map(p => `
+<div class="admin-tx-card ${p.status === 'PENDING' ? 'pending' : ''}">
+<div class="flex-between">
+<span style="font-weight:bold;">${p.network}</span>
+<span class="status-badge ${p.status === 'APPROVED' ? 'premium' : ''}">${p.status}</span>
+</div>
+<p class="text-sm" style="margin-top:5px;">TX ID: ${p.txid}</p>
+<p class="text-sm">Tarehe: ${p.date}</p>
+</div>
+`).join('');
+}
+
+// ================= ADMIN PANEL =================
+function togglePass() {
+const passInput = document.getElementById('admin-pass');
+passInput.type = passInput.type === 'password' ? 'text' : 'password';
+}
+
+function loginAdmin() {
+const pass = document.getElementById('admin-pass').value;
+if (pass === 'kitwe2026') {
+document.getElementById('admin-login-box').classList.add('hidden');
+document.getElementById('admin-panel-box').classList.remove('hidden');
+renderAdminList();
+} else {
+alert('Password si sahihi! Jaribu tena.');
+}
+}
+
+function logoutAdmin() {
+document.getElementById('admin-login-box').classList.remove('hidden');
+document.getElementById('admin-panel-box').classList.add('hidden');
+document.getElementById('admin-pass').value = '';
+}
+
+function renderAdminList() {
+const el = document.getElementById('admin-tx-list');
+if (!el) return;
+
+if (state.payments.length === 0) {
+el.innerHTML = '<p class="text-sm">Hakuna malipo yaliyowasilishwa bado.</p>';
+return;
+}
+
+el.innerHTML = state.payments.map((p, i) => `
+<div class="admin-tx-card ${p.status === 'PENDING' ? 'pending' : ''}">
+<div class="flex-between">
+<div>
+<b>${p.txid}</b>
+<p class="text-sm">${p.network} - ${p.phone}</p>
+<small class="text-sm">${p.date}</small>
+</div>
+<div style="display:flex;gap:5px;align-items:center;">
+<span class="status-badge ${p.status === 'APPROVED' ? 'premium' : ''}">${p.status}</span>
+${p.status === 'PENDING' ? `
+<button class="btn btn-gold" style="padding:6px 10px;font-size:0.7rem;" onclick="approvePay(${i})">Approve</button>
+<button class="btn btn-danger" style="padding:6px 10px;font-size:0.7rem;" onclick="rejectPay(${i})">Reject</button>
+` : ''}
+</div>
+</div>
+</div>
+`).join('');
+}
+
+function approvePay(index) {
+state.payments[index].status = 'APPROVED';
+localStorage.setItem('kitwe_payments', JSON.stringify(state.payments));
+
+state.isPremium = true;
+localStorage.setItem('kitwe_premium', 'true');
+
+renderPaymentsHistory();
+renderAdminList();
+updateDashboardState();
+
+alert('✓ Malipo yameidhinishwa! Mtumiaji sasa ni Premium.');
+}
+
+function rejectPay(index) {
+state.payments[index].status = 'REJECTED';
+localStorage.setItem('kitwe_payments', JSON.stringify(state.payments));
+
+renderPaymentsHistory();
+renderAdminList();
+
+alert('Malipo yamekataliwa.');
+}
+
+// ================= TRACKER LOGIC =================
+function updateTracker() {
+const checkboxes = document.querySelectorAll('#tracker-list input[type="checkbox"]');
+let checkedCount = 0;
+
+checkboxes.forEach(cb => {
+if (cb.checked) checkedCount++;
+});
+
+const percentage = Math.round((checkedCount / checkboxes.length) * 100);
+
+const bar = document.getElementById('progress-bar');
+const text = document.getElementById('progress-text');
+
+if (bar && text) {
+bar.style.width = percentage + '%';
+text.innerText = percentage + '% Imekamilika';
+
+if (percentage === 100) {
+bar.style.backgroundColor = 'var(--gold)';
+text.innerText = 'Hongera! Mradi umekamilika 100% 🎉';
+} else {
+bar.style.backgroundColor = 'var(--success)';
+}
+}
+}
+
+function initTracker() {
+const trackerList = document.getElementById('tracker-list');
+if (!trackerList) return;
+
+trackerList.innerHTML = `
+<label style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+<input type="checkbox" onchange="updateTracker()"> Utafiti wa Soko - Uliofanyika
+</label>
+<label style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+<input type="checkbox" onchange="updateTracker()"> Kununua Malighafi - TSh 5,000
+</label>
+<label style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+<input type="checkbox" onchange="updateTracker()"> Kujenga Mfano - Prototype
+</label>
+<label style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+<input type="checkbox" onchange="updateTracker()"> Kuanza Uuzaji - Sokoni
+</label>
+`;
+}
+
+// ================= BUSINESS PLAN LOGIC =================
+function saveBizPlan() {
+const purpose = document.getElementById('biz-purpose').value.trim();
+const goal = document.getElementById('biz-goal').value.trim();
+
+if (!purpose || !goal) return alert('Tafadhali jaza dhumuni na lengo la biashara!');
+
+const resultEl = document.getElementById('biz-plan-result');
+resultEl.classList.remove('hidden');
+resultEl.innerHTML = `
+<div class="card" style="background:#f0fdf4;border:1px solid #bbf7d0;">
+<h4 style="color:var(--success);">Mpango wa Biashara Umehifadhiwa!</h4>
+<p class="text-sm" style="margin-top:5px;"><b>Dhumuni:</b> ${purpose}</p>
+<p class="text-sm" style="margin-top:5px;"><b>Lengo:</b> ${goal}</p>
+</div>
+`;
+
+localStorage.setItem('kitwe_biz_purpose', purpose);
+localStorage.setItem('kitwe_biz_goal', goal);
+
+alert('Mpango wa biashara umehifadhiwa kikamilifu!');
+}
+
+function loadBizPlan() {
+const purpose = localStorage.getItem('kitwe_biz_purpose');
+const goal = localStorage.getItem('kitwe_biz_goal');
+
+if (purpose && goal) {
+document.getElementById('biz-purpose').value = purpose;
+document.getElementById('biz-goal').value = goal;
+}
+}
+
+// ================= DOM READY INITIALIZATION =================
+document.addEventListener('DOMContentLoaded', () => {
+renderSidebar();
+renderServices();
+updateDashboardState();
+updateStats();
+renderPaymentsHistory();
+renderAdminList();
+renderChal();
+renderPlansList();
+renderSaved();
+loadProfileData();
+renderLearningNotes();
+
+initTracker();
+loadBizPlan();
+
+document.getElementById('overlay').addEventListener('click', () => {
+if (document.getElementById('sidebar').classList.contains('open')) {
+toggleSidebar();
+}
+});
+});
+
+window.onerror = function(msg, url, lineNo, columnNo, error) {
+console.log('Error: ' + msg + '\nURL: ' + url + '\nLine: ' + lineNo + '\nColumn: ' + columnNo + '\nError object: ' + error);
+return false;
+};
 </script>
 </body>
 </html>
+
