@@ -25,72 +25,15 @@ main{flex:1;overflow-y:auto;padding:15px;padding-bottom:80px}.page{display:none;
 .profile-pic{width:80px;height:80px;border-radius:50%;object-fit:cover;margin:0 auto 15px;display:block;border:3px solid var(--gold)}
 .progress-container{width:100%;background-color:#e5e7eb;border-radius:20px;margin-top:10px;height:15px;overflow:hidden}.progress-bar{height:100%;background-color:var(--success);width:0%;transition:width 0.3s ease}
 
-/* ==================================================== */
-/* SEHEMU MPYA: ZOOM TEXT & TICKER (Imeongezwa)         */
-/* ==================================================== */
-.zoom-container {
-    width: fit-content; 
-    padding: 8px 25px; 
-    background: var(--white);
-    border-radius: 50px; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    margin: 10px auto 15px auto;
-    border: 1px solid #e5e7eb;
-}
-
-.zoom-text {
-    font-size: 1.5rem;
-    font-weight: 900;
-    letter-spacing: 1px;
-    animation: zoomEffect 3s ease-in-out infinite;
-    white-space: nowrap; 
-}
-
-@keyframes zoomEffect {
-    0% { transform: scale(0.85); color: var(--royal-blue); text-shadow: 0 0 5px rgba(30,58,138,0.3); }
-    50% { transform: scale(1.1); color: var(--gold); text-shadow: 0 0 20px rgba(245,158,11,0.8); }
-    100% { transform: scale(0.85); color: var(--royal-blue); text-shadow: 0 0 5px rgba(30,58,138,0.3); }
-}
-
-.ticker-container {
-    width: 90%;
-    max-width: 400px;
-    margin: 0 auto 15px auto;
-    background: var(--navy-blue);
-    border-radius: 50px; 
-    padding: 10px 15px;
-    overflow: hidden; 
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    border: 1px solid var(--gold);
-    display: flex;
-    align-items: center;
-}
-
-.ticker-content {
-    display: flex;
-    white-space: nowrap; 
-    animation: tickerMove 40s linear infinite; 
-}
-
-.ticker-item {
-    color: var(--white);
-    font-size: 0.85rem;
-    font-weight: bold;
-    padding-right: 50px;
-}
-
-.ticker-item span { 
-    color: var(--gold); 
-    text-shadow: 0 0 8px rgba(245,158,11,0.5); 
-}
-
-@keyframes tickerMove {
-    0% { transform: translateX(20%); }   
-    100% { transform: translateX(-100%); } 
-}
+/* SEHEMU YA ZOOM NA TICKER */
+.zoom-container { width: fit-content; padding: 8px 25px; background: var(--white); border-radius: 50px; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin: 15px auto 10px auto; border: 1px solid #e5e7eb; }
+.zoom-text { font-size: 1.5rem; font-weight: 900; letter-spacing: 1px; animation: zoomEffect 3s ease-in-out infinite; white-space: nowrap; }
+@keyframes zoomEffect { 0% { transform: scale(0.85); color: var(--royal-blue); text-shadow: 0 0 5px rgba(30,58,138,0.3); } 50% { transform: scale(1.1); color: var(--gold); text-shadow: 0 0 20px rgba(245,158,11,0.8); } 100% { transform: scale(0.85); color: var(--royal-blue); text-shadow: 0 0 5px rgba(30,58,138,0.3); } }
+.ticker-container { width: 90%; max-width: 400px; margin: 0 auto 15px auto; background: var(--navy-blue); border-radius: 50px; padding: 10px 15px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.2); border: 1px solid var(--gold); display: flex; align-items: center; }
+.ticker-content { display: flex; white-space: nowrap; animation: tickerMove 40s linear infinite; }
+.ticker-item { color: var(--white); font-size: 0.85rem; font-weight: bold; padding-right: 50px; }
+.ticker-item span { color: var(--gold); text-shadow: 0 0 8px rgba(245,158,11,0.5); }
+@keyframes tickerMove { 0% { transform: translateX(20%); } 100% { transform: translateX(-100%); } }
 </style>
 </head>
 <body>
@@ -106,21 +49,8 @@ main{flex:1;overflow-y:auto;padding:15px;padding-bottom:80px}.page{display:none;
 <!-- 1. DASHBOARD -->
 <section id="page-dashboard" class="page active">
 <div class="welcome-text"><h2>Karibu, <span id="dash-name">YAHAYA</span> 👋</h2><p>Think. Create. Innovate.</p></div>
-
-<!-- SEHEMU MPYA: Zoom & Ticker -->
-<div class="zoom-container">
-    <div class="zoom-text">KITWE GlobalMind</div>
-</div>
-
-<div class="ticker-container">
-    <div class="ticker-content">
-        <div class="ticker-item">🚀 Karibu <span>KITWE GlobalMind</span>! Pata maarifa ya biashara, teknolojia, na ubunifu. </div>
-        <div class="ticker-item">💡 Tengeneza mawazo, tathmini, na uanze biashara yako leo! </div>
-        <div class="ticker-item">🏆 Jiunge nasi kwenye changamoto za ubunifu na ujifunze zaidi. </div>
-    </div>
-</div>
-<!-- Mwisho wa Sehemu Mpya -->
-
+<div class="zoom-container"><div class="zoom-text">KITWE GlobalMind</div></div>
+<div class="ticker-container"><div class="ticker-content"><div class="ticker-item">🚀 Karibu <span>KITWE GlobalMind</span>! Pata maarifa ya biashara, teknolojia, na ubunifu. </div><div class="ticker-item">💡 Tengeneza mawazo, tathmini, na uanze biashara yako leo! </div><div class="ticker-item">🏆 Jiunge nasi kwenye changamoto za ubunifu na ujifunze zaidi. </div></div></div>
 <div class="card" id="dash-sub-banner"><div class="flex-between" style="margin-bottom:10px;"><h4 style="font-size:.9rem;">Usajili wako</h4><span class="status-badge" id="dash-status-badge">INASUBIRI • PENDING</span></div><p class="text-sm" id="dash-status-text">Malipo yako yanasubiri uthibitisho wa admin. Utafunguliwa Premium baada ya kuthibitishwa.</p><button class="btn btn-gold" style="margin-top:10px;font-size:.8rem;" onclick="navigate('payments')">Pata Premium</button></div>
 <div class="card"><h4 style="font-size:.9rem;margin-bottom:10px;">Matumizi ya AI leo</h4><div class="stats-grid"><div class="stat-item"><div class="stat-val" id="stat-chats">0/5</div><div class="stat-label">Mazungumzo</div></div><div class="stat-item"><div class="stat-val" id="stat-ideas">0/2</div><div class="stat-label">Mawazo</div></div><div class="stat-item"><div class="stat-val">0/1</div><div class="stat-label">Mpango wa AI</div></div></div></div>
 <h4 style="font-size:.9rem;margin-bottom:10px;margin-top:15px;">Huduma</h4>
@@ -187,4 +117,9 @@ main{flex:1;overflow-y:auto;padding:15px;padding-bottom:80px}.page{display:none;
 <!-- 7. COMPARE IDEAS -->
 <section id="page-compare" class="page">
 <h3>Linganisha Mawazo ⚖️</h3>
-<div class="card text-center" id="compare-premium-box"><p style="font-size:2rem;margin-bottom:10px;">🔒</p><p sty
+<div class="card text-center" id="compare-premium-box"><p style="font-size:2rem;margin-bottom:10px;">🔒</p><p style="font-weight:bold;margin-bottom:5px;">Kulinganisha mawazo ni ya Premium</p><p class="text-sm" style="margin-bottom:15px;">Lipia Premium kufungua huduma hii.</p><button class="btn btn-gold" onclick="navigate('payments')">Pata Premium</button></div>
+<div id="actual-compare-area" class="hidden"><p class="text-sm">Nenda kwenye "Mawazo Yaliyohifadhiwa" kuchagua na kulinganisha.</p></div>
+</section>
+
+<!-- 8. DIY LAB -->
+<section id="page-diy
