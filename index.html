@@ -1,1077 +1,1565 @@
 <!DOCTYPE html>
 <html lang="sw">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><meta name="theme-color" content="#1e3a8a"><title>KITWE IDEALAB AI</title>
-<style>
-:root{--royal-blue:#1e3a8a;--navy-blue:#0f172a;--gold:#f59e0b;--gold-hover:#d97706;--bg-light:#f3f4f6;--text-dark:#1f2937;--text-light:#6b7280;--white:#ffffff;--danger:#ef4444;--success:#10b981}
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;-webkit-tap-highlight-color:transparent}
-body{background-color:var(--bg-light);color:var(--text-dark);overflow-x:hidden;display:flex;flex-direction:column;height:100vh}
-h1,h2,h3,h4{color:var(--navy-blue)}a{text-decoration:none;color:var(--royal-blue);cursor:pointer}ul{list-style:none}.hidden{display:none!important}.text-center{text-align:center}.text-sm{font-size:.85rem;color:var(--text-light)}.flex-between{display:flex;justify-content:space-between;align-items:center}
-.btn{padding:10px 15px;border:none;border-radius:8px;font-weight:bold;cursor:pointer;transition:.2s;display:inline-flex;align-items:center;justify-content:center;gap:8px;font-size:.9rem}.btn:active{transform:scale(.98)}.btn-primary{background-color:var(--royal-blue);color:var(--white)}.btn-gold{background-color:var(--gold);color:var(--navy-blue)}.btn-gold:hover{background-color:var(--gold-hover)}.btn-outline{background:transparent;border:1px solid var(--royal-blue);color:var(--royal-blue)}.btn-danger{background-color:var(--danger);color:white}.btn-block{width:100%}
-header{background-color:var(--royal-blue);color:var(--white);padding:15px;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:100;box-shadow:0 2px 5px rgba(0,0,0,.1)}.header-left{display:flex;align-items:center;gap:15px}.menu-icon{font-size:1.5rem;cursor:pointer}.logo{display:flex;align-items:center;gap:8px;font-weight:bold;font-size:1.1rem}.logo span{color:var(--gold)}.bell-icon{font-size:1.3rem;cursor:pointer;color:var(--gold)}
-main{flex:1;overflow-y:auto;padding:15px;padding-bottom:80px}.page{display:none;animation:fadeIn .3s ease}.page.active{display:block}@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
-.card{background:var(--white);border-radius:12px;padding:15px;margin-bottom:15px;box-shadow:0 1px 3px rgba(0,0,0,.1);border:1px solid #e5e7eb}
-.sidebar{position:fixed;top:0;left:-280px;width:280px;height:100vh;background:var(--white);z-index:200;transition:.3s;overflow-y:auto;box-shadow:2px 0 10px rgba(0,0,0,.1);display:flex;flex-direction:column}.sidebar.open{left:0}.sidebar-header{padding:20px;background:var(--bg-light);border-bottom:1px solid #e5e7eb}.sidebar-user{display:flex;align-items:center;gap:10px}.avatar{width:40px;height:40px;background:var(--navy-blue);color:var(--gold);border-radius:50%;display:flex;justify-content:center;align-items:center;font-weight:bold;font-size:1.2rem}.sidebar-user-info h4{font-size:.9rem;text-transform:uppercase}.sidebar-user-info p{font-size:.75rem;color:var(--text-light)}.sidebar-menu{flex:1;padding:10px 0}.sidebar-menu li{padding:12px 20px;display:flex;align-items:center;gap:15px;cursor:pointer;font-size:.95rem;font-weight:500;color:var(--text-dark);border-left:3px solid transparent;transition:.2s}.sidebar-menu li:hover{background:#f9fafb}.sidebar-menu li.active{background:#eff6ff;color:var(--royal-blue);border-left-color:var(--royal-blue)}.sidebar-menu li span.en{margin-left:auto;font-size:.7rem;color:var(--text-light);font-weight:normal;text-align:right}.sidebar-footer{padding:20px;border-top:1px solid #e5e7eb}
-.overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);z-index:150;display:none}.overlay.active{display:block}
-.form-group{margin-bottom:12px}.form-group label{display:block;font-size:.85rem;font-weight:bold;margin-bottom:5px;color:var(--navy-blue)}.form-control{width:100%;padding:10px;border:1px solid #d1d5db;border-radius:6px;font-size:.9rem;outline:none;background:var(--white)}.form-control:focus{border-color:var(--royal-blue);box-shadow:0 0 0 2px rgba(30,58,138,.1)}textarea.form-control{resize:vertical;min-height:80px}
-.welcome-text h2{margin-bottom:5px}.welcome-text p{color:var(--gold);font-weight:bold;font-style:italic;font-size:.9rem;margin-bottom:15px}.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;text-align:center;margin-top:10px}.stat-item{background:#f9fafb;padding:10px;border-radius:8px;border:1px solid #e5e7eb}.stat-val{font-size:1.2rem;font-weight:bold;color:var(--navy-blue)}.stat-label{font-size:.7rem;color:var(--text-light)}.services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}.service-card{background:var(--white);border:1px solid #e5e7eb;border-radius:8px;padding:12px 5px;text-align:center;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;transition:.2s;box-shadow:0 1px 2px rgba(0,0,0,.05)}.service-card:active{transform:scale(.95)}.service-icon{font-size:1.5rem}.service-name{font-size:.75rem;font-weight:bold;color:var(--navy-blue);line-height:1.2}
-.chat-container{display:flex;flex-direction:column;height:calc(100vh - 180px)}.chat-messages{flex:1;overflow-y:auto;padding:10px 0;display:flex;flex-direction:column;gap:10px}.chat-bubble{max-width:85%;padding:10px 15px;border-radius:15px;font-size:.9rem;line-height:1.4}.chat-bubble.user{background:var(--royal-blue);color:var(--white);align-self:flex-end;border-bottom-right-radius:2px}.chat-bubble.ai{background:var(--white);border:1px solid #e5e7eb;color:var(--text-dark);align-self:flex-start;border-bottom-left-radius:2px}.chat-suggestions{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px}.suggestion-btn{background:var(--white);border:1px solid #d1d5db;border-radius:20px;padding:6px 12px;font-size:.8rem;cursor:pointer;color:var(--text-dark)}.chat-input-area{display:flex;gap:10px;background:var(--bg-light);padding:10px 0;position:sticky;bottom:0}.chat-input-area input{flex:1;margin-bottom:0;border-radius:20px;padding:12px 15px}.chat-input-area button{border-radius:50%;width:45px;height:45px;display:flex;justify-content:center;align-items:center;padding:0}
-.generated-idea{background:#f0fdf4;border:1px solid #bbf7d0;border-left:4px solid var(--success);padding:15px;border-radius:8px;margin-top:15px}.generated-idea h4{color:var(--success);margin-bottom:5px}
-.slider-group{margin-bottom:15px}.slider-header{display:flex;justify-content:space-between;font-size:.85rem;font-weight:bold;margin-bottom:5px}.slider-group input[type="range"]{width:100%;accent-color:var(--royal-blue)}.result-box{background:var(--gold);color:var(--navy-blue);padding:15px;border-radius:8px;text-align:center;font-size:1.5rem;font-weight:bold;margin-top:15px}
-.payment-method{display:flex;justify-content:space-between;align-items:center;border:1px solid #e5e7eb;padding:10px;border-radius:8px;margin-bottom:10px}.pm-info h4{font-size:.9rem}.pm-info p{font-size:1.1rem;font-weight:bold;letter-spacing:1px}.pm-info small{color:var(--text-light);font-size:.75rem}.status-badge{background:#fef3c7;color:#b45309;padding:4px 8px;border-radius:12px;font-size:.7rem;font-weight:bold;border:1px solid #fcd34d;text-transform:uppercase}.status-badge.premium{background:#d1fae5;color:#065f46;border-color:#34d399}
-.admin-tx-card{border:1px solid #e5e7eb;padding:10px;border-radius:8px;margin-bottom:10px;background:#f9fafb}.admin-tx-card.pending{border-left:4px solid var(--gold)}
-.hub-card{background:#1e293b;border:1px solid #334155;border-radius:8px;padding:15px;margin-bottom:15px;color:#e2e8f0}.hub-title{color:var(--gold);margin-bottom:10px;font-size:1.1rem}.hub-text{font-size:.9rem;line-height:1.5;color:#cbd5e1}
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--white);display:flex;justify-content:space-around;padding:10px 0;border-top:1px solid #e5e7eb;z-index:100}.nav-item{display:flex;flex-direction:column;align-items:center;gap:4px;color:var(--text-light);font-size:.7rem;cursor:pointer}.nav-item.active{color:var(--royal-blue);font-weight:bold}.nav-item i{font-size:1.2rem}
-.profile-pic{width:80px;height:80px;border-radius:50%;object-fit:cover;margin:0 auto 15px;display:block;border:3px solid var(--gold)}
-.progress-container{width:100%;background-color:#e5e7eb;border-radius:20px;margin-top:10px;height:15px;overflow:hidden}.progress-bar{height:100%;background-color:var(--success);width:0%;transition:width 0.3s ease}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#002366">
+    <title>KITWE GLOBALMIND HUB</title>
+    <style>
+        :root {
+            --navy: #002366;
+            --gold: #FFD700;
+            --white: #FFFFFF;
+            --bg-light: #F5F7FA;
+            --text-dark: #1E293B;
+            --text-light: #64748B;
+        }
 
-/* SEHEMU YA ZOOM NA TICKER */
-.zoom-container { width: fit-content; padding: 8px 25px; background: var(--white); border-radius: 50px; display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin: 15px auto 10px auto; border: 1px solid #e5e7eb; }
-.zoom-text { font-size: 1.5rem; font-weight: 900; letter-spacing: 1px; animation: zoomEffect 3s ease-in-out infinite; white-space: nowrap; }
-@keyframes zoomEffect { 0% { transform: scale(0.85); color: var(--royal-blue); text-shadow: 0 0 5px rgba(30,58,138,0.3); } 50% { transform: scale(1.1); color: var(--gold); text-shadow: 0 0 20px rgba(245,158,11,0.8); } 100% { transform: scale(0.85); color: var(--royal-blue); text-shadow: 0 0 5px rgba(30,58,138,0.3); } }
-.ticker-container { width: 90%; max-width: 400px; margin: 0 auto 15px auto; background: var(--navy-blue); border-radius: 50px; padding: 10px 15px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.2); border: 1px solid var(--gold); display: flex; align-items: center; }
-.ticker-content { display: flex; white-space: nowrap; animation: tickerMove 40s linear infinite; }
-.ticker-item { color: var(--white); font-size: 0.85rem; font-weight: bold; padding-right: 50px; }
-.ticker-item span { color: var(--gold); text-shadow: 0 0 8px rgba(245,158,11,0.5); }
-@keyframes tickerMove { 0% { transform: translateX(20%); } 100% { transform: translateX(-100%); } }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-light); color: var(--text-dark); overflow-x: hidden; min-height: 100vh; }
 
-/* ADMIN LIVE USERS */
-.user-status-item { display: flex; justify-content: space-between; align-items: center; padding: 8px; border-bottom: 1px solid #e5e7eb; font-size: 0.85rem; }
-.dot-online { width: 10px; height: 10px; background-color: var(--success); border-radius: 50%; display: inline-block; margin-right: 5px; }
-.dot-offline { width: 10px; height: 10px; background-color: var(--text-light); border-radius: 50%; display: inline-block; margin-right: 5px; }
-</style>
+        /* Main Hub Container */
+        #hub-container { max-width: 600px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column; padding-bottom: 40px; }
+
+        /* Header */
+        header { background: var(--navy); color: white; padding: 20px; text-align: center; border-bottom: 3px solid var(--gold); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .brand h1 { font-size: 1.3rem; color: var(--white); letter-spacing: 1px; }
+        .brand h1 span { color: var(--gold); }
+        .brand p { font-size: 0.75rem; color: #94a3b8; margin-top: 4px; font-style: italic; }
+
+        /* Welcome Section */
+        .hub-welcome { padding: 20px; text-align: center; }
+        .hub-welcome h2 { font-size: 1.2rem; color: var(--navy); margin-bottom: 5px; }
+        .hub-welcome p { font-size: 0.85rem; color: var(--text-light); }
+
+        /* Cards Grid (4 Modules) */
+        .modules-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 0 20px; margin-bottom: 20px; }
+        .module-card {
+            background: var(--white); padding: 25px 15px; border-radius: 16px; text-align: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.06); cursor: pointer; border: 2px solid transparent;
+            transition: all 0.25s ease; position: relative; overflow: hidden;
+        }
+        .module-card:active { transform: scale(0.96); }
+        .module-card:hover { border-color: var(--gold); box-shadow: 0 6px 18px rgba(0,35,102,0.12); }
+        .module-icon { font-size: 2.5rem; margin-bottom: 10px; display: block; }
+        .module-name { font-size: 0.95rem; font-weight: bold; color: var(--navy); }
+        .module-desc { font-size: 0.7rem; color: var(--text-light); margin-top: 4px; }
+
+        /* Footer Tagline / Disclaimer */
+        .hub-footer { text-align: center; font-size: 0.7rem; color: #94a3b8; margin-top: auto; padding: 20px; }
+
+        /* Module Viewer (Fullscreen iframe & Back button container) */
+        #module-viewer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+            background: var(--white); z-index: 9999; display: none; flex-direction: column;
+        }
+        
+        /* Floating Back to Hub Button */
+        .back-hub-bar {
+            background: var(--navy); color: white; padding: 10px 15px; display: flex;
+            align-items: center; justify-content: space-between; border-bottom: 2px solid var(--gold);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2); z-index: 10000; flex-shrink: 0;
+        }
+        .back-btn {
+            background: var(--gold); color: var(--navy); border: none; padding: 6px 14px;
+            border-radius: 6px; font-weight: bold; font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 5px;
+        }
+        .back-title { font-size: 0.85rem; font-weight: bold; color: var(--white); }
+
+        /* Iframe Frame */
+        #module-frame { width: 100%; flex: 1; border: none; background: #fff; }
+    </style>
 </head>
 <body>
-<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
-<div class="sidebar" id="sidebar">
-<div class="sidebar-header"><div class="sidebar-user"><div class="avatar" id="side-avatar">Y</div><div class="sidebar-user-info"><h4 id="side-name">Yahaya Boniphace Andrea</h4><p id="side-email">yahayakitwe@gmail.com</p></div></div></div>
-<ul class="sidebar-menu" id="sidebar-menu"></ul>
-<div class="sidebar-footer"><button class="btn btn-outline btn-block" onclick="logoutUser()">Toka (Logout)</button><p class="text-center text-sm" style="margin-top:15px;color:#9ca3af;">KITWE GlobalMind · v1.0.1</p></div>
-</div>
-<header><div class="header-left"><div class="menu-icon" onclick="toggleSidebar()">☰</div><div class="logo"><div style="background:var(--gold);color:var(--navy-blue);width:28px;height:28px;border-radius:50%;display:flex;justify-content:center;align-items:center;font-weight:bold;">K</div>KITWE IDEALAB <span>AI</span></div></div><div class="bell-icon" onclick="navigate('notifications')">🔔</div></header>
-<main>
 
-<!-- 1. DASHBOARD -->
-<section id="page-dashboard" class="page active">
-<div class="welcome-text"><h2>Karibu, <span id="dash-name">YAHAYA</span> 👋</h2><p>Think. Create. Innovate.</p></div>
-<div class="zoom-container"><div class="zoom-text">KITWE GlobalMind</div></div>
-<div class="ticker-container"><div class="ticker-content"><div class="ticker-item">🚀 Karibu <span>KITWE GlobalMind</span>! Pata maarifa ya biashara, teknolojia, na ubunifu. </div><div class="ticker-item">💡 Tengeneza mawazo, tathmini, na uanze biashara yako leo! </div><div class="ticker-item">🏆 Jiunge nasi kwenye changamoto za ubunifu na ujifunze zaidi. </div></div></div>
-<div class="card" id="dash-sub-banner"><div class="flex-between" style="margin-bottom:10px;"><h4 style="font-size:.9rem;">Usajili wako</h4><span class="status-badge" id="dash-status-badge">INASUBIRI • PENDING</span></div><p class="text-sm" id="dash-status-text">Malipo yako yanasubiri uthibitisho wa admin. Utafunguliwa Premium baada ya kuthibitishwa.</p><button class="btn btn-gold" style="margin-top:10px;font-size:.8rem;" onclick="navigate('payments')">Pata Premium</button></div>
-<div class="card"><h4 style="font-size:.9rem;margin-bottom:10px;">Matumizi ya AI leo</h4><div class="stats-grid"><div class="stat-item"><div class="stat-val" id="stat-chats">0/5</div><div class="stat-label">Mazungumzo</div></div><div class="stat-item"><div class="stat-val" id="stat-ideas">0/2</div><div class="stat-label">Mawazo</div></div><div class="stat-item"><div class="stat-val">0/1</div><div class="stat-label">Mpango wa AI</div></div></div></div>
-<h4 style="font-size:.9rem;margin-bottom:10px;margin-top:15px;">Huduma</h4>
-<div class="services-grid" id="services-grid"></div>
-<div class="card" style="margin-top:15px;"><div class="flex-between" style="margin-bottom:10px;"><h4 style="font-size:.9rem;">Arifa za hivi karibuni</h4><a href="#" class="text-sm" onclick="navigate('notifications')">Zote →</a></div><p class="text-sm">Karibu KITWE IDEALAB AI</p><p class="text-sm" style="font-size:.7rem;color:#9ca3af;margin-top:5px;">Leo</p></div>
-</section>
-
-<!-- 2. AI CHAT -->
-<section id="page-chat" class="page">
-<div class="flex-between" style="margin-bottom:10px;"><h3>Uliza KITWE AI</h3><div><button class="btn btn-outline" style="padding:5px 10px;font-size:.8rem;" onclick="loadChatHistory()">Historia</button><button class="btn btn-outline" style="padding:5px 10px;font-size:.8rem;margin-left:5px;" onclick="clearChat()">Mpya</button></div></div>
-<p class="text-sm" style="margin-bottom:15px;">Kiswahili, English au Swanglish. Leo: <span id="chat-limit">0/5</span> · Historia inahifadhiwa.</p>
-<div class="chat-container">
-<div class="chat-messages" id="chat-messages"><div class="chat-bubble ai">Habari! Mimi ni KITWE AI. Nikusaidie nini leo? Unaweza kuuliza kuhusu biashara, sayansi, au teknolojia.</div></div>
-<div class="chat-suggestions"><button class="suggestion-btn" onclick="sendChatSuggestion('Mambo!')">Mambo!</button><button class="suggestion-btn" onclick="sendChatSuggestion('Nina mtaji wa TSh 20,000. Nipe wazo la biashara.')">Nina mtaji wa TSh 20,000. Nipe wazo la biashara.</button><button class="suggestion-btn" onclick="sendChatSuggestion('Nieleze photosynthesis kwa Kiswahili rahisi.')">Nieleze photosynthesis kwa Kiswahili rahisi.</button></div>
-<div class="chat-input-area"><input type="text" id="chat-input" class="form-control" placeholder="Andika ujumbe..." onkeypress="handleChatEnter(event)"><button class="btn btn-primary" onclick="sendChatMessage()">➤</button></div>
-</div>
-</section>
-
-<!-- 3. IDEA GENERATOR -->
-<section id="page-generator" class="page">
-<h3>Jenereta ya Mawazo ya Biashara 💡</h3><p class="text-sm" style="margin-bottom:15px;">AI inapendekeza mawazo kulingana na mtaji na ujuzi wako. Gharama ni makadirio. Leo: <span id="gen-limit">0/2</span></p>
-<div class="card">
-<div class="form-group"><label>Tatizo gani unataka kutatua?</label><input type="text" id="gen-problem" class="form-control" placeholder="mf. cardbaord, wanafunzi, kilimo"></div>
-<div class="form-group"><label>Mtaji wako</label><input type="number" id="gen-capital" class="form-control" placeholder="mf. 20000"></div>
-<div class="form-group"><label>Eneo</label><input type="text" id="gen-area" class="form-control" placeholder="mf. Dar es Salaam"></div>
-<div class="form-group"><label>Ujuzi ulionao</label><input type="text" id="gen-skill" class="form-control" placeholder="mf. kuchora, kushona"></div>
-<button class="btn btn-primary btn-block" onclick="generateIdea()">Tengeneza mawazo</button>
-</div>
-<div id="gen-result-container" class="hidden"><h4 style="margin-bottom:10px;">Mawazo yaliyochaguliwa na KITWE</h4><div class="generated-idea" id="gen-result-content"></div></div>
-</section>
-
-<!-- 4. IDEA EVALUATION -->
-<section id="page-evaluation" class="page">
-<h3>Tathmini ya Wazo 📊</h3><p class="text-sm" style="margin-bottom:15px;">Jibu kwa kweli (1 = dhaifu, 5 = nzuri sana). Alama inahesabiwa kwa uzito wa kila kigezo.</p>
-<div class="card">
-<div class="form-group"><label>Jina la wazo</label><input type="text" id="eval-name" class="form-control" placeholder="Andika jina la wazo lako"></div>
-<div class="slider-group"><div class="slider-header"><span>Tatizo halisi (10%)</span><span id="val-tatizo">3</span></div><input type="range" min="1" max="5" value="3" id="eval-tatizo" oninput="document.getElementById('val-tatizo').innerText=this.value"></div>
-<div class="slider-group"><div class="slider-header"><span>Wateja tayari kulipa (20%)</span><span id="val-wateja">3</span></div><input type="range" min="1" max="5" value="3" id="eval-wateja" oninput="document.getElementById('val-wateja').innerText=this.value"></div>
-<div class="slider-group"><div class="slider-header"><span>Gharama ndogo (15%)</span><span id="val-gharama">3</span></div><input type="range" min="1" max="5" value="3" id="eval-gharama" oninput="document.getElementById('val-gharama').innerText=this.value"></div>
-<div class="slider-group"><div class="slider-header"><span>Ujuzi ulionao (15%)</span><span id="val-ujuzi">3</span></div><input type="range" min="1" max="5" value="3" id="eval-ujuzi" oninput="document.getElementById('val-ujuzi').innerText=this.value"></div>
-<div class="slider-group"><div class="slider-header"><span>Ushindani mdogo (15%)</span><span id="val-ushindani">3</span></div><input type="range" min="1" max="5" value="3" id="eval-ushindani" oninput="document.getElementById('val-ushindani').innerText=this.value"></div>
-<div class="slider-group"><div class="slider-header"><span>Vifaa vinapatikana (10%)</span><span id="val-vifaa">3</span></div><input type="range" min="1" max="5" value="3" id="eval-vifaa" oninput="document.getElementById('val-vifaa').innerText=this.value"></div>
-<div class="slider-group"><div class="slider-header"><span>Uwezo wa kukua (5%)</span><span id="val-ukua">3</span></div><input type="range" min="1" max="5" value="3" id="eval-ukua" oninput="document.getElementById('val-ukua').innerText=this.value"></div>
-<div class="slider-group"><div class="slider-header"><span>Faida (10%)</span><span id="val-faida">3</span></div><input type="range" min="1" max="5" value="3" id="eval-faida" oninput="document.getElementById('val-faida').innerText=this.value"></div>
-<button class="btn btn-primary btn-block" onclick="calculateEvaluation()">Hesabu Tathmini</button>
-</div>
-<div id="eval-result-box" class="hidden"><div class="result-box" id="eval-score">0/100</div><p class="text-center text-sm" style="margin-top:10px;font-weight:bold;" id="eval-message"></p></div>
-</section>
-
-<!-- 5. SAVED IDEAS -->
-<section id="page-saved" class="page">
-<h3>Mawazo Yaliyohifadhiwa 📁</h3><p class="text-sm" style="margin-bottom:15px;">Mpango wa bure: hadi vitu 8. Teua kwa kisanduku kisha boneya "Linganisha".</p>
-<div class="card" id="saved-list-container"></div>
-<button class="btn btn-gold btn-block" onclick="compareIdeas()">Linganisha Zilizochaguliwa</button>
-<div id="compare-result" class="hidden" style="margin-top:15px;padding:15px;background:#f0fdf4;border-radius:8px;"></div>
-</section>
-
-<!-- 6. FAVORITES -->
-<section id="page-favorites" class="page">
-<h3>Vipendwa ⭐</h3><p class="text-sm" style="margin-bottom:15px;">Mawazo uliyoyapa nyota (Star).</p>
-<div class="card" id="fav-list-container"><p class="text-sm">Hakuna vipendwa bado. Bonyeza ☆ kwenye wazo lolote.</p></div>
-</section>
-
-<!-- 7. COMPARE IDEAS -->
-<section id="page-compare" class="page">
-<h3>Linganisha Mawazo ⚖️</h3>
-<div class="card text-center" id="compare-premium-box"><p style="font-size:2rem;margin-bottom:10px;">🔒</p><p style="font-weight:bold;margin-bottom:5px;">Kulinganisha mawazo ni ya Premium</p><p class="text-sm" style="margin-bottom:15px;">Lipia Premium kufungua huduma hii.</p><button class="btn btn-gold" onclick="navigate('payments')">Pata Premium</button></div>
-<div id="actual-compare-area" class="hidden"><p class="text-sm">Nenda kwenye "Mawazo Yaliyohifadhiwa" kuchagua na kulinganisha.</p></div>
-</section>
-
-<!-- 8. DIY LAB -->
-<section id="page-diy" class="page">
-<h3>KITWE DIY LAB 🛠️</h3><p class="text-sm" style="margin-bottom:15px;">Chagua mradi ili kuona vifaa na maelekezo.</p>
-<div class="card" id="diy-projects">
-<select class="form-control" onchange="showDiy(this.value)">
-<option value="">-- Chagua Mradi --</option>
-<option value="taa">Taa ya Cardboard (TSh 5,000)</option>
-<option value="maji">Kichujio cha Maji (TSh 3,000)</option>
-<option value="sabuni">Sabuni ya Maji (TSh 2,500)</option>
-</select>
-<div id="diy-details" style="margin-top:15px;display:none;padding:15px;background:#f9fafb;border-radius:8px;"></div>
-</div>
-</section>
-
-<!-- 9. BUSINESS CALCULATOR -->
-<section id="page-calculator" class="page">
-<h3>Kikokotoo cha Biashara 🧮</h3>
-<div class="card">
-<div class="form-group"><label>Gharama ya Bidhaa</label><input type="number" id="calc-cost" class="form-control" placeholder="mf. 5000"></div>
-<div class="form-group"><label>Bei ya Kuuza</label><input type="number" id="calc-price" class="form-control" placeholder="mf. 8000"></div>
-<div class="form-group"><label>Idadi ya Bidhaa</label><input type="number" id="calc-qty" class="form-control" placeholder="mf. 10" value="1"></div>
-<button class="btn btn-primary btn-block" onclick="calculateBiz()">Hesabu Faida</button>
-</div>
-<div id="calc-result-box" class="hidden result-box" style="background:var(--success);color:white;"><p style="font-size:1rem;">Faida: TSh <span id="calc-profit">0</span></p><p style="font-size:.9rem;margin-top:5px;">Margin: <span id="calc-margin">0</span>%</p></div>
-</section>
-
-<!-- 10. CHALLENGES -->
-<section id="page-challenges" class="page">
-<h3>Changamoto za Ubunifu 🏆</h3>
-<div class="card"><p style="font-weight:bold;margin-bottom:5px;">Changamoto ya Wiki: Kupunguza Uchafu wa Plastiki</p><p class="text-sm" style="margin-bottom:15px;">Wasilisha wazo lako la jinsi ya kutumia plastic chakavu.</p><div class="form-group"><label>Wazo lako hapa</label><textarea id="chal-input" class="form-control" placeholder="Andika suluhisho lako..."></textarea></div><button class="btn btn-gold btn-block" onclick="submitChallenge()">Wasilisha</button></div>
-<div id="chal-history" class="mt-2"></div>
-</section>
-
-<!-- 11. PROTOTYPE PLANNER -->
-<section id="page-planner" class="page">
-<h3>Mpangi wa Mfano 📐</h3>
-<div class="card">
-<div class="form-group"><label>Jina la Bidhaa/Mfano</label><input type="text" id="plan-name" class="form-control" placeholder="mf. Kifaa cha kusafisha maji"></div>
-<div class="form-group"><label>Vifaa Vinavyohitajika</label><textarea id="plan-mats" class="form-control" placeholder="mf. Chupa, mchanga, pamba"></textarea></div>
-<button class="btn btn-primary btn-block" onclick="savePlan()">Hifadhi Mpango</button>
-</div>
-<div id="plan-list" class="mt-2"></div>
-</section>
-
-<!-- 12. PROGRESS TRACKER -->
-<section id="page-tracker" class="page">
-<h3>Maendeleo ya Mfano 📈</h3>
-<div class="card">
-<p class="text-sm" style="margin-bottom:10px;">Fuatilia hatua za mradi wako.</p>
-<div id="tracker-list"></div>
-<div class="progress-container"><div class="progress-bar" id="progress-bar"></div></div>
-<p class="text-center text-sm" style="margin-top:10px;" id="progress-text">0% Imekamilika</p>
-</div>
-</section>
-
-<!-- 13. BUSINESS PLAN -->
-<section id="page-businessplan" class="page">
-<h3>Mpango wa Biashara 📝</h3>
-<div class="card">
-<p class="text-sm" style="margin-bottom:15px;">Tengeneza mpango wako wa biashara hatua kwa hatua.</p>
-<div class="form-group"><label>Dhumuni la Biashara</label><textarea id="biz-purpose" class="form-control" placeholder="Tunataka kutatua tatizo gani?"></textarea></div>
-<div class="form-group"><label>Lengo la Muda Mfupi</label><input type="text" id="biz-goal" class="form-control" placeholder="mf. Kupata wateja 50 kwa mwezi"></div>
-<button class="btn btn-primary btn-block" onclick="saveBizPlan()">Hifadhi Mpango</button>
-<div id="biz-plan-result" class="mt-2"></div>
-</div>
-</section>
-
-<!-- 14. LEARNING HUB -->
-<section id="page-learning" class="page">
-<div class="hub-card">
-<h3 class="hub-title" style="text-align:center;">AI LEARNING HUB</h3>
-<p style="font-weight:bold;color:var(--gold);margin-top:15px;">Somo la 1: Nini maana ya Artificial Intelligence (AI)?</p>
-<p class="text-sm" style="margin-bottom:15px;">Karibu kwenye somo lako la kwanza kabisa!</p>
-<div style="background:#0f172a;border:1px solid #334155;padding:15px;border-radius:8px;margin-bottom:15px;">
-<p style="font-weight:bold;color:var(--gold);margin-bottom:5px;">🤖 AI ni Nini?</p>
-<p style="font-size:.9rem;line-height:1.5;color:#cbd5e1;">Artificial Intelligence (Akili Bandia) ni uwezo wa kompyuta kufikiri, kujifunza, na kufanya maamuzi kama binadamu.</p>
-</div>
-<button class="btn btn-gold" onclick="navigate('dashboard')">← Rudi Ukurasa Mkuu</button>
-</div>
-
-<!-- SEHEMU YA KUANDIKA NOTES -->
-<div class="card">
-<h4 style="font-size:.9rem;margin-bottom:10px;">Andika Notes Zako</h4>
-<div class="form-group">
-<textarea id="learning-note" class="form-control" placeholder="Andika hapa..."></textarea>
-</div>
-<button class="btn btn-primary btn-block" onclick="saveLearningNote()">Hifadhi Note</button>
-<div id="learning-notes-list" style="margin-top:15px;"></div>
-</div>
-</section>
-
-<!-- 15. NOTIFICATIONS -->
-<section id="page-notifications" class="page">
-<h3>Arifa 🔔</h3>
-<div class="card">
-<h4 style="font-size:.9rem;margin-bottom:5px;">Karibu KITWE IDEALAB AI</h4>
-<p class="text-sm">Anza na Mazungumzo ya AI au Jenereta ya Mawazo.</p>
-<p class="text-sm" style="font-size:.7rem;color:#9ca3af;margin-top:5px;">Leo</p>
-</div>
-</section>
-
-<!-- 16. PROFILE -->
-<section id="page-profile" class="page">
-<h3>Wasifu Wangu 👤</h3>
-<div class="card text-center" style="padding:30px 15px;">
-<img src="" id="profile-img" class="profile-pic hidden" alt="Profile">
-<div class="avatar" id="profile-avatar" style="width:80px;height:80px;font-size:2rem;margin:0 auto 15px;">Y</div>
-<h3 id="profile-display-name">Yahaya Boniphace Andrea</h3>
-<p class="text-sm" id="profile-display-email">yahayakitwe@gmail.com</p>
-<p class="text-sm" style="margin-top:10px;color:var(--gold);font-weight:bold;" id="profile-status">Free Member</p>
-</div>
-<div class="card">
-<div class="form-group">
-<label>Badilisha Jina</label>
-<input type="text" id="edit-name-input" class="form-control" placeholder="Jina lako kamili">
-</div>
-<div class="form-group">
-<label>Weka Picha (Profile Picture)</label>
-<input type="file" id="profile-pic-input" class="form-control" accept="image/*" onchange="uploadProfilePic(event)">
-</div>
-<button class="btn btn-primary btn-block" onclick="updateProfile()">Hifadhi Taarifa</button>
-</div>
-</section>
-
-<!-- 17. PAYMENTS -->
-<section id="page-payments" class="page">
-<h3>Usajili na Malipo 💳</h3>
-<div class="card" style="background:var(--royal-blue);color:white;text-align:center;">
-<p style="color:var(--gold);font-weight:bold;font-size:.85rem;">SPECIAL LAUNCH OFFER</p>
-<p style="font-size:.9rem;margin:5px 0;">Bei ya kawaida: <strike>TSh 900</strike></p>
-<p style="font-size:2rem;font-weight:bold;color:var(--gold);">TSh 600</p>
-<p style="font-size:.85rem;">kwa miezi 3</p>
-</div>
-<div class="card">
-<h4 style="font-size:.9rem;margin-bottom:10px;">1. Lipa kiasi kamili TSh 600 kwa:</h4>
-<div class="payment-method">
-<div class="pm-info"><h4>Vodacom M-Pesa</h4><p>0796133662</p><small>Jina: Yahaya Boniphace Andrea</small></div>
-<button class="btn btn-outline" style="padding:5px 10px;font-size:.8rem;" onclick="copyNumber('0796133662')">Nakili</button>
-</div>
-<div class="payment-method">
-<div class="pm-info"><h4>Airtel Money</h4><p>0683530583</p><small>Jina: Amina Adam Kitwe</small></div>
-<button class="btn btn-outline" style="padding:5px 10px;font-size:.8rem;" onclick="copyNumber('0683530583')">Nakili</button>
-</div>
-<div class="payment-method">
-<div class="pm-info"><h4>Halotel Money</h4><p>0610333788</p><small>Jina: Yahaya Boniphace Andrea</small></div>
-<button class="btn btn-outline" style="padding:5px 10px;font-size:.8rem;" onclick="copyNumber('0610333788')">Nakili</button>
-</div>
-<p class="text-sm" style="margin-top:10px;color:var(--danger);font-weight:bold;">USITUME PIN yako kwa mtu yeyote!</p>
-</div>
-<div class="card">
-<h4 style="font-size:.9rem;margin-bottom:10px;">2. Wasilisha namba ya muamala</h4>
-<div class="form-group"><label>Mtandao uliolipia</label><select id="pay-network" class="form-control"><option>Vodacom M-Pesa</option><option>Airtel Money</option><option>Halotel Money</option></select></div>
-<div class="form-group"><label>Namba ya muamala (Transaction ID)</label><input type="text" id="pay-txid" class="form-control" placeholder="Herufi/Namba 6-24"></div>
-<div class="form-group"><label>Namba ya simu uliyolipia (hiari)</label><input type="text" id="pay-phone" class="form-control" placeholder="mf. 0712345678"></div>
-<button class="btn btn-gold btn-block" onclick="submitPayment()">Wasilisha</button>
-</div>
-<div class="card">
-<div class="flex-between" style="margin-bottom:10px;">
-<h4 style="font-size:.9rem;">Historia ya malipo</h4>
-<button class="btn btn-danger" style="padding:5px 10px;font-size:0.75rem;" onclick="clearMyPayments()">Futa Historia</button>
-</div>
-<div id="pay-history-list"><p class="text-sm">Bado hakuna malipo yaliyowasilishwa.</p></div>
-</div>
-</section>
-
-<!-- 18. ADMIN PANEL -->
-<section id="page-admin" class="page">
-<h3>Admin Panel 🔒</h3>
-<div id="admin-login-box" class="card">
-<p class="text-sm" style="margin-bottom:15px;">Ingiza password kuona malipo ya wateja na kuidhinisha Premium.</p>
-<div class="form-group">
-<label>Password</label>
-<div style="display:flex;gap:10px;">
-<input type="password" id="admin-pass" class="form-control" placeholder="********">
-<button class="btn btn-outline" onclick="togglePass()" style="padding:0 15px;">👁️</button>
-</div>
-</div>
-<button class="btn btn-primary btn-block" onclick="loginAdmin()">Ingia</button>
-</div>
-<div id="admin-panel-box" class="hidden">
-<div class="flex-between" style="margin-bottom:10px;"><h4>Malipo na Watumiaji</h4><button class="btn btn-danger" style="padding:5px 10px;font-size:.8rem;" onclick="logoutAdmin()">Toka</button></div>
-
-<!-- ADMIN LIVE USERS SECTION -->
-<div class="card" style="padding:10px;background:#f8fafc;">
-<h4 style="font-size:.85rem;margin-bottom:10px;color:var(--royal-blue);">Watumiaji Waliopo (Live Users)</h4>
-<div class="user-status-item">
-<span><span class="dot-online"></span> Wewe (Admin)</span>
-<span style="color:var(--success);font-weight:bold;">Mtandaoni</span>
-</div>
-<div class="user-status-item">
-<span><span class="dot-online"></span> Mteja #1 (Mfano)</span>
-<span style="color:var(--success);font-weight:bold;">Mtandaoni</span>
-</div>
-<div class="user-status-item" style="border-bottom:none;">
-<span><span class="dot-offline"></span> Mteja #2 (Mfano)</span>
-<span style="color:var(--text-light);">Ametoka</span>
-</div>
-</div>
-
-<div id="admin-tx-list" style="margin-top:15px;"><p class="text-sm">Hakuna malipo yaliyowasilishwa bado.</p></div>
-</div>
-</section>
-
-</main>
-
-<!-- BOTTOM NAVIGATION -->
-<div class="bottom-nav">
-<div class="nav-item active" id="bnav-dashboard" onclick="navigate('dashboard')"><span>🏠</span>Nyumbani</div>
-<div class="nav-item" id="bnav-chat" onclick="navigate('chat')"><span>🤖</span>AI</div>
-<div class="nav-item" id="bnav-generator" onclick="navigate('generator')"><span>💡</span>Mawazo</div>
-<div class="nav-item" id="bnav-diy" onclick="navigate('diy')"><span>🛠️</span>DIY</div>
-<div class="nav-item" id="bnav-more" onclick="toggleSidebar()"><span>☰</span>Zaidi</div>
-</div>
-
-<script>
-// ================= DATA & STATE MANAGEMENT =================
-const menuItems = [
-{id:'dashboard', icon:'🏠', name:'Nyumbani', en:'Dashboard'},
-{id:'chat', icon:'🤖', name:'Uliza KITWE AI', en:'KITWE AI Chat'},
-{id:'generator', icon:'💡', name:'Jenereta ya Mawazo', en:'Idea Generator'},
-{id:'evaluation', icon:'📊', name:'Tathmini ya Wazo', en:'Idea Evaluation'},
-{id:'saved', icon:'📁', name:'Mawazo Yaliyohifadhiwa', en:'Saved Ideas'},
-{id:'favorites', icon:'⭐', name:'Vipendwa', en:'Favorites'},
-{id:'compare', icon:'⚖️', name:'Linganisha Mawazo', en:'Compare Ideas'},
-{id:'diy', icon:'🛠️', name:'KITWE DIY LAB', en:'DIY Lab'},
-{id:'calculator', icon:'🧮', name:'Kikokotoo cha Biashara', en:'Business Calculator'},
-{id:'challenges', icon:'🏆', name:'Changamoto za Ubunifu', en:'Innovation Challenges'},
-{id:'planner', icon:'📐', name:'Mpangi wa Mfano', en:'Prototype Planner'},
-{id:'tracker', icon:'📈', name:'Maendeleo ya Mfano', en:'Progress Tracker'},
-{id:'businessplan', icon:'📝', name:'Mpango wa Biashara', en:'Business Plan'},
-{id:'learning', icon:'📚', name:'Masomo', en:'Learning Resources'},
-{id:'notifications', icon:'🔔', name:'Arifa', en:'Notifications'},
-{id:'profile', icon:'👤', name:'Wasifu Wangu', en:'User Profile'},
-{id:'payments', icon:'💳', name:'Usajili na Malipo', en:'Subscription & Payments'},
-{id:'admin', icon:'🔒', name:'Admin Panel', en:'Admin', color:'var(--danger)'}
-];
-
-// State (Premium inaisha baada ya siku 90)
-let state = {
-isPremium: localStorage.getItem('kitwe_premium') === 'true',
-premiumExpiry: localStorage.getItem('kitwe_premium_expiry') ? parseInt(localStorage.getItem('kitwe_premium_expiry')) : null,
-ideasCount: parseInt(localStorage.getItem('kitwe_ideas_count') || '0'),
-chatsCount: parseInt(localStorage.getItem('kitwe_chats_count') || '0'),
-payments: JSON.parse(localStorage.getItem('kitwe_payments') || '[]'),
-ideas: JSON.parse(localStorage.getItem('kitwe_ideas') || '[]'),
-favs: JSON.parse(localStorage.getItem('kitwe_favs') || '[]'),
-challenges: JSON.parse(localStorage.getItem('kitwe_chal') || '[]'),
-plans: JSON.parse(localStorage.getItem('kitwe_plans') || '[]'),
-notes: JSON.parse(localStorage.getItem('kitwe_notes') || '[]'),
-userName: localStorage.getItem('kitwe_user_name') || 'Yahaya Boniphace Andrea',
-userPic: localStorage.getItem('kitwe_user_pic') || null
-};
-
-// Angalia kama Premium imeisha muda wake
-function checkPremiumExpiry() {
-    if (state.isPremium && state.premiumExpiry) {
-        if (Date.now() > state.premiumExpiry) {
-            state.isPremium = false;
-            state.premiumExpiry = null;
-            localStorage.setItem('kitwe_premium', 'false');
-            localStorage.removeItem('kitwe_premium_expiry');
-            updateDashboardState();
-        }
-    }
-}
-
-// ================= INITIALIZATION =================
-document.addEventListener('DOMContentLoaded', () => {
-    checkPremiumExpiry();
-    renderSidebar();
-    renderServices();
-    updateDashboardState();
-    updateStats();
-    renderPaymentsHistory();
-    renderAdminList();
-    renderChal();
-    renderPlansList();
-    renderSaved();
-    renderFavs();
-    loadProfileData();
-    renderLearningNotes();
-    initTracker();
-    loadBizPlan();
-
-    document.getElementById('overlay').addEventListener('click', () => {
-        if (document.getElementById('sidebar').classList.contains('open')) {
-            toggleSidebar();
-        }
-    });
-});
-
-function renderSidebar() {
-const ul = document.getElementById('sidebar-menu');
-ul.innerHTML = menuItems.map(item => `
-<li onclick="navigate('${item.id}')" id="nav-${item.id}" ${item.color ? `style="color:${item.color}"` : ''}>
-${item.icon} ${item.name} <span class="en">${item.en}</span>
-</li>
-`).join('');
-}
-
-function renderServices() {
-const grid = document.getElementById('services-grid');
-const services = menuItems.filter(m => !['admin', 'profile', 'payments', 'notifications'].includes(m.id));
-grid.innerHTML = services.map(item => `
-<div class="service-card" onclick="navigate('${item.id}')">
-<div class="service-icon">${item.icon}</div>
-<div class="service-name">${item.name}</div>
-</div>
-`).join('');
-}
-
-// ================= NAVIGATION =================
-function toggleSidebar() {
-document.getElementById('sidebar').classList.toggle('open');
-document.getElementById('overlay').classList.toggle('active');
-}
-
-function navigate(pageId) {
-document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-document.querySelectorAll('.sidebar-menu li').forEach(li => li.classList.remove('active'));
-document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-
-const page = document.getElementById('page-' + pageId);
-if (page) page.classList.add('active');
-
-const navLi = document.getElementById('nav-' + pageId);
-if (navLi) navLi.classList.add('active');
-
-const bnav = document.getElementById('bnav-' + pageId);
-if (bnav) {
-    bnav.classList.add('active');
-} else {
-    document.getElementById('bnav-more').classList.add('active');
-}
-
-if (document.getElementById('sidebar').classList.contains('open')) {
-    toggleSidebar();
-}
-document.querySelector('main').scrollTop = 0;
-}
-
-function logoutUser() {
-    alert('Umetoka kwenye mfumo kwa mafanikio.');
-}
-
-// ================= DASHBOARD & STATE =================
-function updateDashboardState() {
-const badge = document.getElementById('dash-status-badge');
-const text = document.getElementById('dash-status-text');
-const btn = document.getElementById('dash-sub-banner').querySelector('button');
-
-if (state.isPremium) {
-badge.innerText = 'PREMIUM • ACTIVE';
-badge.className = 'status-badge premium';
-text.innerText = 'Hongera! Akaunti yako ni Premium. Unafurahia huduma zote.';
-btn.style.display = 'none';
-} else if (state.payments.some(p => p.status === 'PENDING')) {
-badge.innerText = 'INASUBIRI • PENDING';
-badge.className = 'status-badge';
-text.innerText = 'Malipo yako yanasubiri uthibitisho wa admin. Utafunguliwa Premium baada ya kuthibitishwa.';
-btn.innerText = 'Angalia Hali';
-btn.onclick = () => navigate('payments');
-} else {
-badge.innerText = 'BURE • FREE';
-badge.className = 'status-badge';
-badge.style.background = '#e5e7eb';
-badge.style.color = '#374151';
-text.innerText = 'Uko kwenye mpango wa bure. Pata Premium kufungua huduma zote.';
-btn.innerText = 'Pata Premium';
-btn.onclick = () => navigate('payments');
-}
-}
-
-function updateStats() {
-    if(state.isPremium) {
-        document.getElementById('stat-chats').innerText = `Unlimited`;
-        document.getElementById('stat-ideas').innerText = `Unlimited`;
-        document.getElementById('chat-limit').innerText = `Unlimited`;
-    } else {
-        document.getElementById('stat-chats').innerText = `${state.chatsCount}/5`;
-        document.getElementById('stat-ideas').innerText = `${state.ideasCount}/2`;
-        document.getElementById('chat-limit').innerText = `${state.chatsCount}/5`;
-    }
-}
-
-// ================= AI CHAT =================
-function handleChatEnter(e) { if (e.key === 'Enter') sendChatMessage(); }
-function sendChatSuggestion(text) { document.getElementById('chat-input').value = text; sendChatMessage(); }
-function clearChat() {
-document.getElementById('chat-messages').innerHTML = `<div class="chat-bubble ai">Habari! Mimi ni KITWE AI. Nikusaidie nini leo?</div>`;
-if(!state.isPremium){
-    state.chatsCount = 0; localStorage.setItem('kitwe_chats_count', 0); updateStats();
-}
-}
-
-function sendChatMessage() {
-const input = document.getElementById('chat-input');
-const msg = input.value.trim();
-if (!msg) return;
-
-if (state.chatsCount >= 5 && !state.isPremium) {
-alert('Umefikia kikomo cha bure cha mazungumzo 5 kwa leo. Pata Premium kuendelea.');
-navigate('payments');
-return;
-}
-
-const chatBox = document.getElementById('chat-messages');
-chatBox.innerHTML += `<div class="chat-bubble user">${msg}</div>`;
-input.value = '';
-chatBox.scrollTop = chatBox.scrollHeight;
-
-if(!state.isPremium) {
-    state.chatsCount++;
-    localStorage.setItem('kitwe_chats_count', state.chatsCount);
-    updateStats();
-}
-
-setTimeout(() => {
-let reply = "Nimekuelewa. Ili nikusaidie vizuri zaidi, unaweza kuniambia mtaji wako au tatizo unalotaka kutatua?";
-const lowerMsg = msg.toLowerCase();
-
-if (lowerMsg.includes('mambo') || lowerMsg.includes('habari')) reply = "Poa sana! Karibu KITWE IDEALAB AI. Leo nikusaidie nini kwenye biashara yako?";
-else if (lowerMsg.includes('mtaji') || lowerMsg.includes('biashara')) reply = "Kwa mtaji huo, wazo zuri ni kuuza bidhaa za msingi au kutoa huduma ndogo. Nenda kwenye 'Jenereta ya Mawazo' kwa maelezo zaidi!";
-else if (lowerMsg.includes('photosynthesis')) reply = "Photosynthesis ni mchakato ambao mimea hutumia mwanga wa jua, maji, na hewa (CO2) kutengeneza chakula chao (glucose) na kutoa oksijeni.";
-
-chatBox.innerHTML += `<div class="chat-bubble ai">${reply}</div>`;
-chatBox.scrollTop = chatBox.scrollHeight;
-
-if (state.chatsCount >= 5 && !state.isPremium) {
-chatBox.innerHTML += `<div class="chat-bubble ai" style="background:#fef3c7;color:#b45309;">Kikomo chako cha bure kimefika. Pata Premium kuendelea kuzungumza nami.</div>`;
-}
-}, 1000);
-}
-
-// ================= IDEA GENERATOR =================
-function generateIdea() {
-const problem = document.getElementById('gen-problem').value;
-const capital = document.getElementById('gen-capital').value;
-const area = document.getElementById('gen-area').value;
-const skill = document.getElementById('gen-skill').value;
-
-if (!problem || !capital) return alert('Tafadhali jaza tatizo na mtaji wako!');
-
-if (state.ideasCount >= 2 && !state.isPremium) {
-alert('Umefikia kikomo cha bure cha mawazo 2 kwa leo. Pata Premium kuendelea.');
-navigate('payments');
-return;
-}
-
-document.getElementById('gen-result-container').classList.remove('hidden');
-document.getElementById('gen-result-content').innerHTML = `
-<h4>Wazo: Huduma ya ${problem}</h4>
-<p><b>Eneo:</b> ${area || 'Tanzania'}</p>
-<p><b>Mtaji:</b> TSh ${capital}</p>
-<p><b>Ujuzi:</b> ${skill || 'Ujuzi wa kawaida'}</p>
-<hr style="margin:10px 0;border:0;border-top:1px solid #bbf7d0;">
-<p><b>Hatua za Kuanza:</b></p>
-<ul style="padding-left:15px;font-size:.9rem;line-height:1.6;">
-<li>Fanya utafiti mdogo wa soko eneo la ${area || 'husika'}.</li>
-<li>Nunua vifaa vya msingi kwa kutumia mtaji wako.</li>
-<li>Tangaza huduma kwa marafiki na mitandao ya kijamii.</li>
-<li>Anza kutoa huduma na rekodi faida.</li>
-</ul>
-<button class="btn btn-primary" style="margin-top:10px;" onclick="saveIdeaNow('${problem}', ${capital}, '${area}')">Hifadhi Wazo</button>
-`;
-
-if(!state.isPremium){
-    state.ideasCount++;
-    localStorage.setItem('kitwe_ideas_count', state.ideasCount);
-    updateStats();
-}
-}
-
-function saveIdeaNow(title, cap, area) {
-    state.ideas.unshift({id: Date.now(), title: title, cap: cap, area: area});
-    localStorage.setItem('kitwe_ideas', JSON.stringify(state.ideas));
-    renderSaved();
-    alert('Wazo limehifadhiwa kwenye Mawazo Yaliyohifadhiwa!');
-}
-
-// ================= IDEA EVALUATION =================
-function calculateEvaluation() {
-    const weights = { tatizo:0.10, wateja:0.20, gharama:0.15, ujuzi:0.15, ushindani:0.15, vifaa:0.10, ukua:0.05, faida:0.10 };
-    let total = 0;
-    for (const key in weights) {
-        const val = parseInt(document.getElementById('eval-' + key).value);
-        total += (val / 5) * weights[key] * 100;
-    }
-    const finalScore = Math.round(total);
-    document.getElementById('eval-result-box').classList.remove('hidden');
-    document.getElementById('eval-score').innerText = finalScore + '/100';
-
-    let msg = '';
-    if (finalScore >= 80) msg = 'Wazo zuri sana! Endelea kulifanyia kazi.';
-    else if (finalScore >= 60) msg = 'Wazo zuri, lakini kuna sehemu unapaswa kuboresha.';
-    else if (finalScore >= 40) msg = 'Wazo linawezekana lakini linahitaji marekebisho makubwa.';
-    else msg = 'Inaonekana kuna changamoto. Tafuta ushauri zaidi au badilisha mkakati.';
-    document.getElementById('eval-message').innerText = msg;
-}
-
-// ================= BUSINESS CALCULATOR =================
-function calculateBiz() {
-    const cost = parseFloat(document.getElementById('calc-cost').value) || 0;
-    const price = parseFloat(document.getElementById('calc-price').value) || 0;
-    const qty = parseFloat(document.getElementById('calc-qty').value) || 1;
-
-    if (cost <= 0 || price <= 0) return alert('Weka gharama na bei kwa usahihi.');
-
-    const profitPerItem = price - cost;
-    const totalProfit = profitPerItem * qty;
-    const margin = (profitPerItem / price) * 100;
-
-    document.getElementById('calc-result-box').classList.remove('hidden');
-    document.getElementById('calc-profit').innerText = totalProfit.toLocaleString();
-    document.getElementById('calc-margin').innerText = margin.toFixed(1);
-}
-
-// ================= CHALLENGES =================
-function submitChallenge() {
-    const val = document.getElementById('chal-input').value.trim();
-    if (!val) return alert('Tafadhali andika wazo lako kwanza!');
-    state.challenges.unshift({text: val, date: new Date().toLocaleString()});
-    localStorage.setItem('kitwe_chal', JSON.stringify(state.challenges));
-    alert('Hongera! Wazo lako limewasilishwa kikamilifu.');
-    document.getElementById('chal-input').value = '';
-    renderChal();
-}
-
-function renderChal() {
-    const el = document.getElementById('chal-history');
-    if (!el) return;
-    el.innerHTML = state.challenges.map(c => `<div class="admin-tx-card"><p class="text-sm">${c.text}</p><small class="text-sm">${c.date}</small></div>`).join('');
-}
-
-// ================= PLANNER =================
-function savePlan() {
-    const name = document.getElementById('plan-name').value;
-    const mats = document.getElementById('plan-mats').value;
-    if (!name) return alert('Jaza jina la bidhaa');
-    state.plans.unshift({name: name, mats: mats});
-    localStorage.setItem('kitwe_plans', JSON.stringify(state.plans));
-    renderPlansList();
-    alert('Mpango wako umehifadhiwa!');
-}
-
-function renderPlansList() {
-    const el = document.getElementById('plan-list');
-    if (!el) return;
-    el.innerHTML = state.plans.map(p => `<div class="admin-tx-card"><b>${p.name}</b><p class="text-sm">${p.mats}</p></div>`).join('');
-}
-
-// ================= LEARNING HUB =================
-function saveLearningNote() {
-    const note = document.getElementById('learning-note').value.trim();
-    if (!note) return alert('Andika kitu kwanza!');
-    state.notes.unshift({text: note, date: new Date().toLocaleString()});
-    localStorage.setItem('kitwe_notes', JSON.stringify(state.notes));
-    document.getElementById('learning-note').value = '';
-    renderLearningNotes();
-    alert('Note imehifadhiwa!');
-}
-
-function renderLearningNotes() {
-    const el = document.getElementById('learning-notes-list');
-    if (!el) return;
-    el.innerHTML = state.notes.map(n => `<div class="admin-tx-card"><p class="text-sm">${n.text}</p><small class="text-sm">${n.date}</small></div>`).join('');
-}
-
-// ================= SAVED & FAVORITES =================
-function renderSaved() {
-    const el = document.getElementById('saved-list-container');
-    if (!el) return;
-    if (state.ideas.length === 0) {
-        el.innerHTML = '<p class="text-sm">Bado hujahifadhi chochote.</p>';
-        return;
-    }
-    el.innerHTML = state.ideas.map(i => `
-        <div class="admin-tx-card">
-            <div class="flex-between">
-                <label style="display:flex;align-items:center;gap:10px;">
-                    <input type="checkbox" class="compare-check" value="${i.id}">
-                    <b>${i.title}</b>
-                </label>
-                <div>
-                    <button class="btn btn-outline" style="padding:4px 8px;font-size:0.7rem;" onclick="toggleFav(${i.id})">${state.favs.includes(i.id) ? '★' : '☆'}</button>
-                    <button class="btn btn-danger" style="padding:4px 8px;font-size:0.7rem;" onclick="delIdea(${i.id})">X</button>
+    <!-- MAIN HUB LAUNCHER SCREEN -->
+    <div id="hub-container">
+        <header>
+            <div class="brand">
+                <h1>KITWE <span>GLOBALMIND HUB</span></h1>
+                <p>"Think. Create. Innovate."</p>
+            </div>
+        </header>
+
+        <div class="hub-welcome">
+            <h2>Chagua Moduli ya Kufanya Kazi</h2>
+            <p>Mfumo mmoja uliounganishwa kwa ajili ya mafanikio yako.</p>
+        </div>
+
+        <!-- 4 CARDS GRID -->
+        <div class="modules-grid">
+            <div class="module-card" onclick="openModule(1)">
+                <span class="module-icon">💼</span>
+                <div class="module-name">Digital Twin</div>
+                <div class="module-desc">Asset management</div>
+            </div>
+            <div class="module-card" onclick="openModule(2)">
+                <span class="module-icon">🧠</span>
+                <div class="module-name">Memory AI</div>
+                <div class="module-desc">Save & organize</div>
+            </div>
+            <div class="module-card" onclick="openModule(3)">
+                <span class="module-icon">📚</span>
+                <div class="module-name">Study AI</div>
+                <div class="module-desc">Learning assistant</div>
+            </div>
+            <div class="module-card" onclick="openModule(4)">
+                <span class="module-icon">🎓</span>
+                <div class="module-name">TIA Forum</div>
+                <div class="module-desc">Student social forum</div>
+            </div>
+        </div>
+
+        <div class="hub-footer">
+            KITWE GLOBALMIND HUB • Mobile-First Unified Experience<br>Developed for Yahaya B. Andrea
+        </div>
+    </div>
+
+    <!-- MODULE VIEWER (HIDDEN BY DEFAULT) -->
+    <div id="module-viewer">
+        <div class="back-hub-bar">
+            <button class="back-btn" onclick="returnToHub()">⬅ Rudi Nyumbani</button>
+            <span class="back-title" id="active-module-title">KITWE HUB</span>
+        </div>
+        <iframe id="module-frame"></iframe>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC & EMBEDDED MODULES -->
+    <script>
+        // Hapa ndipo code za moduli zote 4 zilipowekwa moja kwa moja kupitia escape safi
+        const moduleCodes = {
+            1: `<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#002366">
+    <title>KITWE DIGITAL TWIN</title>
+    <style>
+        :root { --navy: #002366; --gold: #FFD700; --white: #FFFFFF; --bg-light: #F5F7FA; --text-dark: #1E293B; --text-light: #64748B; --danger: #EF4444; --success: #22C55E; --card-bg: #FFFFFF; }
+        body.dark-mode { --bg-light: #0F172A; --text-dark: #F1F5F9; --text-light: #94A3B8; --card-bg: #1E293B; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-light); color: var(--text-dark); overflow-x: hidden; transition: background 0.3s; }
+        #splash { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: linear-gradient(135deg, var(--navy), #001133); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; color: white; transition: opacity 0.5s ease; }
+        .splash-logo { font-size: 3rem; margin-bottom: 10px; animation: pulse 1.5s infinite; }
+        .splash-title { font-size: 1.6rem; font-weight: bold; color: var(--gold); text-align: center; letter-spacing: 2px; }
+        .splash-sub { font-size: 0.85rem; margin-top: 5px; color: #cbd5e1; text-align: center; padding: 0 20px;}
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        #app { display: none; padding-bottom: 80px; max-width: 600px; margin: 0 auto; min-height: 100vh; background: var(--bg-light); }
+        header { background: var(--navy); color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--gold); position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+        .brand h1 { font-size: 1.1rem; color: var(--white); }
+        .brand h1 span { color: var(--gold); }
+        .brand p { font-size: 0.65rem; color: #94a3b8; }
+        .header-controls { display: flex; gap: 10px; }
+        .icon-btn { background: var(--gold); color: var(--navy); border: none; padding: 8px 10px; border-radius: 5px; font-weight: bold; font-size: 0.75rem; cursor: pointer; }
+        .page { display: none; padding: 20px; animation: fadeIn 0.3s ease; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        .welcome-card { background: linear-gradient(135deg, var(--navy), #003399); color: white; padding: 20px; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 6px 15px rgba(0,35,102,0.3); }
+        .welcome-card h2 { font-size: 1.2rem; margin-bottom: 5px; color: white; }
+        .welcome-card p { font-size: 0.85rem; color: var(--gold); }
+        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px; }
+        .stat-card { background: var(--card-bg); padding: 15px; border-radius: 12px; border-left: 4px solid var(--gold); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .stat-card b { display: block; font-size: 1.4rem; color: var(--navy); }
+        body.dark-mode .stat-card b { color: var(--gold); }
+        .stat-card small { font-size: 0.75rem; color: var(--text-light); }
+        .section-title { font-size: 1rem; color: var(--navy); margin-bottom: 15px; border-left: 4px solid var(--gold); padding-left: 10px; font-weight: bold; }
+        body.dark-mode .section-title { color: var(--gold); }
+        .asset-card { background: var(--card-bg); padding: 15px; border-radius: 10px; margin-bottom: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; position: relative; display: flex; gap: 15px; align-items: center; }
+        body.dark-mode .asset-card { border-color: #334155; }
+        .asset-icon { font-size: 2rem; background: #f1f5f9; padding: 10px; border-radius: 10px; }
+        body.dark-mode .asset-icon { background: #334155; }
+        .asset-info { flex: 1; }
+        .asset-info h4 { font-size: 1rem; color: var(--navy); margin-bottom: 3px; }
+        body.dark-mode .asset-info h4 { color: var(--white); }
+        .asset-info p { font-size: 0.8rem; color: var(--text-light); margin-bottom: 2px; }
+        .asset-info .price { color: var(--success); font-weight: bold; font-size: 0.85rem; }
+        .card-actions { display: flex; flex-direction: column; gap: 5px; }
+        .btn-icon { background: none; border: none; font-size: 1.2rem; cursor: pointer; padding: 5px; border-radius: 5px; }
+        .btn-icon.delete { color: var(--danger); }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: bold; color: var(--navy); margin-bottom: 5px; }
+        body.dark-mode .form-group label { color: var(--gold); }
+        .form-control { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; background: var(--card-bg); color: var(--text-dark); outline: none; }
+        .form-control:focus { border-color: var(--gold); box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2); }
+        textarea.form-control { resize: vertical; min-height: 80px; }
+        .btn-primary { background: var(--navy); color: white; border: none; padding: 12px 20px; border-radius: 8px; font-size: 0.95rem; font-weight: bold; width: 100%; cursor: pointer; }
+        .btn-primary:active { transform: scale(0.98); }
+        .btn-gold { background: var(--gold); color: var(--navy); }
+        .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 600px; background: var(--card-bg); display: flex; justify-content: space-around; padding: 10px 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); z-index: 1000; border-top-left-radius: 15px; border-top-right-radius: 15px; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 0.65rem; color: var(--text-light); cursor: pointer; padding: 5px 10px; transition: 0.2s; }
+        .nav-item.active { color: var(--navy); font-weight: bold; }
+        body.dark-mode .nav-item.active { color: var(--gold); }
+        .nav-icon { font-size: 1.3rem; margin-bottom: 2px; }
+        .disclaimer { text-align: center; font-size: 0.65rem; color: #94a3b8; margin-top: 30px; padding-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div id="splash">
+        <div class="splash-logo">💼</div>
+        <div class="splash-title">KITWE DIGITAL TWIN</div>
+        <div class="splash-sub">CONNECT YOUR ASSETS. UNDERSTAND YOUR WORLD.</div>
+    </div>
+    <div id="app">
+        <header>
+            <div class="brand">
+                <h1>KITWE <span>DIGITAL TWIN</span></h1>
+                <p>Powered by KITWE GlobalMind</p>
+            </div>
+            <div class="header-controls">
+                <button class="icon-btn" onclick="toggleTheme()" id="theme-btn">🌙</button>
+            </div>
+        </header>
+        <div id="page-dashboard" class="page active">
+            <div class="welcome-card">
+                <h2>Karibu, Yahaya 👋</h2>
+                <p>Hii ni dashboard yako ya digital assets.</p>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <b id="stat-total-assets">0</b>
+                    <small>Jumla ya Assets</small>
+                </div>
+                <div class="stat-card">
+                    <b id="stat-total-value">TSh 0</b>
+                    <small>Thamani ya Assets</small>
                 </div>
             </div>
-            <p class="text-sm">Mtaji: TSh ${i.cap} | Eneo: ${i.area}</p>
+            <h3 class="section-title">Assets Zako</h3>
+            <div id="asset-list-container"></div>
+            <div class="disclaimer">KITWE DIGITAL TWIN is an independent project by KITWE GlobalMind.</div>
         </div>
-    `).join('');
-}
-
-function delIdea(id) {
-    state.ideas = state.ideas.filter(i => i.id !== id);
-    state.favs = state.favs.filter(fid => fid !== id);
-    localStorage.setItem('kitwe_ideas', JSON.stringify(state.ideas));
-    localStorage.setItem('kitwe_favs', JSON.stringify(state.favs));
-    renderSaved();
-    renderFavs();
-}
-
-function toggleFav(id) {
-    if (state.favs.includes(id)) {
-        state.favs = state.favs.filter(fid => fid !== id);
-    } else {
-        state.favs.push(id);
-    }
-    localStorage.setItem('kitwe_favs', JSON.stringify(state.favs));
-    renderSaved();
-    renderFavs();
-}
-
-function renderFavs() {
-    const el = document.getElementById('fav-list-container');
-    if (!el) return;
-    if (state.favs.length === 0) {
-        el.innerHTML = '<p class="text-sm">Hakuna vipendwa bado.</p>';
-        return;
-    }
-    el.innerHTML = state.ideas.filter(i => state.favs.includes(i.id)).map(i => `
-        <div class="admin-tx-card">
-            <b>${i.title}</b>
-            <p class="text-sm">TSh ${i.cap}</p>
+        <div id="page-add" class="page">
+            <h3 class="section-title">Ongeza Asset Mpya</h3>
+            <div class="form-group">
+                <label>Jina la Asset</label>
+                <input type="text" id="input-name" class="form-control" placeholder="mf. Samsung Galaxy A24">
+            </div>
+            <div class="form-group">
+                <label>Kundi (Category)</label>
+                <select id="input-category" class="form-control">
+                    <option value="Smartphone">📱 Smartphone</option>
+                    <option value="Computer">💻 Computer</option>
+                    <option value="Vehicle">🚗 Vehicle</option>
+                    <option value="Furniture">🪑 Furniture</option>
+                    <option value="House">🏠 House</option>
+                    <option value="Business Equipment">🔧 Business Equipment</option>
+                    <option value="Other">📦 Other</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Tarehe ya Kununua</label>
+                <input type="date" id="input-date" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>Bei ya Kununua (TSh)</label>
+                <input type="number" id="input-price" class="form-control" placeholder="mf. 350000">
+            </div>
+            <div class="form-group">
+                <label>Thamani ya Sasa (TSh)</label>
+                <input type="number" id="input-current-value" class="form-control" placeholder="mf. 300000">
+            </div>
+            <div class="form-group">
+                <label>Hali (Condition)</label>
+                <select id="input-condition" class="form-control">
+                    <option value="Excellent">Excellent / Nzuri Sana</option>
+                    <option value="Good">Good / Nzuri</option>
+                    <option value="Fair">Fair / Kawaida</option>
+                    <option value="Poor">Poor / Mbaya</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Maelezo</label>
+                <textarea id="input-desc" class="form-control" placeholder="Maelezo zaidi kuhusu asset..."></textarea>
+            </div>
+            <button class="btn-primary btn-gold" onclick="saveAsset()">Hifadhi Asset</button>
         </div>
-    `).join('');
-}
-
-function compareIdeas() {
-    const checks = document.querySelectorAll('.compare-check:checked');
-    if (checks.length < 2) return alert('Chagua mawazo angalau mawili kulinganisha!');
-    if (checks.length > 2 && !state.isPremium) return alert('Kulinganisha zaidi ya 2 ni kwa Premium. Pata Premium kwanza.');
-
-    const selected = Array.from(checks).map(c => state.ideas.find(i => i.id == c.value));
-    let html = '<h4>Matokeo ya Ulinganisho</h4>';
-    selected.forEach(i => {
-        html += `<div style="margin-top:10px;padding:10px;border:1px solid #ccc;border-radius:5px;">
-            <b>${i.title}</b><br>
-            Mtaji: TSh ${i.cap} | Eneo: ${i.area}
-        </div>`;
-    });
-    const el = document.getElementById('compare-result');
-    el.classList.remove('hidden');
-    el.innerHTML = html;
-}
-
-// ================= DIY LAB =================
-function showDiy(val) {
-    const el = document.getElementById('diy-details');
-    if (!val) { el.style.display = 'none'; return; }
-    el.style.display = 'block';
-    if (val === 'taa') {
-        el.innerHTML = `<b>Taa ya Cardboard (TSh 5,000)</b><p>Vifaa: Kadibodi, LED 5, Betri 9V, Switch, Waya.<br>Faida: TSh 3,000 kwa kila taa.</p>`;
-    } else if (val === 'maji') {
-        el.innerHTML = `<b>Kichujio cha Maji (TSh 3,000)</b><p>Vifaa: Chupa, Mchanga, Kokoto, Pamba.<br>Faida: TSh 2,000 kwa kichujio kimoja.</p>`;
-    } else if (val === 'sabuni') {
-        el.innerHTML = `<b>Sabuni ya Maji (TSh 2,500)</b><p>Vifaa: Mafuta ya kupikia, Soda ya kufulia (Caustic Soda), Maji, Rangi.<br>Faida: TSh 4,000 kwa lita moja.</p>`;
-    }
-}
-
-// ================= PROFILE =================
-function loadProfileData() {
-    document.getElementById('side-name').innerText = state.userName;
-    document.getElementById('profile-display-name').innerText = state.userName;
-    document.getElementById('dash-name').innerText = state.userName.split(' ')[0];
-    document.getElementById('edit-name-input').value = state.userName;
-
-    if (state.userPic) {
-        const img = document.getElementById('profile-img');
-        img.src = state.userPic;
-        img.classList.remove('hidden');
-        document.getElementById('profile-avatar').classList.add('hidden');
-        document.getElementById('side-avatar').style.background = `url(${state.userPic}) center/cover`;
-        document.getElementById('side-avatar').innerText = '';
-    }
-}
-
-function uploadProfilePic(event) {
-    const file = event.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            state.userPic = e.target.result;
-            localStorage.setItem('kitwe_user_pic', state.userPic);
-            loadProfileData();
-            alert('Picha imewekwa kikamilifu!');
+        <div class="bottom-nav">
+            <div class="nav-item active" id="nav-dashboard" onclick="navigate('dashboard')">
+                <div class="nav-icon">🏠</div>
+                <span>Dashboard</span>
+            </div>
+            <div class="nav-item" id="nav-add" onclick="navigate('add')">
+                <div class="nav-icon">➕</div>
+                <span>Ongeza</span>
+            </div>
+        </div>
+    </div>
+    <script>
+        let assets = JSON.parse(localStorage.getItem('kitwe_assets')) || [];
+        let isDarkMode = localStorage.getItem('kitwe_darkmode') === 'true';
+        window.onload = function() {
+            if(isDarkMode) {
+                document.body.classList.add('dark-mode');
+                document.getElementById('theme-btn').innerText = '☀️';
+            }
+            setTimeout(() => {
+                document.getElementById('splash').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('splash').style.display = 'none';
+                    document.getElementById('app').style.display = 'block';
+                    renderDashboard();
+                }, 500);
+            }, 2000);
         };
-        reader.readAsDataURL(file);
-    }
-}
-
-function updateProfile() {
-    const newName = document.getElementById('edit-name-input').value.trim();
-    if (newName) {
-        state.userName = newName;
-        localStorage.setItem('kitwe_user_name', newName);
-        loadProfileData();
-        alert('Jina limehifadhiwa!');
-    }
-}
-
-// ================= PAYMENTS & SUBSCRIPTION =================
-function copyNumber(num) {
-    navigator.clipboard.writeText(num).then(() => {
-        alert('Namba ' + num + ' imenakiliwa!');
-    }).catch(() => {
-        alert('Imeshindikana kunakili. Tafadhali andika namba mwenyewe: ' + num);
-    });
-}
-
-function submitPayment() {
-    const txid = document.getElementById('pay-txid').value.trim();
-    const network = document.getElementById('pay-network').value;
-    const phone = document.getElementById('pay-phone').value.trim();
-
-    if (txid.length < 6) return alert('Tafadhali weka namba sahihi ya muamala (Transaction ID).');
-
-    const newPayment = {
-        id: Date.now(),
-        txid: txid,
-        network: network,
-        phone: phone || 'Hakuna',
-        date: new Date().toLocaleString(),
-        status: 'PENDING'
-    };
-
-    state.payments.push(newPayment);
-    localStorage.setItem('kitwe_payments', JSON.stringify(state.payments));
-
-    document.getElementById('pay-txid').value = '';
-    document.getElementById('pay-phone').value = '';
-
-    alert('Malipo yamewasilishwa kikamilifu! Admin atahakiki na kukufungulia Premium hivi karibuni.');
-    renderPaymentsHistory();
-    updateDashboardState();
-    navigate('dashboard');
-}
-
-function renderPaymentsHistory() {
-    const list = document.getElementById('pay-history-list');
-    if (!list) return;
-    if (state.payments.length === 0) {
-        list.innerHTML = '<p class="text-sm">Bado hakuna malipo yaliyowasilishwa.</p>';
-        return;
-    }
-
-    list.innerHTML = state.payments.map(p => `
-        <div class="admin-tx-card ${p.status === 'PENDING' ? 'pending' : ''}">
-            <div class="flex-between">
-                <span style="font-weight:bold;">${p.network}</span>
-                <span class="status-badge ${p.status === 'APPROVED' ? 'premium' : ''}">${p.status}</span>
-            </div>
-            <p class="text-sm" style="margin-top:5px;">TX ID: ${p.txid}</p>
-            <p class="text-sm">Tarehe: ${p.date}</p>
-        </div>
-    `).join('');
-}
-
-function clearMyPayments() {
-    if (confirm('Je, una uhakika unataka kufuta historia ya malipo yako yote? Hii itakurudisha kwenye mpango wa Bure.')) {
-        state.payments = [];
-        state.isPremium = false;
-        state.premiumExpiry = null;
-        localStorage.removeItem('kitwe_payments');
-        localStorage.setItem('kitwe_premium', 'false');
-        localStorage.removeItem('kitwe_premium_expiry');
-        
-        renderPaymentsHistory();
-        renderAdminList();
-        updateDashboardState();
-        updateStats();
-        alert('Historia imefutwa! Sasa uko kwenye mpango wa Bure na unaweza kujaribu tena.');
-    }
-}
-
-// ================= ADMIN PANEL =================
-function togglePass() {
-    const passInput = document.getElementById('admin-pass');
-    passInput.type = passInput.type === 'password' ? 'text' : 'password';
-}
-
-function loginAdmin() {
-    const pass = document.getElementById('admin-pass').value;
-    if (pass === 'kitwe2026') {
-        document.getElementById('admin-login-box').classList.add('hidden');
-        document.getElementById('admin-panel-box').classList.remove('hidden');
-        renderAdminList();
-    } else {
-        alert('Password si sahihi! Jaribu tena.');
-    }
-}
-
-function logoutAdmin() {
-    document.getElementById('admin-login-box').classList.remove('hidden');
-    document.getElementById('admin-panel-box').classList.add('hidden');
-    document.getElementById('admin-pass').value = '';
-}
-
-function renderAdminList() {
-    const el = document.getElementById('admin-tx-list');
-    if (!el) return;
-
-    if (state.payments.length === 0) {
-        el.innerHTML = '<p class="text-sm">Hakuna malipo yaliyowasilishwa bado.</p>';
-        return;
-    }
-
-    el.innerHTML = state.payments.map((p, i) => `
-        <div class="admin-tx-card ${p.status === 'PENDING' ? 'pending' : ''}">
-            <div class="flex-between">
-                <div>
-                    <b>${p.txid}</b>
-                    <p class="text-sm">${p.network} - ${p.phone}</p>
-                    <small class="text-sm">${p.date}</small>
-                </div>
-                <div style="display:flex;gap:5px;align-items:center;">
-                    <span class="status-badge ${p.status === 'APPROVED' ? 'premium' : ''}">${p.status}</span>
-                    ${p.status === 'PENDING' ? `
-                        <button class="btn btn-gold" style="padding:6px 10px;font-size:0.7rem;" onclick="approvePay(${i})">Approve</button>
-                        <button class="btn btn-danger" style="padding:6px 10px;font-size:0.7rem;" onclick="rejectPay(${i})">Reject</button>
-                    ` : ''}
-                </div>
-            </div>
-        </div>
-    `).join('');
-}
-
-function approvePay(index) {
-    state.payments[index].status = 'APPROVED';
-    localStorage.setItem('kitwe_payments', JSON.stringify(state.payments));
-
-    state.isPremium = true;
-    const expiryDate = Date.now() + (90 * 24 * 60 * 60 * 1000); 
-    state.premiumExpiry = expiryDate;
-    
-    localStorage.setItem('kitwe_premium', 'true');
-    localStorage.setItem('kitwe_premium_expiry', expiryDate);
-
-    state.chatsCount = 0;
-    state.ideasCount = 0;
-    localStorage.setItem('kitwe_chats_count', 0);
-    localStorage.setItem('kitwe_ideas_count', 0);
-
-    renderPaymentsHistory();
-    renderAdminList();
-    updateDashboardState();
-    updateStats();
-
-    alert('✓ Malipo yameidhinishwa! Mtumiaji sasa ni Premium kwa miezi 3 (AI Unlimited).');
-}
-
-function rejectPay(index) {
-    state.payments[index].status = 'REJECTED';
-    localStorage.setItem('kitwe_payments', JSON.stringify(state.payments));
-
-    renderPaymentsHistory();
-    renderAdminList();
-
-    alert('Malipo yamekataliwa.');
-}
-
-// ================= TRACKER LOGIC =================
-function updateTracker() {
-    const checkboxes = document.querySelectorAll('#tracker-list input[type="checkbox"]');
-    if(checkboxes.length === 0) return;
-    let checkedCount = 0;
-
-    checkboxes.forEach(cb => {
-        if (cb.checked) checkedCount++;
-    });
-
-    const percentage = Math.round((checkedCount / checkboxes.length) * 100);
-
-    const bar = document.getElementById('progress-bar');
-    const text = document.getElementById('progress-text');
-
-    if (bar && text) {
-        bar.style.width = percentage + '%';
-        text.innerText = percentage + '% Imekamilika';
-
-        if (percentage === 100) {
-            bar.style.backgroundColor = 'var(--gold)';
-            text.innerText = 'Hongera! Mradi umekamilika 100% 🎉';
-        } else {
-            bar.style.backgroundColor = 'var(--success)';
+        function navigate(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById('page-' + pageId).classList.add('active');
+            document.getElementById('nav-' + pageId).classList.add('active');
+            if(pageId === 'dashboard') renderDashboard();
+            window.scrollTo(0,0);
         }
-    }
-}
+        function toggleTheme() {
+            isDarkMode = !isDarkMode;
+            document.body.classList.toggle('dark-mode');
+            localStorage.setItem('kitwe_darkmode', isDarkMode);
+            document.getElementById('theme-btn').innerText = isDarkMode ? '☀️' : '🌙';
+        }
+        function saveAsset() {
+            const name = document.getElementById('input-name').value.trim();
+            const category = document.getElementById('input-category').value;
+            const date = document.getElementById('input-date').value;
+            const price = parseFloat(document.getElementById('input-price').value) || 0;
+            const currentValue = parseFloat(document.getElementById('input-current-value').value) || 0;
+            const condition = document.getElementById('input-condition').value;
+            const desc = document.getElementById('input-desc').value.trim();
+            if(!name || price <= 0) {
+                alert("Tafadhali jaza Jina la Asset na Bei!");
+                return;
+            }
+            const newAsset = { id: Date.now(), name: name, category: category, date: date, price: price, currentValue: currentValue, condition: condition, description: desc };
+            assets.unshift(newAsset);
+            localStorage.setItem('kitwe_assets', JSON.stringify(assets));
+            document.getElementById('input-name').value = '';
+            document.getElementById('input-price').value = '';
+            document.getElementById('input-current-value').value = '';
+            document.getElementById('input-desc').value = '';
+            document.getElementById('input-date').value = '';
+            alert("Asset imehifadhiwa kikamilifu!");
+            navigate('dashboard');
+        }
+        function deleteAsset(id) {
+            if(confirm("Una uhakika unataka kufuta asset hii?")) {
+                assets = assets.filter(a => a.id !== id);
+                localStorage.setItem('kitwe_assets', JSON.stringify(assets));
+                renderDashboard();
+            }
+        }
+        function getCategoryIcon(category) {
+            const icons = { 'Smartphone': '📱', 'Computer': '💻', 'Vehicle': '🚗', 'Furniture': '🪑', 'House': '🏠', 'Business Equipment': '🔧', 'Other': '📦' };
+            return icons[category] || '📦';
+        }
+        function renderDashboard() {
+            document.getElementById('stat-total-assets').innerText = assets.length;
+            let totalValue = assets.reduce((sum, asset) => sum + asset.currentValue, 0);
+            document.getElementById('stat-total-value').innerText = "TSh " + totalValue.toLocaleString();
+            const list = document.getElementById('asset-list-container');
+            if(assets.length === 0) {
+                list.innerHTML = \`<p style="text-align:center; color:#94a3b8; font-size:0.85rem; padding: 20px;">Hakuna assets bado. Bonyeza 'Ongeza' kuanza.</p>\`;
+            } else {
+                list.innerHTML = assets.map(asset => \`
+                    <div class="asset-card">
+                        <div class="asset-icon">\${getCategoryIcon(asset.category)}</div>
+                        <div class="asset-info">
+                            <h4>\${asset.name}</h4>
+                            <p>\${asset.category} • \${asset.condition}</p>
+                            <span class="price">TSh \${asset.currentValue.toLocaleString()}</span>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn-icon delete" onclick="deleteAsset(\${asset.id})">🗑️</button>
+                        </div>
+                    </div>
+                \`).join('');
+            }
+        }
+    </script>
+</body>
+</html>`,
 
-function initTracker() {
-    const trackerList = document.getElementById('tracker-list');
-    if (!trackerList) return;
-
-    trackerList.innerHTML = `
-        <label style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
-            <input type="checkbox" onchange="updateTracker()"> Utafiti wa Soko - Uliofanyika
-        </label>
-        <label style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
-            <input type="checkbox" onchange="updateTracker()"> Kununua Malighafi - TSh 5,000
-        </label>
-        <label style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
-            <input type="checkbox" onchange="updateTracker()"> Kujenga Mfano - Prototype
-        </label>
-        <label style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
-            <input type="checkbox" onchange="updateTracker()"> Kuanza Uuzaji - Sokoni
-        </label>
-    `;
-}
-
-// ================= BUSINESS PLAN LOGIC =================
-function saveBizPlan() {
-    const purpose = document.getElementById('biz-purpose').value.trim();
-    const goal = document.getElementById('biz-goal').value.trim();
-
-    if (!purpose || !goal) return alert('Tafadhali jaza dhumuni na lengo la biashara!');
-
-    const resultEl = document.getElementById('biz-plan-result');
-    resultEl.classList.remove('hidden');
-    resultEl.innerHTML = `
-        <div class="card" style="background:#f0fdf4;border:1px solid #bbf7d0;">
-            <h4 style="color:var(--success);">Mpango wa Biashara Umehifadhiwa!</h4>
-            <p class="text-sm" style="margin-top:5px;"><b>Dhumuni:</b> ${purpose}</p>
-            <p class="text-sm" style="margin-top:5px;"><b>Lengo:</b> ${goal}</p>
+            2: `<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#002366">
+    <title>KITWE MEMORY AI</title>
+    <style>
+        :root { --navy: #002366; --gold: #FFD700; --white: #FFFFFF; --bg-light: #F5F7FA; --text-dark: #1E293B; --text-light: #64748B; --danger: #EF4444; --success: #22C55E; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-light); color: var(--text-dark); overflow-x: hidden; }
+        #splash { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: linear-gradient(135deg, var(--navy), #001133); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; color: white; transition: opacity 0.5s ease; }
+        .splash-logo { font-size: 3rem; margin-bottom: 10px; animation: pulse 1.5s infinite; }
+        .splash-title { font-size: 1.8rem; font-weight: bold; color: var(--gold); text-align: center; letter-spacing: 2px; }
+        .splash-sub { font-size: 0.9rem; margin-top: 5px; color: #cbd5e1; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        #app { display: none; padding-bottom: 80px; max-width: 600px; margin: 0 auto; min-height: 100vh; background: var(--bg-light); }
+        header { background: var(--navy); color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid var(--gold); position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .brand h1 { font-size: 1.1rem; color: var(--white); }
+        .brand h1 span { color: var(--gold); }
+        .brand p { font-size: 0.65rem; color: #94a3b8; }
+        .lang-switch { background: var(--gold); color: var(--navy); border: none; padding: 5px 10px; border-radius: 5px; font-weight: bold; font-size: 0.75rem; cursor: pointer; }
+        .page { display: none; padding: 20px; animation: fadeIn 0.3s ease; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        .welcome-card { background: linear-gradient(135deg, var(--navy), #003399); color: white; padding: 20px; border-radius: 15px; margin-bottom: 20px; box-shadow: 0 6px 15px rgba(0,35,102,0.3); }
+        .welcome-card h2 { font-size: 1.2rem; margin-bottom: 5px; }
+        .welcome-card p { font-size: 0.85rem; color: var(--gold); }
+        .stats-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 20px; }
+        .stat-card { background: white; padding: 15px; border-radius: 12px; border-left: 4px solid var(--gold); box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .stat-card b { display: block; font-size: 1.5rem; color: var(--navy); }
+        .stat-card small { font-size: 0.75rem; color: var(--text-light); }
+        .section-title { font-size: 1rem; color: var(--navy); margin-bottom: 15px; border-left: 4px solid var(--gold); padding-left: 10px; font-weight: bold; }
+        .memory-card { background: white; padding: 15px; border-radius: 10px; margin-bottom: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); border: 1px solid #e2e8f0; position: relative; }
+        .memory-card .category-tag { display: inline-block; background: #e0f2fe; color: #0369a1; font-size: 0.7rem; font-weight: bold; padding: 3px 8px; border-radius: 10px; margin-bottom: 8px; }
+        .memory-card h4 { font-size: 1rem; color: var(--navy); margin-bottom: 5px; }
+        .memory-card p { font-size: 0.85rem; color: var(--text-light); line-height: 1.4; margin-bottom: 10px; }
+        .memory-card .date-text { font-size: 0.7rem; color: #94a3b8; }
+        .card-actions { display: flex; justify-content: flex-end; gap: 8px; border-top: 1px solid #f1f5f9; padding-top: 10px; margin-top: 10px; }
+        .btn-icon { background: none; border: none; font-size: 1.1rem; cursor: pointer; padding: 5px; border-radius: 5px; }
+        .btn-icon.fav { color: #cbd5e1; }
+        .btn-icon.fav.active { color: var(--gold); }
+        .btn-icon.delete { color: var(--danger); }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: bold; color: var(--navy); margin-bottom: 5px; }
+        .form-control { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; background: white; outline: none; }
+        .form-control:focus { border-color: var(--gold); box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2); }
+        textarea.form-control { resize: vertical; min-height: 100px; }
+        .btn-primary { background: var(--navy); color: white; border: none; padding: 12px 20px; border-radius: 8px; font-size: 0.95rem; font-weight: bold; width: 100%; cursor: pointer; }
+        .btn-primary:active { transform: scale(0.98); }
+        .btn-gold { background: var(--gold); color: var(--navy); }
+        .search-box { width: 100%; padding: 12px 15px; border-radius: 20px; border: 1px solid #cbd5e1; margin-bottom: 15px; font-size: 0.9rem; outline: none; background: white; }
+        .search-box:focus { border-color: var(--navy); }
+        .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 600px; background: white; display: flex; justify-content: space-around; padding: 10px 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); z-index: 1000; border-top-left-radius: 15px; border-top-right-radius: 15px; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 0.65rem; color: var(--text-light); cursor: pointer; padding: 5px 10px; transition: 0.2s; }
+        .nav-item.active { color: var(--navy); font-weight: bold; }
+        .nav-icon { font-size: 1.3rem; margin-bottom: 2px; }
+        .disclaimer { text-align: center; font-size: 0.65rem; color: #94a3b8; margin-top: 30px; padding-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div id="splash">
+        <div class="splash-logo">🧠</div>
+        <div class="splash-title">KITWE MEMORY AI</div>
+        <div class="splash-sub">Save. Organize. Retrieve.</div>
+    </div>
+    <div id="app">
+        <header>
+            <div class="brand">
+                <h1>KITWE <span>MEMORY AI</span></h1>
+                <p>Powered by KITWE GlobalMind</p>
+            </div>
+            <button class="lang-switch" onclick="toggleLanguage()" id="lang-btn">EN</button>
+        </header>
+        <div id="page-dashboard" class="page active">
+            <div class="welcome-card">
+                <h2 id="dash-welcome">Karibu kwenye Kumbukumbu Zako</h2>
+                <p id="dash-sub">Hifadhi, panga, na tafuta kumbukumbu zako zote hapa.</p>
+            </div>
+            <h3 class="section-title" id="dash-stats-title">Takwimu Zako</h3>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <b id="stat-total">0</b>
+                    <small id="stat-total-label">Jumla ya Memories</small>
+                </div>
+                <div class="stat-card">
+                    <b id="stat-favs">0</b>
+                    <small id="stat-favs-label">Vipendwa (Favorites)</small>
+                </div>
+            </div>
+            <h3 class="section-title" id="dash-recent-title">Kumbukumbu za Hivi Karibuni</h3>
+            <div id="recent-memories-list"></div>
+            <div class="disclaimer">KITWE MEMORY AI is an independent project by KITWE GlobalMind.</div>
         </div>
-    `;
+        <div id="page-add" class="page">
+            <h3 class="section-title" id="add-title">Ongeza Kumbukumbu Mpya</h3>
+            <div class="form-group">
+                <label id="lbl-title">Kichwa (Title)</label>
+                <input type="text" id="input-title" class="form-control" placeholder="mf. Mkutano wa Biashara">
+            </div>
+            <div class="form-group">
+                <label id="lbl-content">Maelezo (Content)</label>
+                <textarea id="input-content" class="form-control" placeholder="Andika kumbukumbu yako hapa..."></textarea>
+            </div>
+            <div class="form-group">
+                <label id="lbl-category">Kundi (Category)</label>
+                <select id="input-category" class="form-control">
+                    <option value="General">General / Kawaida</option>
+                    <option value="Work">Work / Kazi</option>
+                    <option value="Personal">Personal / Binafsi</option>
+                    <option value="Ideas">Ideas / Mawazo</option>
+                    <option value="Important">Important / Muhimu</option>
+                </select>
+            </div>
+            <button class="btn-primary btn-gold" id="btn-save-memory" onclick="saveMemory()">Hifadhi Kumbukumbu</button>
+        </div>
+        <div id="page-search" class="page">
+            <h3 class="section-title" id="search-title">Tafuta Kumbukumbu</h3>
+            <input type="text" id="search-input" class="search-box" placeholder="🔍 Andika neno la kutafuta..." onkeyup="searchMemories()">
+            <div id="search-results-list"></div>
+        </div>
+        <div id="page-favorites" class="page">
+            <h3 class="section-title" id="fav-title">Kumbukumbu Uliyozipenda</h3>
+            <div id="favorites-list"></div>
+        </div>
+        <div class="bottom-nav">
+            <div class="nav-item active" id="nav-dashboard" onclick="navigate('dashboard')">
+                <div class="nav-icon">🏠</div>
+                <span id="nav-lbl-home">Home</span>
+            </div>
+            <div class="nav-item" id="nav-add" onclick="navigate('add')">
+                <div class="nav-icon">➕</div>
+                <span id="nav-lbl-add">Ongeza</span>
+            </div>
+            <div class="nav-item" id="nav-search" onclick="navigate('search')">
+                <div class="nav-icon">🔍</div>
+                <span id="nav-lbl-search">Tafuta</span>
+            </div>
+            <div class="nav-item" id="nav-favorites" onclick="navigate('favorites')">
+                <div class="nav-icon">⭐</div>
+                <span id="nav-lbl-fav">Vipendwa</span>
+            </div>
+        </div>
+    </div>
+    <script>
+        let currentLang = localStorage.getItem('kitwe_lang') || 'sw';
+        let memories = JSON.parse(localStorage.getItem('kitwe_memories')) || [];
+        let editingMemoryId = null;
+        const translations = {
+            sw: { welcome: "Karibu kwenye Kumbukumbu Zako", welcomeSub: "Hifadhi, panga, na tafuta kumbukumbu zako zote hapa.", statsTitle: "Takwimu Zako", totalMemories: "Jumla ya Memories", favorites: "Vipendwa (Favorites)", recentTitle: "Kumbukumbu za Hivi Karibuni", addTitle: "Ongeza Kumbukumbu Mpya", editTitle: "Badilisha Kumbukumbu", titleLbl: "Kichwa (Title)", contentLbl: "Maelezo (Content)", categoryLbl: "Kundi (Category)", saveBtn: "Hifadhi Kumbukumbu", updateBtn: "Sasisha Kumbukumbu", searchTitle: "Tafuta Kumbukumbu", searchPlaceholder: "🔍 Andika neno la kutafuta...", favTitle: "Kumbukumbu Uliyozipenda", navHome: "Home", navAdd: "Ongeza", navSearch: "Tafuta", navFav: "Vipendwa", noMemories: "Hakuna kumbukumbu bado. Bonyeza 'Ongeza' kuanza.", noFavs: "Hakuna kumbukumbu ulizozipenda bado.", noSearch: "Hakuna matokeo ya tafuta yako.", deleteConfirm: "Una uhakika unataka kufuta kumbukumbu hii?" },
+            en: { welcome: "Welcome to Your Memories", welcomeSub: "Save, organize, and find all your memories here.", statsTitle: "Your Statistics", totalMemories: "Total Memories", favorites: "Favorites", recentTitle: "Recent Memories", addTitle: "Add New Memory", editTitle: "Edit Memory", titleLbl: "Title", contentLbl: "Content", categoryLbl: "Category", saveBtn: "Save Memory", updateBtn: "Update Memory", searchTitle: "Search Memories", searchPlaceholder: "🔍 Type a word to search...", favTitle: "Your Favorite Memories", navHome: "Home", navAdd: "Add", navSearch: "Search", navFav: "Favorites", noMemories: "No memories yet. Click 'Add' to start.", noFavs: "No favorite memories yet.", noSearch: "No results found for your search.", deleteConfirm: "Are you sure you want to delete this memory?" }
+        };
+        window.onload = function() {
+            setTimeout(() => {
+                document.getElementById('splash').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('splash').style.display = 'none';
+                    document.getElementById('app').style.display = 'block';
+                    applyLanguage();
+                    renderDashboard();
+                }, 500);
+            }, 2000);
+        };
+        function navigate(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById('page-' + pageId).classList.add('active');
+            document.getElementById('nav-' + pageId).classList.add('active');
+            if(pageId === 'dashboard') renderDashboard();
+            if(pageId === 'favorites') renderFavorites();
+            if(pageId === 'search') document.getElementById('search-input').value = '';
+            window.scrollTo(0,0);
+        }
+        function toggleLanguage() {
+            currentLang = currentLang === 'sw' ? 'en' : 'sw';
+            localStorage.setItem('kitwe_lang', currentLang);
+            applyLanguage();
+            renderDashboard();
+            renderFavorites();
+        }
+        function applyLanguage() {
+            const t = translations[currentLang];
+            document.getElementById('lang-btn').innerText = currentLang === 'sw' ? 'EN' : 'SW';
+            document.getElementById('dash-welcome').innerText = t.welcome;
+            document.getElementById('dash-sub').innerText = t.welcomeSub;
+            document.getElementById('dash-stats-title').innerText = t.statsTitle;
+            document.getElementById('stat-total-label').innerText = t.totalMemories;
+            document.getElementById('stat-favs-label').innerText = t.favorites;
+            document.getElementById('dash-recent-title').innerText = t.recentTitle;
+            document.getElementById('add-title').innerText = editingMemoryId ? t.editTitle : t.addTitle;
+            document.getElementById('lbl-title').innerText = t.titleLbl;
+            document.getElementById('lbl-content').innerText = t.contentLbl;
+            document.getElementById('lbl-category').innerText = t.categoryLbl;
+            document.getElementById('btn-save-memory').innerText = editingMemoryId ? t.updateBtn : t.saveBtn;
+            document.getElementById('search-title').innerText = t.searchTitle;
+            document.getElementById('search-input').placeholder = t.searchPlaceholder;
+            document.getElementById('fav-title').innerText = t.favTitle;
+            document.getElementById('nav-lbl-home').innerText = t.navHome;
+            document.getElementById('nav-lbl-add').innerText = t.navAdd;
+            document.getElementById('nav-lbl-search').innerText = t.navSearch;
+            document.getElementById('nav-lbl-fav').innerText = t.navFav;
+        }
+        function saveMemory() {
+            const title = document.getElementById('input-title').value.trim();
+            const content = document.getElementById('input-content').value.trim();
+            const category = document.getElementById('input-category').value;
+            if(!title || !content) {
+                alert(currentLang === 'sw' ? "Tafadhali jaza kichwa na maelezo!" : "Please fill in title and content!");
+                return;
+            }
+            if(editingMemoryId) {
+                const index = memories.findIndex(m => m.id === editingMemoryId);
+                if(index !== -1) { memories[index] = { ...memories[index], title, content, category }; }
+                editingMemoryId = null;
+            } else {
+                const newMemory = { id: Date.now(), title: title, content: content, category: category, date: new Date().toLocaleDateString(), isFavorite: false };
+                memories.unshift(newMemory);
+            }
+            localStorage.setItem('kitwe_memories', JSON.stringify(memories));
+            document.getElementById('input-title').value = '';
+            document.getElementById('input-content').value = '';
+            document.getElementById('input-category').value = 'General';
+            alert(currentLang === 'sw' ? "Kumbukumbu imehifadhiwa!" : "Memory saved!");
+            applyLanguage();
+            navigate('dashboard');
+        }
+        function editMemory(id) {
+            const mem = memories.find(m => m.id === id);
+            if(!mem) return;
+            editingMemoryId = id;
+            document.getElementById('input-title').value = mem.title;
+            document.getElementById('input-content').value = mem.content;
+            document.getElementById('input-category').value = mem.category;
+            applyLanguage();
+            navigate('add');
+        }
+        function deleteMemory(id) {
+            const t = translations[currentLang];
+            if(confirm(t.deleteConfirm)) {
+                memories = memories.filter(m => m.id !== id);
+                localStorage.setItem('kitwe_memories', JSON.stringify(memories));
+                renderDashboard();
+                renderFavorites();
+            }
+        }
+        function toggleFavorite(id) {
+            const index = memories.findIndex(m => m.id === id);
+            if(index !== -1) {
+                memories[index].isFavorite = !memories[index].isFavorite;
+                localStorage.setItem('kitwe_memories', JSON.stringify(memories));
+                renderDashboard();
+                renderFavorites();
+            }
+        }
+        function createMemoryHTML(mem) {
+            return \`
+                <div class="memory-card">
+                    <span class="category-tag">\${mem.category}</span>
+                    <h4>\${mem.title}</h4>
+                    <p>\${mem.content}</p>
+                    <small class="date-text">📅 \${mem.date}</small>
+                    <div class="card-actions">
+                        <button class="btn-icon fav \${mem.isFavorite ? 'active' : ''}" onclick="toggleFavorite(\${mem.id})">⭐</button>
+                        <button class="btn-icon" onclick="editMemory(\${mem.id})">✏️</button>
+                        <button class="btn-icon delete" onclick="deleteMemory(\${mem.id})">🗑️</button>
+                    </div>
+                </div>
+            \`;
+        }
+        function renderDashboard() {
+            document.getElementById('stat-total').innerText = memories.length;
+            document.getElementById('stat-favs').innerText = memories.filter(m => m.isFavorite).length;
+            const list = document.getElementById('recent-memories-list');
+            if(memories.length === 0) {
+                list.innerHTML = \`<p style="text-align:center; color:#94a3b8; font-size:0.85rem;">\${translations[currentLang].noMemories}</p>\`;
+            } else {
+                list.innerHTML = memories.slice(0, 3).map(createMemoryHTML).join('');
+            }
+        }
+        function renderFavorites() {
+            const list = document.getElementById('favorites-list');
+            const favs = memories.filter(m => m.isFavorite);
+            if(favs.length === 0) {
+                list.innerHTML = \`<p style="text-align:center; color:#94a3b8; font-size:0.85rem;">\${translations[currentLang].noFavs}</p>\`;
+            } else {
+                list.innerHTML = favs.map(createMemoryHTML).join('');
+            }
+        }
+        function searchMemories() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const list = document.getElementById('search-results-list');
+            if(query.length < 2) { list.innerHTML = ''; return; }
+            const results = memories.filter(m => m.title.toLowerCase().includes(query) || m.content.toLowerCase().includes(query) || m.category.toLowerCase().includes(query));
+            if(results.length === 0) {
+                list.innerHTML = \`<p style="text-align:center; color:#94a3b8; font-size:0.85rem;">\${translations[currentLang].noSearch}</p>\`;
+            } else {
+                list.innerHTML = results.map(createMemoryHTML).join('');
+            }
+        }
+    </script>
+</body>
+</html>`,
 
-    localStorage.setItem('kitwe_biz_purpose', purpose);
-    localStorage.setItem('kitwe_biz_goal', goal);
+            3: `<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>KITWE STUDY AI</title>
+    <style>
+        :root { --navy: #002366; --royal: #003399; --gold: #FFD700; --gold-dark: #D4AF37; --white: #FFFFFF; --bg-light: #F5F7FA; --text-dark: #1E293B; --text-light: #64748B; --danger: #EF4444; --success: #22C55E; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-light); color: var(--text-dark); overflow-x: hidden; }
+        #splash { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: linear-gradient(135deg, var(--navy), var(--royal)); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; color: white; transition: opacity 0.5s ease; }
+        .splash-logo { font-size: 3rem; margin-bottom: 10px; animation: pulse 1.5s infinite; }
+        .splash-title { font-size: 1.8rem; font-weight: bold; color: var(--gold); text-align: center; }
+        .splash-sub { font-size: 0.9rem; margin-top: 5px; color: #cbd5e1; }
+        .splash-loader { margin-top: 30px; width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.2); border-top: 3px solid var(--gold); border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        #app { display: none; padding-bottom: 70px; max-width: 600px; margin: 0 auto; min-height: 100vh; background: var(--bg-light); }
+        header { background: var(--navy); color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        .brand-header h1 { font-size: 1.2rem; color: var(--white); }
+        .brand-header h1 span { color: var(--gold); }
+        .brand-header p { font-size: 0.65rem; color: #94a3b8; }
+        .page { display: none; padding: 20px; animation: fadeIn 0.3s ease; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        .welcome-banner { background: linear-gradient(135deg, var(--royal), var(--navy)); color: white; padding: 25px 20px; border-radius: 15px; margin-bottom: 20px; text-align: center; box-shadow: 0 4px 15px rgba(0,35,102,0.3); }
+        .welcome-banner h2 { font-size: 1.3rem; margin-bottom: 5px; }
+        .welcome-banner p { font-size: 0.85rem; color: var(--gold); }
+        .grid-menu { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        .menu-card { background: white; padding: 20px 10px; border-radius: 15px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); cursor: pointer; border: 1px solid #e2e8f0; transition: 0.2s; }
+        .menu-card:active { transform: scale(0.96); border-color: var(--gold); }
+        .menu-icon { font-size: 1.8rem; margin-bottom: 8px; }
+        .menu-name { font-size: 0.85rem; font-weight: bold; color: var(--navy); }
+        .section-title { font-size: 1.1rem; color: var(--navy); margin-bottom: 15px; border-left: 4px solid var(--gold); padding-left: 10px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: bold; color: var(--text-dark); margin-bottom: 6px; }
+        .form-control { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 0.9rem; background: white; outline: none; transition: 0.2s; }
+        .form-control:focus { border-color: var(--gold); box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2); }
+        textarea.form-control { resize: vertical; min-height: 100px; }
+        .btn { padding: 12px 20px; background: var(--navy); color: white; border: none; border-radius: 10px; font-weight: bold; font-size: 0.95rem; cursor: pointer; width: 100%; transition: 0.2s; }
+        .btn:active { transform: scale(0.98); }
+        .btn-gold { background: var(--gold); color: var(--navy); }
+        .btn-outline { background: transparent; border: 1px solid var(--navy); color: var(--navy); }
+        .btn-danger { background: var(--danger); }
+        .ai-box { background: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid var(--royal); padding: 15px; border-radius: 10px; margin-top: 15px; font-size: 0.9rem; line-height: 1.6; display: none; }
+        .demo-note { font-size: 0.7rem; color: var(--danger); margin-top: 8px; background: #fef2f2; padding: 5px 8px; border-radius: 5px; display: inline-block; }
+        .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 600px; background: white; display: flex; justify-content: space-around; padding: 10px 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); z-index: 1000; border-top-left-radius: 15px; border-top-right-radius: 15px; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 0.65rem; color: var(--text-light); cursor: pointer; padding: 5px 10px; transition: 0.2s; }
+        .nav-item.active { color: var(--navy); font-weight: bold; }
+        .nav-item.active .nav-icon { color: var(--gold); transform: scale(1.1); }
+        .nav-icon { font-size: 1.3rem; margin-bottom: 2px; }
+        .list-item { background: white; padding: 15px; border-radius: 10px; margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-left: 3px solid var(--gold); }
+        .list-item h4 { font-size: 0.95rem; color: var(--navy); margin-bottom: 5px; }
+        .list-item p { font-size: 0.8rem; color: var(--text-light); margin-bottom: 10px; }
+        .item-actions { display: flex; justify-content: flex-end; gap: 8px; }
+        .btn-small { padding: 5px 10px; font-size: 0.75rem; border-radius: 6px; width: auto; }
+        .profile-header { text-align: center; margin-bottom: 20px; }
+        .avatar { width: 80px; height: 80px; background: var(--navy); color: var(--gold); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 2rem; font-weight: bold; margin: 0 auto 10px; border: 3px solid var(--gold); }
+        .quiz-option { display: block; background: white; padding: 12px; border-radius: 8px; margin-bottom: 8px; border: 1px solid #e2e8f0; cursor: pointer; font-size: 0.9rem; }
+        .quiz-option input { margin-right: 10px; }
+        .quiz-result { text-align: center; padding: 20px; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 10px; margin-top: 15px; display: none; }
+        .disclaimer { text-align: center; font-size: 0.65rem; color: #94a3b8; margin-top: 30px; padding-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div id="splash">
+        <div class="splash-logo">🧠</div>
+        <div class="splash-title">KITWE STUDY AI</div>
+        <div class="splash-sub">Learn Smarter. Understand Better.</div>
+        <div class="splash-loader"></div>
+    </div>
+    <div id="app">
+        <header>
+            <div class="brand-header">
+                <h1>KITWE <span>STUDY AI</span></h1>
+                <p>Powered by KITWE GlobalMind</p>
+            </div>
+        </header>
+        <div id="page-home" class="page active">
+            <div class="welcome-banner">
+                <h2>Karibu KITWE STUDY AI 👋</h2>
+                <p>Learn Smarter. Understand Better.</p>
+            </div>
+            <h3 class="section-title">Huduma Zetu</h3>
+            <div class="grid-menu">
+                <div class="menu-card" onclick="navigate('explain')"><div class="menu-icon">📚</div><div class="menu-name">Explain Topic</div></div>
+                <div class="menu-card" onclick="navigate('notes')"><div class="menu-icon">📝</div><div class="menu-name">Make Notes</div></div>
+                <div class="menu-card" onclick="navigate('quiz')"><div class="menu-icon">❓</div><div class="menu-name">Generate Quiz</div></div>
+                <div class="menu-card" onclick="navigate('planner')"><div class="menu-icon">📅</div><div class="menu-name">Study Planner</div></div>
+                <div class="menu-card" onclick="navigate('tools')"><div class="menu-icon">🔢</div><div class="menu-name">Business Calc</div></div>
+                <div class="menu-card" onclick="navigate('saved')"><div class="menu-icon">💾</div><div class="menu-name">Saved Lessons</div></div>
+            </div>
+            <div class="disclaimer">"KITWE STUDY AI is an independent educational project by KITWE GlobalMind."</div>
+        </div>
+        <div id="page-explain" class="page">
+            <h3 class="section-title">Explain Topic 📚</h3>
+            <div class="form-group"><label>Topic / Mada</label><input type="text" id="explain-topic" class="form-control" placeholder="mf. Photosynthesis"></div>
+            <div class="form-group"><label>Subject / Somo</label><input type="text" id="explain-subject" class="form-control" placeholder="mf. Biology"></div>
+            <div class="form-group"><label>Kiwango cha Uelewa</label><select id="explain-level" class="form-control"><option value="beginner">Beginner (Mwanzo)</option><option value="intermediate">Intermediate (Kati)</option><option value="advanced">Advanced (Juu)</option></select></div>
+            <button class="btn btn-gold" onclick="explainTopic()">Eleza Mada</button>
+            <div id="explain-result" class="ai-box"></div>
+        </div>
+        <div id="page-notes" class="page">
+            <h3 class="section-title">Make Notes 📝</h3>
+            <div class="form-group"><label>Weka Maandishi / Topic</label><textarea id="notes-input" class="form-control" placeholder="Andika mada au maandishi unayotaka kufanyiwa muhtasari..."></textarea></div>
+            <button class="btn btn-gold" onclick="generateNotes()">Tengeneza Notes</button>
+            <div id="notes-result" class="ai-box"></div>
+        </div>
+        <div id="page-quiz" class="page">
+            <h3 class="section-title">Generate Quiz ❓</h3>
+            <div id="quiz-setup">
+                <div class="form-group"><label>Subject / Somo</label><select id="quiz-subject" class="form-control"><option value="general">General Knowledge</option><option value="business">Business / Biashara</option><option value="science">Science / Sayansi</option></select></div>
+                <div class="form-group"><label>Idadi ya Maswali</label><input type="number" id="quiz-count" class="form-control" value="3" min="1" max="5"></div>
+                <button class="btn btn-gold" onclick="startQuiz()">Anza Quiz</button>
+            </div>
+            <div id="quiz-play" style="display:none;">
+                <div id="quiz-questions-container"></div>
+                <button class="btn" onclick="submitQuiz()" style="margin-top:15px;">Wasilisha Majibu</button>
+            </div>
+            <div id="quiz-result" class="quiz-result">
+                <h3 id="score-text">0/0</h3>
+                <p>Umekamilisha Quiz!</p>
+                <button class="btn btn-outline" style="margin-top:10px;" onclick="startQuiz()">Jaribu Tena</button>
+            </div>
+        </div>
+        <div id="page-planner" class="page">
+            <h3 class="section-title">Study Planner 📅</h3>
+            <div class="form-group"><label>Somo (Subject)</label><input type="text" id="plan-subject" class="form-control" placeholder="mf. Accounting"></div>
+            <div class="form-group"><label>Mada (Topic)</label><input type="text" id="plan-topic" class="form-control" placeholder="mf. Trial Balance"></div>
+            <div class="form-group"><label>Tarehe (Date)</label><input type="date" id="plan-date" class="form-control"></div>
+            <div class="form-group"><label>Muda wa Kujifunza (Time)</label><input type="time" id="plan-time" class="form-control"></div>
+            <button class="btn btn-gold" onclick="addPlan()">Ongeza kwenye Ratiba</button>
+            <h3 class="section-title" style="margin-top:20px;">Ratiba Yako</h3>
+            <div id="planner-list"></div>
+        </div>
+        <div id="page-tools" class="page">
+            <h3 class="section-title">Business Calculator 🔢</h3>
+            <div class="list-item">
+                <h4>Profit Calculator</h4>
+                <div class="form-group" style="margin-top:10px;"><input type="number" id="profit-revenue" class="form-control" placeholder="Revenue (Mauzo)" style="margin-bottom:5px;"><input type="number" id="profit-cost" class="form-control" placeholder="Cost (Gharama)"></div>
+                <button class="btn btn-small" onclick="calcProfit()">Hesabu Faida</button>
+                <p id="profit-result" style="font-weight:bold; margin-top:10px; color:var(--success);"></p>
+            </div>
+            <div class="list-item">
+                <h4>Percentage Calculator</h4>
+                <div class="form-group" style="margin-top:10px;"><input type="number" id="pct-part" class="form-control" placeholder="Kiasi (Part)" style="margin-bottom:5px;"><input type="number" id="pct-total" class="form-control" placeholder="Jumla (Total)"></div>
+                <button class="btn btn-small" onclick="calcPercentage()">Hesabu Asilimia</button>
+                <p id="pct-result" style="font-weight:bold; margin-top:10px; color:var(--royal);"></p>
+            </div>
+            <div class="list-item">
+                <h4>Simple Interest Calculator</h4>
+                <div class="form-group" style="margin-top:10px;"><input type="number" id="int-principal" class="form-control" placeholder="Principal (Mtaji)" style="margin-bottom:5px;"><input type="number" id="int-rate" class="form-control" placeholder="Rate % (Riba)" style="margin-bottom:5px;"><input type="number" id="int-time" class="form-control" placeholder="Time (Miaka)"></div>
+                <button class="btn btn-small" onclick="calcInterest()">Hesabu Riba</button>
+                <p id="int-result" style="font-weight:bold; margin-top:10px; color:var(--navy);"></p>
+            </div>
+            <div class="list-item">
+                <h4>Discount Calculator</h4>
+                <div class="form-group" style="margin-top:10px;"><input type="number" id="disc-price" class="form-control" placeholder="Bei ya Awali" style="margin-bottom:5px;"><input type="number" id="disc-percent" class="form-control" placeholder="Punguzo %"></div>
+                <button class="btn btn-small" onclick="calcDiscount()">Hesabu Punguzo</button>
+                <p id="disc-result" style="font-weight:bold; margin-top:10px; color:var(--danger);"></p>
+            </div>
+        </div>
+        <div id="page-saved" class="page">
+            <h3 class="section-title">Saved Lessons 💾</h3>
+            <div id="saved-list"></div>
+        </div>
+        <div id="page-profile" class="page">
+            <h3 class="section-title">Profile 👤</h3>
+            <div class="profile-header">
+                <div class="avatar" id="profile-avatar">Y</div>
+                <h3 id="profile-name">Yahaya Boniphace</h3>
+                <p id="profile-course" style="color:var(--text-light); font-size:0.85rem;">Course: DBA</p>
+                <p id="profile-year" style="color:var(--text-light); font-size:0.85rem;">Year: 2024</p>
+            </div>
+            <div class="list-item" style="display:flex; justify-content:space-between; text-align:center;">
+                <div><b id="stat-saved" style="font-size:1.2rem; color:var(--navy);">0</b><br><small>Saved</small></div>
+                <div><b id="stat-plans" style="font-size:1.2rem; color:var(--navy);">0</b><br><small>Plans</small></div>
+            </div>
+            <button class="btn btn-outline" onclick="toggleEditProfile()" style="margin-bottom:15px;">Edit Profile</button>
+            <div id="edit-profile" style="display:none;">
+                <div class="form-group"><label>Jina</label><input type="text" id="edit-name" class="form-control"></div>
+                <div class="form-group"><label>Kozi</label><input type="text" id="edit-course" class="form-control"></div>
+                <div class="form-group"><label>Mwaka</label><input type="text" id="edit-year" class="form-control"></div>
+                <button class="btn btn-gold" onclick="saveProfile()">Hifadhi</button>
+            </div>
+        </div>
+        <div class="bottom-nav">
+            <div class="nav-item active" id="nav-home" onclick="navigate('home')"><div class="nav-icon">🏠</div>Home</div>
+            <div class="nav-item" id="nav-ai" onclick="navigate('explain')"><div class="nav-icon">🤖</div>AI Study</div>
+            <div class="nav-item" id="nav-planner" onclick="navigate('planner')"><div class="nav-icon">📅</div>Planner</div>
+            <div class="nav-item" id="nav-tools" onclick="navigate('tools')"><div class="nav-icon">🔢</div>Tools</div>
+            <div class="nav-item" id="nav-profile" onclick="navigate('profile')"><div class="nav-icon">👤</div>Profile</div>
+        </div>
+    </div>
+    <script>
+        let profile = JSON.parse(localStorage.getItem('kitwe_profile')) || { name: "Yahaya Boniphace", course: "DBA", year: "2024" };
+        let savedLessons = JSON.parse(localStorage.getItem('kitwe_saved')) || [];
+        let studyPlans = JSON.parse(localStorage.getItem('kitwe_plans')) || [];
+        window.onload = function() {
+            setTimeout(() => {
+                document.getElementById('splash').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('splash').style.display = 'none';
+                    document.getElementById('app').style.display = 'block';
+                    loadProfile();
+                    renderSaved();
+                    renderPlans();
+                }, 500);
+            }, 2000);
+        };
+        function navigate(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById('page-' + pageId).classList.add('active');
+            if(pageId === 'home' || pageId === 'explain' || pageId === 'planner' || pageId === 'tools' || pageId === 'profile') {
+                let navId = pageId;
+                if(pageId === 'explain') navId = 'ai';
+                document.getElementById('nav-' + navId).classList.add('active');
+            }
+            window.scrollTo(0,0);
+        }
+        function callAI(prompt, type) {
+            return new Promise((resolve) => {
+                setTimeout(() => {
+                    let response = "";
+                    const p = prompt.toLowerCase();
+                    if(type === 'explain') {
+                        if(p.includes('photosynthesis')) {
+                            response = "<b>Photosynthesis:</b> Ni mchakato ambao mimea hutumia mwanga wa jua, maji, na CO2 kutengeneza chakula (glucose) na kutoa oksijeni.";
+                        } else if (p.includes('accounting') || p.includes('account')) {
+                            response = "<b>Accounting:</b> Ni mchakato wa kurekodi, kuchambua, na kuripoti shughuli za kifedha za biashara au taasisi.";
+                        } else {
+                            response = "<b>Mada:</b> " + prompt + "<br><br>Hii ni mada nzuri kujifunza. Kwa maelezo zaidi, tafadhali unganisha API halisi ya AI.";
+                        }
+                    } else if(type === 'notes') {
+                        response = "<b>Summary:</b> Maandishi yako yamefupishwa hapa.<br><b>Key Points:</b><br>- Pointi 1<br>- Pointi 2<br>- Pointi 3";
+                    }
+                    resolve(response + "<br><br><span class='demo-note'>Demo Mode – Connect an AI backend for real AI responses.</span>");
+                }, 1000);
+            });
+        }
+        function explainTopic() {
+            const topic = document.getElementById('explain-topic').value;
+            const subject = document.getElementById('explain-subject').value;
+            const level = document.getElementById('explain-level').value;
+            if(!topic) return alert("Tafadhali weka mada!");
+            const resultBox = document.getElementById('explain-result');
+            resultBox.style.display = 'block';
+            resultBox.innerHTML = "Inatafuta jibu...";
+            callAI(topic, 'explain').then(res => {
+                resultBox.innerHTML = \`<b>Subject:</b> \${subject} | <b>Level:</b> \${level}<br><br>\${res}\`;
+            });
+        }
+        function generateNotes() {
+            const input = document.getElementById('notes-input').value;
+            if(!input) return alert("Tafadhali andika kitu!");
+            const resultBox = document.getElementById('notes-result');
+            resultBox.style.display = 'block';
+            resultBox.innerHTML = "Inatengeneza notes...";
+            callAI(input, 'notes').then(res => {
+                resultBox.innerHTML = res;
+                saveLesson("Notes: " + input.substring(0, 20) + "...", res);
+            });
+        }
+        function saveLesson(title, content) {
+            const newLesson = { id: Date.now(), title: title, content: content, date: new Date().toLocaleDateString() };
+            savedLessons.push(newLesson);
+            localStorage.setItem('kitwe_saved', JSON.stringify(savedLessons));
+            renderSaved();
+            updateProfileStats();
+        }
+        function renderSaved() {
+            const container = document.getElementById('saved-list');
+            if(!container) return;
+            container.innerHTML = '';
+            if(savedLessons.length === 0) {
+                container.innerHTML = '<p style="text-align:center; color:var(--text-light); font-size:0.85rem;">Hakuna lessons zilizohifadhiwa.</p>';
+                return;
+            }
+            savedLessons.slice().reverse().forEach(lesson => {
+                container.innerHTML += \`
+                    <div class="list-item">
+                        <h4>\${lesson.title}</h4>
+                        <p style="font-size:0.8rem;">\${lesson.content}</p>
+                        <div class="item-actions">
+                            <button class="btn btn-small btn-danger" onclick="deleteLesson(\${lesson.id})">Futa</button>
+                        </div>
+                    </div>
+                \`;
+            });
+        }
+        function deleteLesson(id) {
+            if(confirm("Una uhakika unataka kufuta?")) {
+                savedLessons = savedLessons.filter(l => l.id !== id);
+                localStorage.setItem('kitwe_saved', JSON.stringify(savedLessons));
+                renderSaved();
+                updateProfileStats();
+            }
+        }
+        const quizData = [
+            { q: "What is the capital of Tanzania?", options: ["Dar es Salaam", "Dodoma", "Arusha"], answer: 1 },
+            { q: "Which is an asset?", options: ["Loan", "Cash", "Rent"], answer: 1 },
+            { q: "What is 10% of 500?", options: ["50", "100", "10"], answer: 0 },
+            { q: "Water boils at?", options: ["100°C", "50°C", "0°C"], answer: 0 },
+            { q: "Who is the father of accounting?", options: ["Luca Pacioli", "Adam Smith", "John Nash"], answer: 0 }
+        ];
+        let currentQuizQuestions = [];
+        function startQuiz() {
+            const count = parseInt(document.getElementById('quiz-count').value);
+            document.getElementById('quiz-setup').style.display = 'none';
+            document.getElementById('quiz-play').style.display = 'block';
+            document.getElementById('quiz-result').style.display = 'none';
+            currentQuizQuestions = quizData.slice().sort(() => 0.5 - Math.random()).slice(0, count);
+            const container = document.getElementById('quiz-questions-container');
+            container.innerHTML = '';
+            currentQuizQuestions.forEach((q, index) => {
+                let optionsHtml = '';
+                q.options.forEach((opt, optIndex) => {
+                    optionsHtml += \`
+                        <label class="quiz-option">
+                            <input type="radio" name="q\${index}" value="\${optIndex}">
+                            \${opt}
+                        </label>
+                    \`;
+                });
+                container.innerHTML += \`
+                    <div style="margin-bottom:20px; background:white; padding:15px; border-radius:10px;">
+                        <p style="font-weight:bold; margin-bottom:10px;">\${index + 1}. \${q.q}</p>
+                        \${optionsHtml}
+                    </div>
+                \`;
+            });
+        }
+        function submitQuiz() {
+            let score = 0;
+            currentQuizQuestions.forEach((q, index) => {
+                const selected = document.querySelector(\`input[name="q\${index}"]:checked\`);
+                if(selected && parseInt(selected.value) === q.answer) { score++; }
+            });
+            document.getElementById('quiz-play').style.display = 'none';
+            document.getElementById('quiz-result').style.display = 'block';
+            document.getElementById('score-text').innerText = \`Alama: \${score}/\${currentQuizQuestions.length}\`;
+        }
+        function addPlan() {
+            const subject = document.getElementById('plan-subject').value;
+            const topic = document.getElementById('plan-topic').value;
+            const date = document.getElementById('plan-date').value;
+            const time = document.getElementById('plan-time').value;
+            if(!subject || !topic || !date || !time) return alert("Tafadhali jaza sehemu zote!");
+            const newPlan = { id: Date.now(), subject, topic, date, time };
+            studyPlans.push(newPlan);
+            localStorage.setItem('kitwe_plans', JSON.stringify(studyPlans));
+            document.getElementById('plan-subject').value = '';
+            document.getElementById('plan-topic').value = '';
+            renderPlans();
+            updateProfileStats();
+        }
+        function renderPlans() {
+            const container = document.getElementById('planner-list');
+            if(!container) return;
+            container.innerHTML = '';
+            if(studyPlans.length === 0) {
+                container.innerHTML = '<p style="text-align:center; color:var(--text-light); font-size:0.85rem;">Hakuna ratiba bado.</p>';
+                return;
+            }
+            studyPlans.slice().reverse().forEach(plan => {
+                container.innerHTML += \`
+                    <div class="list-item">
+                        <h4>\${plan.subject}: \${plan.topic}</h4>
+                        <p>📅 \${plan.date} | ⏰ \${plan.time}</p>
+                        <div class="item-actions">
+                            <button class="btn btn-small btn-danger" onclick="deletePlan(\${plan.id})">Futa</button>
+                        </div>
+                    </div>
+                \`;
+            });
+        }
+        function deletePlan(id) {
+            studyPlans = studyPlans.filter(p => p.id !== id);
+            localStorage.setItem('kitwe_plans', JSON.stringify(studyPlans));
+            renderPlans();
+            updateProfileStats();
+        }
+        function calcProfit() {
+            const rev = parseFloat(document.getElementById('profit-revenue').value) || 0;
+            const cost = parseFloat(document.getElementById('profit-cost').value) || 0;
+            document.getElementById('profit-result').innerText = "Faida: TSh " + (rev - cost).toLocaleString();
+        }
+        function calcPercentage() {
+            const part = parseFloat(document.getElementById('pct-part').value) || 0;
+            const total = parseFloat(document.getElementById('pct-total').value) || 0;
+            if (total === 0) { document.getElementById('pct-result').innerText = "Jumla haiwezi kuwa 0."; return; }
+            document.getElementById('pct-result').innerText = "Asilimia: " + ((part / total) * 100).toFixed(2) + "%";
+        }
+        function calcInterest() {
+            const principal = parseFloat(document.getElementById('int-principal').value) || 0;
+            const rate = parseFloat(document.getElementById('int-rate').value) || 0;
+            const time = parseFloat(document.getElementById('int-time').value) || 0;
+            const interest = (principal * rate * time) / 100;
+            document.getElementById('int-result').innerHTML = \`Riba: TSh \${interest.toLocaleString()}<br>Jumla: TSh \${(principal + interest).toLocaleString()}\`;
+        }
+        function calcDiscount() {
+            const price = parseFloat(document.getElementById('disc-price').value) || 0;
+            const percent = parseFloat(document.getElementById('disc-percent').value) || 0;
+            const discountAmount = (price * percent) / 100;
+            document.getElementById('disc-result').innerHTML = \`Punguzo: TSh \${discountAmount.toLocaleString()}<br>Bei Mpya: TSh \${(price - discountAmount).toLocaleString()}\`;
+        }
+        function loadProfile() {
+            document.getElementById('profile-name').innerText = profile.name;
+            document.getElementById('profile-course').innerText = "Course: " + profile.course;
+            document.getElementById('profile-year').innerText = "Year: " + profile.year;
+            document.getElementById('profile-avatar').innerText = profile.name.charAt(0).toUpperCase();
+            document.getElementById('edit-name').value = profile.name;
+            document.getElementById('edit-course').value = profile.course;
+            document.getElementById('edit-year').value = profile.year;
+            updateProfileStats();
+        }
+        function toggleEditProfile() {
+            const form = document.getElementById('edit-profile');
+            form.style.display = form.style.display === 'none' || form.style.display === '' ? 'block' : 'none';
+        }
+        function saveProfile() {
+            const newName = document.getElementById('edit-name').value.trim();
+            const newCourse = document.getElementById('edit-course').value.trim();
+            const newYear = document.getElementById('edit-year').value.trim();
+            if (!newName || !newCourse || !newYear) return alert("Tafadhali jaza sehemu zote!");
+            profile.name = newName; profile.course = newCourse; profile.year = newYear;
+            localStorage.setItem('kitwe_profile', JSON.stringify(profile));
+            loadProfile();
+            document.getElementById('edit-profile').style.display = 'none';
+            alert("Profile imehifadhiwa!");
+        }
+        function updateProfileStats() {
+            document.getElementById('stat-saved').innerText = savedLessons.length;
+            document.getElementById('stat-plans').innerText = studyPlans.length;
+        }
+    </script>
+</body>
+</html>`,
 
-    alert('Mpango wa biashara umehifadhiwa kikamilifu!');
-}
+            4: `<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>TIA Kigoma Student Forum</title>
+    <style>
+        :root { --main-blue: #003366; --sec-blue: #0057B8; --active-green: #22C55E; --white: #FFFFFF; --bg-light: #F5F7FA; --text-dark: #1F2937; --text-light: #6B7280; --gold: #F59E0B; --danger: #EF4444; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-light); color: var(--text-dark); overflow-x: hidden; }
+        #splash-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: linear-gradient(135deg, var(--main-blue), var(--sec-blue)); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; color: white; transition: opacity 0.5s ease; }
+        .splash-logo { font-size: 3rem; margin-bottom: 10px; animation: pulse 1.5s infinite; }
+        .splash-title { font-size: 1.5rem; font-weight: bold; text-align: center; letter-spacing: 1px; }
+        .splash-sub { font-size: 0.9rem; margin-top: 5px; color: #cbd5e1; }
+        .splash-loader { margin-top: 30px; width: 50px; height: 50px; border: 4px solid rgba(255,255,255,0.3); border-top: 4px solid var(--gold); border-radius: 50%; animation: spin 1s linear infinite; }
+        .splash-brand { position: absolute; bottom: 20px; font-size: 0.75rem; color: #94a3b8; letter-spacing: 1px; }
+        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        #app-container { display: none; padding-bottom: 70px; width: 100%; max-width: 600px; margin: 0 auto; background: var(--bg-light); min-height: 100vh; position: relative; }
+        .app-header { background: var(--main-blue); color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .app-header h1 { font-size: 1.1rem; font-weight: bold; }
+        .app-header span { font-size: 0.6rem; color: var(--gold); display: block; font-weight: normal; }
+        .header-icon { font-size: 1.3rem; cursor: pointer; position: relative; }
+        .page { display: none; padding: 15px; animation: fadeIn 0.3s ease; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        .welcome-box { background: var(--sec-blue); color: white; padding: 20px; border-radius: 15px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,87,184,0.2); }
+        .welcome-box h2 { font-size: 1.2rem; margin-bottom: 5px; }
+        .welcome-box p { font-size: 0.85rem; opacity: 0.9; }
+        .search-bar { width: 100%; padding: 12px 15px; border-radius: 25px; border: 1px solid #e2e8f0; margin-bottom: 15px; font-size: 0.9rem; outline: none; background: white; }
+        .section-title { font-size: 1rem; font-weight: bold; margin-bottom: 10px; color: var(--main-blue); }
+        .categories-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; }
+        .cat-card { background: white; padding: 15px; border-radius: 12px; text-align: center; font-size: 0.85rem; font-weight: bold; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-left: 4px solid var(--sec-blue); }
+        .post-card { background: white; padding: 15px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); cursor: pointer; }
+        .post-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+        .post-category { font-size: 0.7rem; font-weight: bold; color: var(--sec-blue); background: #e0f2fe; padding: 3px 8px; border-radius: 10px; }
+        .post-title { font-size: 1rem; font-weight: bold; margin-bottom: 5px; color: var(--text-dark); }
+        .post-content { font-size: 0.85rem; color: var(--text-light); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 10px; }
+        .post-footer { display: flex; gap: 15px; font-size: 0.8rem; color: var(--text-light); border-top: 1px solid #f1f5f9; padding-top: 10px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: bold; margin-bottom: 5px; color: var(--main-blue); }
+        .form-control { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; outline: none; background: white; }
+        textarea.form-control { resize: vertical; min-height: 100px; }
+        .btn { width: 100%; padding: 12px; background: var(--sec-blue); color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer; margin-top: 10px; }
+        .btn-gold { background: var(--gold); color: var(--text-dark); }
+        .btn-danger { background: var(--danger); }
+        .btn-outline { background: transparent; border: 1px solid var(--sec-blue); color: var(--sec-blue); }
+        .toggle-container { display: flex; align-items: center; justify-content: space-between; background: white; padding: 12px; border-radius: 8px; border: 1px solid #cbd5e1; margin-bottom: 15px; }
+        .toggle-switch { position: relative; display: inline-block; width: 44px; height: 24px; }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 24px; }
+        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: var(--active-green); }
+        input:checked + .slider:before { transform: translateX(20px); }
+        .profile-header { text-align: center; margin-bottom: 20px; }
+        .avatar { width: 80px; height: 80px; background: var(--sec-blue); color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 2rem; font-weight: bold; margin: 0 auto 10px; border: 3px solid var(--gold); }
+        .profile-stats { display: flex; justify-content: space-around; background: white; padding: 15px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .stat-item { text-align: center; }
+        .stat-val { font-size: 1.2rem; font-weight: bold; color: var(--main-blue); }
+        .stat-label { font-size: 0.75rem; color: var(--text-light); }
+        .notif-card { background: white; padding: 15px; border-radius: 10px; margin-bottom: 10px; border-left: 4px solid var(--gold); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 600px; background: white; display: flex; justify-content: space-around; padding: 10px 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); z-index: 1000; border-top-left-radius: 15px; border-top-right-radius: 15px; }
+        .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 0.65rem; color: var(--text-light); cursor: pointer; transition: 0.2s; padding: 5px 10px; border-radius: 8px; position: relative; }
+        .nav-item.active { color: var(--active-green); font-weight: bold; }
+        .nav-icon { font-size: 1.3rem; margin-bottom: 2px; }
+        .nav-badge { position: absolute; top: 0px; right: 15px; background: var(--danger); color: white; font-size: 0.6rem; padding: 2px 5px; border-radius: 10px; font-weight: bold; }
+        .admin-section { background: #fff1f2; border: 1px solid #fecdd3; padding: 15px; border-radius: 10px; margin-top: 20px; }
+        .admin-stats { display: flex; justify-content: space-between; margin-bottom: 15px; text-align: center; }
+        #post-view-content { background: white; padding: 20px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .comment-list { margin-top: 15px; }
+        .comment-item { background: #f8fafc; padding: 10px; border-radius: 8px; margin-bottom: 8px; font-size: 0.85rem; }
+        .comment-item b { color: var(--sec-blue); font-size: 0.8rem; display: block; margin-bottom: 3px; }
+        .disclaimer { text-align: center; font-size: 0.65rem; color: #94a3b8; padding: 20px 10px; line-height: 1.4; }
+        .branding { text-align: center; font-size: 0.7rem; color: var(--sec-blue); font-weight: bold; margin-bottom: 5px; }
+    </style>
+</head>
+<body>
+    <div id="splash-screen">
+        <div class="splash-logo">🎓</div>
+        <div class="splash-title">TIA KIGOMA</div>
+        <div class="splash-title" style="color: var(--gold); font-size: 1.2rem;">STUDENT FORUM</div>
+        <div class="splash-sub">Connect • Share • Learn</div>
+        <div class="splash-loader"></div>
+        <div class="splash-brand">Powered by KITWE GlobalMind</div>
+    </div>
+    <div id="app-container">
+        <div class="app-header">
+            <div><h1>TIA KIGOMA <span>Student Forum</span></h1></div>
+            <div class="header-icon" onclick="toggleNotifications()">🔔<span id="notif-badge" class="nav-badge" style="display:none;">0</span></div>
+        </div>
+        <div id="page-home" class="page active">
+            <div class="welcome-box">
+                <h2>Karibu Mwanafunzi! 👋</h2>
+                <p>Connect, Share na Learn na wenzako hapa TIA Kigoma.</p>
+            </div>
+            <input type="text" id="search-input" class="search-bar" placeholder="🔍 Tafuta posts, mada au makundi..." onkeyup="searchPosts()">
+            <h3 class="section-title">Categories</h3>
+            <div class="categories-grid" id="categories-container"></div>
+            <h3 class="section-title">Recent Posts</h3>
+            <div id="home-posts-container"></div>
+            <div class="branding">Built with ❤️ by KITWE GlobalMind</div>
+        </div>
+        <div id="page-trending" class="page">
+            <h3 class="section-title">🔥 Trending Discussions</h3>
+            <div id="trending-posts-container"></div>
+        </div>
+        <div id="page-create" class="page">
+            <h3 class="section-title">➕ Create New Post</h3>
+            <div class="form-group"><label>Kichwa cha Post (Title)</label><input type="text" id="post-title" class="form-control" placeholder="Andika kichwa kifupi..."></div>
+            <div class="form-group"><label>Maelezo (Content)</label><textarea id="post-content" class="form-control" placeholder="Eleza zaidi..."></textarea></div>
+            <div class="form-group">
+                <label>Chagua Category</label>
+                <select id="post-category" class="form-control">
+                    <option value="Academics">📚 Academics</option>
+                    <option value="Announcements">📢 Announcements</option>
+                    <option value="Questions">❓ Questions</option>
+                    <option value="Opportunities">💼 Opportunities</option>
+                    <option value="Campus Life">🎉 Campus Life</option>
+                    <option value="Ideas & Innovation">💡 Ideas & Innovation</option>
+                </select>
+            </div>
+            <div class="toggle-container">
+                <span style="font-size: 0.85rem; font-weight: bold; color: var(--main-blue);">Post Kama Anonymous 🕵️</span>
+                <label class="toggle-switch"><input type="checkbox" id="post-anonymous"><span class="slider"></span></label>
+            </div>
+            <button class="btn" onclick="createPost()">CHAPISHA POST</button>
+        </div>
+        <div id="page-notifications" class="page">
+            <h3 class="section-title">🔔 Notifications</h3>
+            <div id="notifications-container"></div>
+        </div>
+        <div id="page-profile" class="page">
+            <div class="profile-header">
+                <div class="avatar" id="profile-avatar">Y</div>
+                <h2 id="profile-name" style="font-size: 1.2rem;">Yahaya Boniphace</h2>
+                <p id="profile-reg" style="font-size: 0.85rem; color: var(--text-light);">Reg: TIA/DBA/001/2024</p>
+                <p id="profile-course" style="font-size: 0.85rem; color: var(--text-light);">Course: DBA I</p>
+            </div>
+            <div class="profile-stats">
+                <div class="stat-item"><div class="stat-val" id="profile-total-posts">0</div><div class="stat-label">Posts</div></div>
+                <div class="stat-item"><div class="stat-val" id="profile-total-likes">0</div><div class="stat-label">Total Likes</div></div>
+                <div class="stat-item"><div class="stat-val" id="profile-total-comments">0</div><div class="stat-label">Comments</div></div>
+            </div>
+            <button class="btn btn-outline" onclick="toggleEditProfile()" style="margin-bottom:10px;">Edit Profile</button>
+            <div id="edit-profile-form" style="display: none; background: white; padding: 15px; border-radius: 12px; margin-bottom: 15px;">
+                <div class="form-group"><label>Jina Kamili</label><input type="text" id="edit-name" class="form-control"></div>
+                <div class="form-group"><label>Namba ya Usajili</label><input type="text" id="edit-reg" class="form-control"></div>
+                <div class="form-group"><label>Kozi</label><input type="text" id="edit-course" class="form-control"></div>
+                <button class="btn" onclick="saveProfile()">Hifadhi</button>
+            </div>
+            <h3 class="section-title">My Posts</h3>
+            <div id="my-posts-container"></div>
+            <div class="admin-section">
+                <h3 style="font-size: 0.9rem; color: var(--danger); margin-bottom: 10px;">🛡️ Admin Panel (Demo)</h3>
+                <div class="admin-stats">
+                    <div><b id="admin-total-users">1</b><br><small>Users</small></div>
+                    <div><b id="admin-total-posts">0</b><br><small>Posts</small></div>
+                    <div><b id="admin-total-comments">0</b><br><small>Comments</small></div>
+                </div>
+                <div id="admin-post-list" style="max-height: 200px; overflow-y: auto; margin-top: 10px;"></div>
+            </div>
+            <div class="disclaimer">"TIA Kigoma Student Forum is an independent student community demo project."</div>
+        </div>
+        <div id="page-single-post" class="page">
+            <button class="btn btn-outline" style="width: auto; padding: 5px 15px; margin-bottom: 15px;" onclick="navigate('home')">← Rudi</button>
+            <div id="post-view-content">
+                <span class="post-category" id="view-cat">Category</span>
+                <h2 id="view-title" style="margin: 10px 0; font-size: 1.2rem;">Title</h2>
+                <p id="view-body" style="font-size: 0.9rem; line-height: 1.5; margin-bottom: 15px;">Content</p>
+                <div style="font-size: 0.8rem; color: var(--text-light); margin-bottom: 15px;">Posted by: <span id="view-author">Anonymous</span></div>
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn" id="view-like-btn" style="flex: 1; background: #e0f2fe; color: var(--sec-blue);" onclick="likeCurrentPost()">❤️ Like (<span id="view-likes">0</span>)</button>
+                    <button class="btn" style="flex: 1; background: #dcfce7; color: #166534;" onclick="sharePost()">🔗 Share</button>
+                </div>
+            </div>
+            <h3 class="section-title">Comments (<span id="view-comment-count">0</span>)</h3>
+            <div class="comment-list" id="view-comments"></div>
+            <div class="form-group" style="margin-top: 15px;">
+                <input type="text" id="comment-input" class="form-control" placeholder="Andika maoni yako hapa...">
+                <button class="btn btn-gold" onclick="addComment()">Tuma Maoni</button>
+            </div>
+        </div>
+        <div class="bottom-nav">
+            <div class="nav-item active" id="nav-home" onclick="navigate('home')"><div class="nav-icon">🏠</div>Home</div>
+            <div class="nav-item" id="nav-trending" onclick="navigate('trending')"><div class="nav-icon">🔥</div>Trending</div>
+            <div class="nav-item" id="nav-create" onclick="navigate('create')">
+                <div class="nav-icon" style="background: var(--sec-blue); color: white; border-radius: 50%; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; margin-top: -15px; box-shadow: 0 4px 10px rgba(0,87,184,0.4);">➕</div>
+                <div style="margin-top: 2px;">Post</div>
+            </div>
+            <div class="nav-item" id="nav-notifications" onclick="navigate('notifications')"><div class="nav-icon">🔔</div>Notifs</div>
+            <div class="nav-item" id="nav-profile" onclick="navigate('profile')"><div class="nav-icon">👤</div>Profile</div>
+        </div>
+    </div>
+    <script>
+        const DEFAULT_PROFILE = { name: "Yahaya Boniphace", reg: "TIA/DBA/001/2024", course: "DBA I", year: "2024" };
+        const SAMPLE_POSTS = [
+            { id: 1, title: "Ratiba ya mitihani ya DBA I imetoka?", content: "Habari wakuu, naomba kujua kama ratiba ya mitihani imetoka.", category: "Academics", author: "Yahaya B.", anonymous: false, likes: 12, comments: [{name: "Juma", text: "Ndio imetoka jana."}] },
+            { id: 2, title: "Nani ana notes za Financial Accounting?", content: "Naomba msaada kwa yeyote mwenye soft copy za notes.", category: "Questions", author: "Anonymous", anonymous: true, likes: 5, comments: [] }
+        ];
+        let posts = JSON.parse(localStorage.getItem('tia_forum_posts')) || SAMPLE_POSTS;
+        let profile = JSON.parse(localStorage.getItem('tia_forum_profile')) || DEFAULT_PROFILE;
+        let notifications = JSON.parse(localStorage.getItem('tia_forum_notifs')) || [{ id: 1, text: "Mtu fulani amependa post yako.", time: "Dakika 5 zilizopita" }];
+        let currentPostId = null;
+        function saveData() {
+            localStorage.setItem('tia_forum_posts', JSON.stringify(posts));
+            localStorage.setItem('tia_forum_profile', JSON.stringify(profile));
+            localStorage.setItem('tia_forum_notifs', JSON.stringify(notifications));
+            updateUI();
+        }
+        function navigate(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById('page-' + pageId).classList.add('active');
+            if(pageId === 'home' || pageId === 'trending' || pageId === 'create' || pageId === 'notifications' || pageId === 'profile') {
+                document.getElementById('nav-' + pageId).classList.add('active');
+            }
+            window.scrollTo(0,0);
+            if(pageId === 'profile') { loadProfileData(); }
+            if(pageId === 'home') { renderHome(); }
+            if(pageId === 'trending') { renderTrending(); }
+        }
+        function updateUI() {
+            const notifBadge = document.getElementById('notif-badge');
+            if(notifications.length > 0) {
+                notifBadge.style.display = 'block';
+                notifBadge.innerText = notifications.length;
+            } else { notifBadge.style.display = 'none'; }
+            let totalLikes = posts.reduce((sum, post) => sum + post.likes, 0);
+            let totalComments = posts.reduce((sum, post) => sum + post.comments.length, 0);
+            document.getElementById('profile-total-posts').innerText = posts.length;
+            document.getElementById('profile-total-likes').innerText = totalLikes;
+            document.getElementById('profile-total-comments').innerText = totalComments;
+            document.getElementById('admin-total-posts').innerText = posts.length;
+            document.getElementById('admin-total-comments').innerText = totalComments;
+            renderHome();
+            renderTrending();
+            renderNotifications();
+            renderAdminPosts();
+        }
+        function renderHome() {
+            const container = document.getElementById('home-posts-container');
+            container.innerHTML = '';
+            const catContainer = document.getElementById('categories-container');
+            const cats = ['📚 Academics', '📢 Announcements', '❓ Questions', '💼 Opportunities', '🎉 Campus Life', '💡 Ideas & Innovation'];
+            catContainer.innerHTML = cats.map(c => \`<div class="cat-card" onclick="filterCategory('\${c.split(' ')[1]}')">\${c}</div>\`).join('');
+            if(posts.length === 0) {
+                container.innerHTML = '<p style="text-align:center; color:#6b7280; font-size:0.85rem;">Hakuna posts bado.</p>';
+                return;
+            }
+            posts.slice().reverse().forEach(post => { container.innerHTML += createPostHTML(post); });
+        }
+        function renderTrending() {
+            const container = document.getElementById('trending-posts-container');
+            container.innerHTML = '';
+            let trendingPosts = posts.slice().sort((a, b) => b.likes - a.likes).slice(0, 5);
+            trendingPosts.forEach(post => {
+                let isTrending = post.likes > 10 ? '<span style="font-size:0.7rem; color:var(--gold); font-weight:bold;">🔥 Trending</span>' : '';
+                container.innerHTML += \`
+                    <div class="post-card" onclick="openPost(\${post.id})">
+                        <div class="post-header"><span class="post-category">\${post.category}</span>\${isTrending}</div>
+                        <div class="post-title">\${post.title}</div>
+                        <div class="post-content">\${post.content}</div>
+                        <div class="post-footer"><span>❤️ \${post.likes}</span><span>💬 \${post.comments.length}</span></div>
+                    </div>
+                \`;
+            });
+        }
+        function createPostHTML(post) {
+            let authorName = post.anonymous ? "🕵️ Anonymous" : post.author;
+            return \`
+                <div class="post-card" onclick="openPost(\${post.id})">
+                    <div class="post-header"><span class="post-category">\${post.category}</span><small style="color: var(--text-light); font-size: 0.7rem;">\${authorName}</small></div>
+                    <div class="post-title">\${post.title}</div>
+                    <div class="post-content">\${post.content}</div>
+                    <div class="post-footer"><span>❤️ \${post.likes}</span><span>💬 \${post.comments.length}</span></div>
+                </div>
+            \`;
+        }
+        function createPost() {
+            const title = document.getElementById('post-title').value.trim();
+            const content = document.getElementById('post-content').value.trim();
+            const category = document.getElementById('post-category').value;
+            const isAnonymous = document.getElementById('post-anonymous').checked;
+            if(!title || !content) { alert("Tafadhali jaza kichwa na maelezo ya post!"); return; }
+            const newPost = { id: Date.now(), title: title, content: content, category: category, author: profile.name, anonymous: isAnonymous, likes: 0, comments: [] };
+            posts.push(newPost);
+            notifications.unshift({ id: Date.now(), text: "Post yako mpya imechapishwa kikamilifu.", time: "Sasa hivi" });
+            saveData();
+            document.getElementById('post-title').value = '';
+            document.getElementById('post-content').value = '';
+            document.getElementById('post-anonymous').checked = false;
+            alert("Post yako imechapishwa!");
+            navigate('home');
+        }
+        function openPost(id) {
+            currentPostId = id;
+            const post = posts.find(p => p.id === id);
+            if(!post) return;
+            document.getElementById('view-cat').innerText = post.category;
+            document.getElementById('view-title').innerText = post.title;
+            document.getElementById('view-body').innerText = post.content;
+            document.getElementById('view-author').innerText = post.anonymous ? "Anonymous" : post.author;
+            document.getElementById('view-likes').innerText = post.likes;
+            document.getElementById('view-comment-count').innerText = post.comments.length;
+            const commentContainer = document.getElementById('view-comments');
+            commentContainer.innerHTML = '';
+            if(post.comments.length === 0) {
+                commentContainer.innerHTML = '<p style="font-size:0.85rem; color:#6b7280;">Hakuna maoni bado.</p>';
+            } else {
+                post.comments.forEach(c => { commentContainer.innerHTML += \`<div class="comment-item"><b>\${c.name}</b>\${c.text}</div>\`; });
+            }
+            navigate('single-post');
+        }
+        function likeCurrentPost() {
+            if (!currentPostId) return;
+            const post = posts.find(p => p.id === currentPostId);
+            if (post) { post.likes++; document.getElementById('view-likes').innerText = post.likes; saveData(); }
+        }
+        function addComment() {
+            const input = document.getElementById('comment-input');
+            const text = input.value.trim();
+            if (!text || !currentPostId) return;
+            const post = posts.find(p => p.id === currentPostId);
+            if (post) { post.comments.push({ name: profile.name, text: text }); input.value = ''; saveData(); openPost(currentPostId); alert("Maoni yameongezwa!"); }
+        }
+        function sharePost() {
+            if (navigator.share) { navigator.share({ title: document.getElementById('view-title').innerText, text: document.getElementById('view-body').innerText, url: window.location.href }).catch(() => {}); }
+            else { alert("Kushare: " + window.location.href); }
+        }
+        function searchPosts() {
+            const query = document.getElementById('search-input').value.toLowerCase();
+            const container = document.getElementById('home-posts-container');
+            container.innerHTML = '';
+            const filtered = posts.filter(p => p.title.toLowerCase().includes(query) || p.content.toLowerCase().includes(query) || p.category.toLowerCase().includes(query));
+            if (filtered.length === 0) { container.innerHTML = '<p style="text-align:center; color:#6b7280; font-size:0.85rem;">Hakuna post inayolingana.</p>'; return; }
+            filtered.forEach(post => { container.innerHTML += createPostHTML(post); });
+        }
+        function filterCategory(cat) {
+            const container = document.getElementById('home-posts-container');
+            container.innerHTML = '';
+            const filtered = posts.filter(p => p.category.includes(cat));
+            if (filtered.length === 0) { container.innerHTML = '<p style="text-align:center; color:#6b7280; font-size:0.85rem;">Hakuna post kwenye category hii.</p>'; return; }
+            filtered.forEach(post => { container.innerHTML += createPostHTML(post); });
+            window.scrollTo(0, 300);
+        }
+        function toggleNotifications() { navigate('notifications'); document.getElementById('notif-badge').style.display = 'none'; }
+        function renderNotifications() {
+            const container = document.getElementById('notifications-container');
+            container.innerHTML = '';
+            if (notifications.length === 0) { container.innerHTML = '<p style="text-align:center; color:#6b7280; font-size:0.85rem;">Hakuna arifa mpya.</p>'; return; }
+            notifications.forEach(n => { container.innerHTML += \`<div class="notif-card"><p>\${n.text}</p><small>\${n.time}</small></div>\`; });
+        }
+        function loadProfileData() {
+            document.getElementById('profile-name').innerText = profile.name;
+            document.getElementById('profile-reg').innerText = "Reg: " + profile.reg;
+            document.getElementById('profile-course').innerText = "Course: " + profile.course;
+            document.getElementById('profile-avatar').innerText = profile.name.charAt(0).toUpperCase();
+            document.getElementById('edit-name').value = profile.name;
+            document.getElementById('edit-reg').value = profile.reg;
+            document.getElementById('edit-course').value = profile.course;
+            const myPostsContainer = document.getElementById('my-posts-container');
+            myPostsContainer.innerHTML = '';
+            let myPosts = posts.filter(p => p.author === profile.name || (p.anonymous && p.author === profile.name));
+            if (myPosts.length === 0) { myPostsContainer.innerHTML = '<p style="font-size:0.85rem; color:#6b7280;">Hujachapisha post yoyote bado.</p>'; }
+            else { myPosts.reverse().forEach(post => { myPostsContainer.innerHTML += createPostHTML(post); }); }
+        }
+        function toggleEditProfile() {
+            const form = document.getElementById('edit-profile-form');
+            form.style.display = form.style.display === 'none' ? 'block' : 'none';
+        }
+        function saveProfile() {
+            const newName = document.getElementById('edit-name').value.trim();
+            const newReg = document.getElementById('edit-reg').value.trim();
+            const newCourse = document.getElementById('edit-course').value.trim();
+            if (!newName || !newReg || !newCourse) { alert("Tafadhali jaza sehemu zote!"); return; }
+            profile.name = newName; profile.reg = newReg; profile.course = newCourse;
+            saveData(); loadProfileData();
+            document.getElementById('edit-profile-form').style.display = 'none';
+            alert("Profile imeboreshwa kikamilifu!");
+        }
+        function renderAdminPosts() {
+            const container = document.getElementById('admin-post-list');
+            if (!container) return;
+            container.innerHTML = '';
+            if (posts.length === 0) { container.innerHTML = '<p style="font-size:0.8rem; color:#6b7280;">Hakuna posts.</p>'; return; }
+            posts.forEach(post => {
+                container.innerHTML += \`
+                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #fecdd3; padding:8px 0;">
+                        <div style="font-size:0.75rem; max-width: 70%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">\${post.title}</div>
+                        <button class="btn btn-danger" style="width:auto; padding:4px 8px; font-size:0.65rem; margin-top:0;" onclick="deletePost(\${post.id})">Futa</button>
+                    </div>
+                \`;
+            });
+        }
+        function deletePost(id) {
+            if (confirm("Una uhakika unataka kufuta post hii?")) {
+                posts = posts.filter(p => p.id !== id);
+                saveData();
+                alert("Post imefutwa!");
+            }
+        }
+        window.onload = function() {
+            setTimeout(() => {
+                document.getElementById('splash-screen').style.opacity = '0';
+                setTimeout(() => {
+                    document.getElementById('splash-screen').style.display = 'none';
+                    document.getElementById('app-container').style.display = 'block';
+                    updateUI();
+                    loadProfileData();
+                }, 500);
+            }, 2500);
+        };
+    </script>
+</body>
+</html>`
+        };
 
-function loadBizPlan() {
-    const purpose = localStorage.getItem('kitwe_biz_purpose');
-    const goal = localStorage.getItem('kitwe_biz_goal');
+        const moduleNames = {
+            1: "💼 KITWE Digital Twin",
+            2: "🧠 KITWE Memory AI",
+            3: "📚 KITWE Study AI",
+            4: "🎓 TIA Kigoma Forum"
+        };
 
-    if (purpose && goal) {
-        document.getElementById('biz-purpose').value = purpose;
-        document.getElementById('biz-goal').value = goal;
-    }
-}
+        function openModule(id) {
+            const frame = document.getElementById('module-frame');
+            const viewer = document.getElementById('module-viewer');
+            const titleEl = document.getElementById('active-module-title');
 
-window.onerror = function(msg, url, lineNo, columnNo, error) {
-    console.log('Error: ' + msg + '\nURL: ' + url + '\nLine: ' + lineNo + '\nColumn: ' + columnNo + '\nError object: ' + error);
-    return false;
-};
-</script>
+            titleEl.innerText = moduleNames[id];
+            viewer.style.display = 'flex';
+            frame.srcdoc = moduleCodes[id];
+        }
+
+        function returnToHub() {
+            const viewer = document.getElementById('module-viewer');
+            const frame = document.getElementById('module-frame');
+            viewer.style.display = 'none';
+            frame.srcdoc = '';
+        }
+    </script>
 </body>
 </html>
