@@ -1,134 +1,78 @@
 <!DOCTYPE html>
 <html lang="sw">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#002366">
-    <title>KITWE GLOBALMIND HUB</title>
-    <style>
-        :root {
-            --navy: #002366;
-            --gold: #FFD700;
-            --white: #FFFFFF;
-            --bg-light: #F5F7FA;
-            --text-dark: #1E293B;
-            --text-light: #64748B;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#002366">
+<title>KITWE GLOBALMIND HUB</title>
+<style>
+:root{--navy:#002366;--gold:#FFD700;--white:#FFFFFF;--bg-light:#F5F7FA;--text-dark:#1E293B;--text-light:#64748B}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg-light);color:var(--text-dark);overflow-x:hidden;min-height:100vh}
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: var(--bg-light); color: var(--text-dark); overflow-x: hidden; min-height: 100vh; }
+#hub-container{max-width:600px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;padding-bottom:20px}
+header{background:var(--navy);color:#fff;padding:20px;text-align:center;border-bottom:3px solid var(--gold);box-shadow:0 4px 10px rgba(0,0,0,.2)}
+.brand h1{font-size:1.3rem;color:var(--white);letter-spacing:1px}
+.brand h1 span{color:var(--gold)}
+.brand p{font-size:.75rem;color:#94a3b8;margin-top:4px;font-style:italic}
 
-        /* Main Hub Container */
-        #hub-container { max-width: 600px; margin: 0 auto; min-height: 100vh; display: flex; flex-direction: column; padding-bottom: 40px; }
+.hub-welcome{padding:20px;text-align:center}
+.hub-welcome h2{font-size:1.2rem;color:var(--navy);margin-bottom:5px}
+.hub-welcome p{font-size:.85rem;color:var(--text-light)}
 
-        /* Header */
-        header { background: var(--navy); color: white; padding: 20px; text-align: center; border-bottom: 3px solid var(--gold); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-        .brand h1 { font-size: 1.3rem; color: var(--white); letter-spacing: 1px; }
-        .brand h1 span { color: var(--gold); }
-        .brand p { font-size: 0.75rem; color: #94a3b8; margin-top: 4px; font-style: italic; }
+.modules-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px;padding:0 20px;margin-bottom:20px}
+.module-card{background:var(--white);padding:25px 15px;border-radius:16px;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,.06);cursor:pointer;border:2px solid transparent;transition:all .25s ease;font:inherit;color:inherit;width:100%}
+.module-card:active{transform:scale(.96);border-color:var(--gold)}
+.module-icon{font-size:2.5rem;margin-bottom:10px;display:block}
+.module-name{font-size:.95rem;font-weight:bold;color:var(--navy)}
+.module-desc{font-size:.7rem;color:var(--text-light);margin-top:4px}
+.hub-footer{text-align:center;font-size:.7rem;color:#94a3b8;margin-top:auto;padding:20px}
 
-        /* Welcome Section */
-        .hub-welcome { padding: 20px; text-align: center; }
-        .hub-welcome h2 { font-size: 1.2rem; color: var(--navy); margin-bottom: 5px; }
-        .hub-welcome p { font-size: 0.85rem; color: var(--text-light); }
-
-        /* Cards Grid (4 Modules) */
-        .modules-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; padding: 0 20px; margin-bottom: 20px; }
-        .module-card {
-            background: var(--white); padding: 25px 15px; border-radius: 16px; text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.06); cursor: pointer; border: 2px solid transparent;
-            transition: all 0.25s ease; position: relative; overflow: hidden;
-        }
-        .module-card:active { transform: scale(0.96); }
-        .module-card:hover { border-color: var(--gold); box-shadow: 0 6px 18px rgba(0,35,102,0.12); }
-        .module-icon { font-size: 2.5rem; margin-bottom: 10px; display: block; }
-        .module-name { font-size: 0.95rem; font-weight: bold; color: var(--navy); }
-        .module-desc { font-size: 0.7rem; color: var(--text-light); margin-top: 4px; }
-
-        /* Footer Tagline / Disclaimer */
-        .hub-footer { text-align: center; font-size: 0.7rem; color: #94a3b8; margin-top: auto; padding: 20px; }
-
-        /* Module Viewer (Fullscreen iframe & Back button container) */
-        #module-viewer {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
-            background: var(--white); z-index: 9999; display: none; flex-direction: column;
-        }
-        
-        /* Floating Back to Hub Button */
-        .back-hub-bar {
-            background: var(--navy); color: white; padding: 10px 15px; display: flex;
-            align-items: center; justify-content: space-between; border-bottom: 2px solid var(--gold);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2); z-index: 10000; flex-shrink: 0;
-        }
-        .back-btn {
-            background: var(--gold); color: var(--navy); border: none; padding: 6px 14px;
-            border-radius: 6px; font-weight: bold; font-size: 0.8rem; cursor: pointer; display: flex; align-items: center; gap: 5px;
-        }
-        .back-title { font-size: 0.85rem; font-weight: bold; color: var(--white); }
-
-        /* Iframe Frame */
-        #module-frame { width: 100%; flex: 1; border: none; background: #fff; }
-    </style>
+/* Module viewer */
+#module-viewer{position:fixed;top:0;left:0;right:0;bottom:0;background:var(--white);z-index:9999;display:none;flex-direction:column}
+.back-hub-bar{background:var(--navy);color:#fff;padding:10px 15px;display:flex;align-items:center;justify-content:space-between;border-bottom:2px solid var(--gold);box-shadow:0 2px 8px rgba(0,0,0,.2);flex-shrink:0}
+.back-btn{background:var(--gold);color:var(--navy);border:none;padding:8px 14px;border-radius:6px;font-weight:bold;font-size:.8rem;cursor:pointer}
+.back-title{font-size:.85rem;font-weight:bold;color:var(--white)}
+#module-frame{width:100%;flex:1;min-height:0;border:none;background:#fff}
+</style>
 </head>
 <body>
 
-    <!-- MAIN HUB LAUNCHER SCREEN -->
-    <div id="hub-container">
-        <header>
-            <div class="brand">
-                <h1>KITWE <span>GLOBALMIND HUB</span></h1>
-                <p>"Think. Create. Innovate."</p>
-            </div>
-        </header>
-
-        <div class="hub-welcome">
-            <h2>Chagua Moduli ya Kufanya Kazi</h2>
-            <p>Mfumo mmoja uliounganishwa kwa ajili ya mafanikio yako.</p>
-        </div>
-
-        <!-- 4 CARDS GRID -->
-        <div class="modules-grid">
-            <div class="module-card" onclick="openModule(1)">
-                <span class="module-icon">💼</span>
-                <div class="module-name">Digital Twin</div>
-                <div class="module-desc">Asset management</div>
-            </div>
-            <div class="module-card" onclick="openModule(2)">
-                <span class="module-icon">🧠</span>
-                <div class="module-name">Memory AI</div>
-                <div class="module-desc">Save & organize</div>
-            </div>
-            <div class="module-card" onclick="openModule(3)">
-                <span class="module-icon">📚</span>
-                <div class="module-name">Study AI</div>
-                <div class="module-desc">Learning assistant</div>
-            </div>
-            <div class="module-card" onclick="openModule(4)">
-                <span class="module-icon">🎓</span>
-                <div class="module-name">TIA Forum</div>
-                <div class="module-desc">Student social forum</div>
-            </div>
-        </div>
-
-        <div class="hub-footer">
-            KITWE GLOBALMIND HUB • Mobile-First Unified Experience<br>Developed for Yahaya B. Andrea
-        </div>
+<div id="hub-container">
+  <header>
+    <div class="brand">
+      <h1>KITWE <span>GLOBALMIND HUB</span></h1>
+      <p>"Think. Create. Innovate."</p>
     </div>
+  </header>
 
-    <!-- MODULE VIEWER (HIDDEN BY DEFAULT) -->
-    <div id="module-viewer">
-        <div class="back-hub-bar">
-            <button class="back-btn" onclick="returnToHub()">⬅ Rudi Nyumbani</button>
-            <span class="back-title" id="active-module-title">KITWE HUB</span>
-        </div>
-        <iframe id="module-frame"></iframe>
-    </div>
+  <div class="hub-welcome">
+    <h2>Chagua Moduli ya Kufanya Kazi</h2>
+    <p>Mfumo mmoja uliounganishwa kwa ajili ya mafanikio yako.</p>
+  </div>
 
-    <!-- JAVASCRIPT LOGIC & EMBEDDED MODULES -->
-    <script>
-        // Hapa ndipo code za moduli zote 4 zilipowekwa moja kwa moja kupitia escape safi
-        const moduleCodes = {
-            1: `<!DOCTYPE html>
+  <div class="modules-grid">
+    <button class="module-card" data-mod="1"><span class="module-icon">💼</span><div class="module-name">Digital Twin</div><div class="module-desc">Asset management</div></button>
+    <button class="module-card" data-mod="2"><span class="module-icon">🧠</span><div class="module-name">Memory AI</div><div class="module-desc">Save &amp; organize</div></button>
+    <button class="module-card" data-mod="3"><span class="module-icon">📚</span><div class="module-name">Study AI</div><div class="module-desc">Learning assistant</div></button>
+    <button class="module-card" data-mod="4"><span class="module-icon">🎓</span><div class="module-name">TIA Forum</div><div class="module-desc">Student social forum</div></button>
+  </div>
+
+  <div class="hub-footer">KITWE GLOBALMIND HUB • Mobile-First Unified Experience<br>Developed for Yahaya B. Andrea</div>
+</div>
+
+<div id="module-viewer">
+  <div class="back-hub-bar">
+    <button class="back-btn" id="back-btn" type="button">⬅ Rudi Nyumbani</button>
+    <span class="back-title" id="active-module-title">KITWE HUB</span>
+  </div>
+  <iframe id="module-frame" title="Moduli"></iframe>
+</div>
+
+
+<!-- ===================== MODULI 1 ===================== -->
+<template id="mod1">
+<!DOCTYPE html>
 <html lang="sw">
 <head>
     <meta charset="UTF-8">
@@ -321,7 +265,7 @@
             const category = document.getElementById('input-category').value;
             const date = document.getElementById('input-date').value;
             const price = parseFloat(document.getElementById('input-price').value) || 0;
-            const currentValue = parseFloat(document.getElementById('input-current-value').value) || 0;
+            const currentValue = parseFloat(document.getElementById('input-current-value').value) || price;
             const condition = document.getElementById('input-condition').value;
             const desc = document.getElementById('input-desc').value.trim();
             if(!name || price <= 0) {
@@ -356,28 +300,31 @@
             document.getElementById('stat-total-value').innerText = "TSh " + totalValue.toLocaleString();
             const list = document.getElementById('asset-list-container');
             if(assets.length === 0) {
-                list.innerHTML = \`<p style="text-align:center; color:#94a3b8; font-size:0.85rem; padding: 20px;">Hakuna assets bado. Bonyeza 'Ongeza' kuanza.</p>\`;
+                list.innerHTML = `<p style="text-align:center; color:#94a3b8; font-size:0.85rem; padding: 20px;">Hakuna assets bado. Bonyeza 'Ongeza' kuanza.</p>`;
             } else {
-                list.innerHTML = assets.map(asset => \`
+                list.innerHTML = assets.map(asset => `
                     <div class="asset-card">
-                        <div class="asset-icon">\${getCategoryIcon(asset.category)}</div>
+                        <div class="asset-icon">${getCategoryIcon(asset.category)}</div>
                         <div class="asset-info">
-                            <h4>\${asset.name}</h4>
-                            <p>\${asset.category} • \${asset.condition}</p>
-                            <span class="price">TSh \${asset.currentValue.toLocaleString()}</span>
+                            <h4>${asset.name}</h4>
+                            <p>${asset.category} • ${asset.condition}</p>
+                            <span class="price">TSh ${asset.currentValue.toLocaleString()}</span>
                         </div>
                         <div class="card-actions">
-                            <button class="btn-icon delete" onclick="deleteAsset(\${asset.id})">🗑️</button>
+                            <button class="btn-icon delete" onclick="deleteAsset(${asset.id})">🗑️</button>
                         </div>
                     </div>
-                \`).join('');
+                `).join('');
             }
         }
     </script>
 </body>
-</html>`,
+</html>
+</template>
 
-            2: `<!DOCTYPE html>
+<!-- ===================== MODULI 2 ===================== -->
+<template id="mod2">
+<!DOCTYPE html>
 <html lang="sw">
 <head>
     <meta charset="UTF-8">
@@ -632,26 +579,26 @@
             }
         }
         function createMemoryHTML(mem) {
-            return \`
+            return `
                 <div class="memory-card">
-                    <span class="category-tag">\${mem.category}</span>
-                    <h4>\${mem.title}</h4>
-                    <p>\${mem.content}</p>
-                    <small class="date-text">📅 \${mem.date}</small>
+                    <span class="category-tag">${mem.category}</span>
+                    <h4>${mem.title}</h4>
+                    <p>${mem.content}</p>
+                    <small class="date-text">📅 ${mem.date}</small>
                     <div class="card-actions">
-                        <button class="btn-icon fav \${mem.isFavorite ? 'active' : ''}" onclick="toggleFavorite(\${mem.id})">⭐</button>
-                        <button class="btn-icon" onclick="editMemory(\${mem.id})">✏️</button>
-                        <button class="btn-icon delete" onclick="deleteMemory(\${mem.id})">🗑️</button>
+                        <button class="btn-icon fav ${mem.isFavorite ? 'active' : ''}" onclick="toggleFavorite(${mem.id})">⭐</button>
+                        <button class="btn-icon" onclick="editMemory(${mem.id})">✏️</button>
+                        <button class="btn-icon delete" onclick="deleteMemory(${mem.id})">🗑️</button>
                     </div>
                 </div>
-            \`;
+            `;
         }
         function renderDashboard() {
             document.getElementById('stat-total').innerText = memories.length;
             document.getElementById('stat-favs').innerText = memories.filter(m => m.isFavorite).length;
             const list = document.getElementById('recent-memories-list');
             if(memories.length === 0) {
-                list.innerHTML = \`<p style="text-align:center; color:#94a3b8; font-size:0.85rem;">\${translations[currentLang].noMemories}</p>\`;
+                list.innerHTML = `<p style="text-align:center; color:#94a3b8; font-size:0.85rem;">${translations[currentLang].noMemories}</p>`;
             } else {
                 list.innerHTML = memories.slice(0, 3).map(createMemoryHTML).join('');
             }
@@ -660,7 +607,7 @@
             const list = document.getElementById('favorites-list');
             const favs = memories.filter(m => m.isFavorite);
             if(favs.length === 0) {
-                list.innerHTML = \`<p style="text-align:center; color:#94a3b8; font-size:0.85rem;">\${translations[currentLang].noFavs}</p>\`;
+                list.innerHTML = `<p style="text-align:center; color:#94a3b8; font-size:0.85rem;">${translations[currentLang].noFavs}</p>`;
             } else {
                 list.innerHTML = favs.map(createMemoryHTML).join('');
             }
@@ -671,895 +618,12 @@
             if(query.length < 2) { list.innerHTML = ''; return; }
             const results = memories.filter(m => m.title.toLowerCase().includes(query) || m.content.toLowerCase().includes(query) || m.category.toLowerCase().includes(query));
             if(results.length === 0) {
-                list.innerHTML = \`<p style="text-align:center; color:#94a3b8; font-size:0.85rem;">\${translations[currentLang].noSearch}</p>\`;
+                list.innerHTML = `<p style="text-align:center; color:#94a3b8; font-size:0.85rem;">${translations[currentLang].noSearch}</p>`;
             } else {
                 list.innerHTML = results.map(createMemoryHTML).join('');
             }
         }
     </script>
 </body>
-</html>`,
-
-            3: `<!DOCTYPE html>
-<html lang="sw">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>KITWE STUDY AI</title>
-    <style>
-        :root { --navy: #002366; --royal: #003399; --gold: #FFD700; --gold-dark: #D4AF37; --white: #FFFFFF; --bg-light: #F5F7FA; --text-dark: #1E293B; --text-light: #64748B; --danger: #EF4444; --success: #22C55E; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: var(--bg-light); color: var(--text-dark); overflow-x: hidden; }
-        #splash { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: linear-gradient(135deg, var(--navy), var(--royal)); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; color: white; transition: opacity 0.5s ease; }
-        .splash-logo { font-size: 3rem; margin-bottom: 10px; animation: pulse 1.5s infinite; }
-        .splash-title { font-size: 1.8rem; font-weight: bold; color: var(--gold); text-align: center; }
-        .splash-sub { font-size: 0.9rem; margin-top: 5px; color: #cbd5e1; }
-        .splash-loader { margin-top: 30px; width: 40px; height: 40px; border: 3px solid rgba(255,255,255,0.2); border-top: 3px solid var(--gold); border-radius: 50%; animation: spin 1s linear infinite; }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        #app { display: none; padding-bottom: 70px; max-width: 600px; margin: 0 auto; min-height: 100vh; background: var(--bg-light); }
-        header { background: var(--navy); color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; border-bottom-left-radius: 20px; border-bottom-right-radius: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
-        .brand-header h1 { font-size: 1.2rem; color: var(--white); }
-        .brand-header h1 span { color: var(--gold); }
-        .brand-header p { font-size: 0.65rem; color: #94a3b8; }
-        .page { display: none; padding: 20px; animation: fadeIn 0.3s ease; }
-        .page.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-        .welcome-banner { background: linear-gradient(135deg, var(--royal), var(--navy)); color: white; padding: 25px 20px; border-radius: 15px; margin-bottom: 20px; text-align: center; box-shadow: 0 4px 15px rgba(0,35,102,0.3); }
-        .welcome-banner h2 { font-size: 1.3rem; margin-bottom: 5px; }
-        .welcome-banner p { font-size: 0.85rem; color: var(--gold); }
-        .grid-menu { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-        .menu-card { background: white; padding: 20px 10px; border-radius: 15px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); cursor: pointer; border: 1px solid #e2e8f0; transition: 0.2s; }
-        .menu-card:active { transform: scale(0.96); border-color: var(--gold); }
-        .menu-icon { font-size: 1.8rem; margin-bottom: 8px; }
-        .menu-name { font-size: 0.85rem; font-weight: bold; color: var(--navy); }
-        .section-title { font-size: 1.1rem; color: var(--navy); margin-bottom: 15px; border-left: 4px solid var(--gold); padding-left: 10px; }
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; font-size: 0.85rem; font-weight: bold; color: var(--text-dark); margin-bottom: 6px; }
-        .form-control { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 10px; font-size: 0.9rem; background: white; outline: none; transition: 0.2s; }
-        .form-control:focus { border-color: var(--gold); box-shadow: 0 0 0 2px rgba(255, 215, 0, 0.2); }
-        textarea.form-control { resize: vertical; min-height: 100px; }
-        .btn { padding: 12px 20px; background: var(--navy); color: white; border: none; border-radius: 10px; font-weight: bold; font-size: 0.95rem; cursor: pointer; width: 100%; transition: 0.2s; }
-        .btn:active { transform: scale(0.98); }
-        .btn-gold { background: var(--gold); color: var(--navy); }
-        .btn-outline { background: transparent; border: 1px solid var(--navy); color: var(--navy); }
-        .btn-danger { background: var(--danger); }
-        .ai-box { background: #f8fafc; border: 1px solid #e2e8f0; border-left: 4px solid var(--royal); padding: 15px; border-radius: 10px; margin-top: 15px; font-size: 0.9rem; line-height: 1.6; display: none; }
-        .demo-note { font-size: 0.7rem; color: var(--danger); margin-top: 8px; background: #fef2f2; padding: 5px 8px; border-radius: 5px; display: inline-block; }
-        .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 600px; background: white; display: flex; justify-content: space-around; padding: 10px 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); z-index: 1000; border-top-left-radius: 15px; border-top-right-radius: 15px; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 0.65rem; color: var(--text-light); cursor: pointer; padding: 5px 10px; transition: 0.2s; }
-        .nav-item.active { color: var(--navy); font-weight: bold; }
-        .nav-item.active .nav-icon { color: var(--gold); transform: scale(1.1); }
-        .nav-icon { font-size: 1.3rem; margin-bottom: 2px; }
-        .list-item { background: white; padding: 15px; border-radius: 10px; margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-left: 3px solid var(--gold); }
-        .list-item h4 { font-size: 0.95rem; color: var(--navy); margin-bottom: 5px; }
-        .list-item p { font-size: 0.8rem; color: var(--text-light); margin-bottom: 10px; }
-        .item-actions { display: flex; justify-content: flex-end; gap: 8px; }
-        .btn-small { padding: 5px 10px; font-size: 0.75rem; border-radius: 6px; width: auto; }
-        .profile-header { text-align: center; margin-bottom: 20px; }
-        .avatar { width: 80px; height: 80px; background: var(--navy); color: var(--gold); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 2rem; font-weight: bold; margin: 0 auto 10px; border: 3px solid var(--gold); }
-        .quiz-option { display: block; background: white; padding: 12px; border-radius: 8px; margin-bottom: 8px; border: 1px solid #e2e8f0; cursor: pointer; font-size: 0.9rem; }
-        .quiz-option input { margin-right: 10px; }
-        .quiz-result { text-align: center; padding: 20px; background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 10px; margin-top: 15px; display: none; }
-        .disclaimer { text-align: center; font-size: 0.65rem; color: #94a3b8; margin-top: 30px; padding-bottom: 20px; }
-    </style>
-</head>
-<body>
-    <div id="splash">
-        <div class="splash-logo">🧠</div>
-        <div class="splash-title">KITWE STUDY AI</div>
-        <div class="splash-sub">Learn Smarter. Understand Better.</div>
-        <div class="splash-loader"></div>
-    </div>
-    <div id="app">
-        <header>
-            <div class="brand-header">
-                <h1>KITWE <span>STUDY AI</span></h1>
-                <p>Powered by KITWE GlobalMind</p>
-            </div>
-        </header>
-        <div id="page-home" class="page active">
-            <div class="welcome-banner">
-                <h2>Karibu KITWE STUDY AI 👋</h2>
-                <p>Learn Smarter. Understand Better.</p>
-            </div>
-            <h3 class="section-title">Huduma Zetu</h3>
-            <div class="grid-menu">
-                <div class="menu-card" onclick="navigate('explain')"><div class="menu-icon">📚</div><div class="menu-name">Explain Topic</div></div>
-                <div class="menu-card" onclick="navigate('notes')"><div class="menu-icon">📝</div><div class="menu-name">Make Notes</div></div>
-                <div class="menu-card" onclick="navigate('quiz')"><div class="menu-icon">❓</div><div class="menu-name">Generate Quiz</div></div>
-                <div class="menu-card" onclick="navigate('planner')"><div class="menu-icon">📅</div><div class="menu-name">Study Planner</div></div>
-                <div class="menu-card" onclick="navigate('tools')"><div class="menu-icon">🔢</div><div class="menu-name">Business Calc</div></div>
-                <div class="menu-card" onclick="navigate('saved')"><div class="menu-icon">💾</div><div class="menu-name">Saved Lessons</div></div>
-            </div>
-            <div class="disclaimer">"KITWE STUDY AI is an independent educational project by KITWE GlobalMind."</div>
-        </div>
-        <div id="page-explain" class="page">
-            <h3 class="section-title">Explain Topic 📚</h3>
-            <div class="form-group"><label>Topic / Mada</label><input type="text" id="explain-topic" class="form-control" placeholder="mf. Photosynthesis"></div>
-            <div class="form-group"><label>Subject / Somo</label><input type="text" id="explain-subject" class="form-control" placeholder="mf. Biology"></div>
-            <div class="form-group"><label>Kiwango cha Uelewa</label><select id="explain-level" class="form-control"><option value="beginner">Beginner (Mwanzo)</option><option value="intermediate">Intermediate (Kati)</option><option value="advanced">Advanced (Juu)</option></select></div>
-            <button class="btn btn-gold" onclick="explainTopic()">Eleza Mada</button>
-            <div id="explain-result" class="ai-box"></div>
-        </div>
-        <div id="page-notes" class="page">
-            <h3 class="section-title">Make Notes 📝</h3>
-            <div class="form-group"><label>Weka Maandishi / Topic</label><textarea id="notes-input" class="form-control" placeholder="Andika mada au maandishi unayotaka kufanyiwa muhtasari..."></textarea></div>
-            <button class="btn btn-gold" onclick="generateNotes()">Tengeneza Notes</button>
-            <div id="notes-result" class="ai-box"></div>
-        </div>
-        <div id="page-quiz" class="page">
-            <h3 class="section-title">Generate Quiz ❓</h3>
-            <div id="quiz-setup">
-                <div class="form-group"><label>Subject / Somo</label><select id="quiz-subject" class="form-control"><option value="general">General Knowledge</option><option value="business">Business / Biashara</option><option value="science">Science / Sayansi</option></select></div>
-                <div class="form-group"><label>Idadi ya Maswali</label><input type="number" id="quiz-count" class="form-control" value="3" min="1" max="5"></div>
-                <button class="btn btn-gold" onclick="startQuiz()">Anza Quiz</button>
-            </div>
-            <div id="quiz-play" style="display:none;">
-                <div id="quiz-questions-container"></div>
-                <button class="btn" onclick="submitQuiz()" style="margin-top:15px;">Wasilisha Majibu</button>
-            </div>
-            <div id="quiz-result" class="quiz-result">
-                <h3 id="score-text">0/0</h3>
-                <p>Umekamilisha Quiz!</p>
-                <button class="btn btn-outline" style="margin-top:10px;" onclick="startQuiz()">Jaribu Tena</button>
-            </div>
-        </div>
-        <div id="page-planner" class="page">
-            <h3 class="section-title">Study Planner 📅</h3>
-            <div class="form-group"><label>Somo (Subject)</label><input type="text" id="plan-subject" class="form-control" placeholder="mf. Accounting"></div>
-            <div class="form-group"><label>Mada (Topic)</label><input type="text" id="plan-topic" class="form-control" placeholder="mf. Trial Balance"></div>
-            <div class="form-group"><label>Tarehe (Date)</label><input type="date" id="plan-date" class="form-control"></div>
-            <div class="form-group"><label>Muda wa Kujifunza (Time)</label><input type="time" id="plan-time" class="form-control"></div>
-            <button class="btn btn-gold" onclick="addPlan()">Ongeza kwenye Ratiba</button>
-            <h3 class="section-title" style="margin-top:20px;">Ratiba Yako</h3>
-            <div id="planner-list"></div>
-        </div>
-        <div id="page-tools" class="page">
-            <h3 class="section-title">Business Calculator 🔢</h3>
-            <div class="list-item">
-                <h4>Profit Calculator</h4>
-                <div class="form-group" style="margin-top:10px;"><input type="number" id="profit-revenue" class="form-control" placeholder="Revenue (Mauzo)" style="margin-bottom:5px;"><input type="number" id="profit-cost" class="form-control" placeholder="Cost (Gharama)"></div>
-                <button class="btn btn-small" onclick="calcProfit()">Hesabu Faida</button>
-                <p id="profit-result" style="font-weight:bold; margin-top:10px; color:var(--success);"></p>
-            </div>
-            <div class="list-item">
-                <h4>Percentage Calculator</h4>
-                <div class="form-group" style="margin-top:10px;"><input type="number" id="pct-part" class="form-control" placeholder="Kiasi (Part)" style="margin-bottom:5px;"><input type="number" id="pct-total" class="form-control" placeholder="Jumla (Total)"></div>
-                <button class="btn btn-small" onclick="calcPercentage()">Hesabu Asilimia</button>
-                <p id="pct-result" style="font-weight:bold; margin-top:10px; color:var(--royal);"></p>
-            </div>
-            <div class="list-item">
-                <h4>Simple Interest Calculator</h4>
-                <div class="form-group" style="margin-top:10px;"><input type="number" id="int-principal" class="form-control" placeholder="Principal (Mtaji)" style="margin-bottom:5px;"><input type="number" id="int-rate" class="form-control" placeholder="Rate % (Riba)" style="margin-bottom:5px;"><input type="number" id="int-time" class="form-control" placeholder="Time (Miaka)"></div>
-                <button class="btn btn-small" onclick="calcInterest()">Hesabu Riba</button>
-                <p id="int-result" style="font-weight:bold; margin-top:10px; color:var(--navy);"></p>
-            </div>
-            <div class="list-item">
-                <h4>Discount Calculator</h4>
-                <div class="form-group" style="margin-top:10px;"><input type="number" id="disc-price" class="form-control" placeholder="Bei ya Awali" style="margin-bottom:5px;"><input type="number" id="disc-percent" class="form-control" placeholder="Punguzo %"></div>
-                <button class="btn btn-small" onclick="calcDiscount()">Hesabu Punguzo</button>
-                <p id="disc-result" style="font-weight:bold; margin-top:10px; color:var(--danger);"></p>
-            </div>
-        </div>
-        <div id="page-saved" class="page">
-            <h3 class="section-title">Saved Lessons 💾</h3>
-            <div id="saved-list"></div>
-        </div>
-        <div id="page-profile" class="page">
-            <h3 class="section-title">Profile 👤</h3>
-            <div class="profile-header">
-                <div class="avatar" id="profile-avatar">Y</div>
-                <h3 id="profile-name">Yahaya Boniphace</h3>
-                <p id="profile-course" style="color:var(--text-light); font-size:0.85rem;">Course: DBA</p>
-                <p id="profile-year" style="color:var(--text-light); font-size:0.85rem;">Year: 2024</p>
-            </div>
-            <div class="list-item" style="display:flex; justify-content:space-between; text-align:center;">
-                <div><b id="stat-saved" style="font-size:1.2rem; color:var(--navy);">0</b><br><small>Saved</small></div>
-                <div><b id="stat-plans" style="font-size:1.2rem; color:var(--navy);">0</b><br><small>Plans</small></div>
-            </div>
-            <button class="btn btn-outline" onclick="toggleEditProfile()" style="margin-bottom:15px;">Edit Profile</button>
-            <div id="edit-profile" style="display:none;">
-                <div class="form-group"><label>Jina</label><input type="text" id="edit-name" class="form-control"></div>
-                <div class="form-group"><label>Kozi</label><input type="text" id="edit-course" class="form-control"></div>
-                <div class="form-group"><label>Mwaka</label><input type="text" id="edit-year" class="form-control"></div>
-                <button class="btn btn-gold" onclick="saveProfile()">Hifadhi</button>
-            </div>
-        </div>
-        <div class="bottom-nav">
-            <div class="nav-item active" id="nav-home" onclick="navigate('home')"><div class="nav-icon">🏠</div>Home</div>
-            <div class="nav-item" id="nav-ai" onclick="navigate('explain')"><div class="nav-icon">🤖</div>AI Study</div>
-            <div class="nav-item" id="nav-planner" onclick="navigate('planner')"><div class="nav-icon">📅</div>Planner</div>
-            <div class="nav-item" id="nav-tools" onclick="navigate('tools')"><div class="nav-icon">🔢</div>Tools</div>
-            <div class="nav-item" id="nav-profile" onclick="navigate('profile')"><div class="nav-icon">👤</div>Profile</div>
-        </div>
-    </div>
-    <script>
-        let profile = JSON.parse(localStorage.getItem('kitwe_profile')) || { name: "Yahaya Boniphace", course: "DBA", year: "2024" };
-        let savedLessons = JSON.parse(localStorage.getItem('kitwe_saved')) || [];
-        let studyPlans = JSON.parse(localStorage.getItem('kitwe_plans')) || [];
-        window.onload = function() {
-            setTimeout(() => {
-                document.getElementById('splash').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('splash').style.display = 'none';
-                    document.getElementById('app').style.display = 'block';
-                    loadProfile();
-                    renderSaved();
-                    renderPlans();
-                }, 500);
-            }, 2000);
-        };
-        function navigate(pageId) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById('page-' + pageId).classList.add('active');
-            if(pageId === 'home' || pageId === 'explain' || pageId === 'planner' || pageId === 'tools' || pageId === 'profile') {
-                let navId = pageId;
-                if(pageId === 'explain') navId = 'ai';
-                document.getElementById('nav-' + navId).classList.add('active');
-            }
-            window.scrollTo(0,0);
-        }
-        function callAI(prompt, type) {
-            return new Promise((resolve) => {
-                setTimeout(() => {
-                    let response = "";
-                    const p = prompt.toLowerCase();
-                    if(type === 'explain') {
-                        if(p.includes('photosynthesis')) {
-                            response = "<b>Photosynthesis:</b> Ni mchakato ambao mimea hutumia mwanga wa jua, maji, na CO2 kutengeneza chakula (glucose) na kutoa oksijeni.";
-                        } else if (p.includes('accounting') || p.includes('account')) {
-                            response = "<b>Accounting:</b> Ni mchakato wa kurekodi, kuchambua, na kuripoti shughuli za kifedha za biashara au taasisi.";
-                        } else {
-                            response = "<b>Mada:</b> " + prompt + "<br><br>Hii ni mada nzuri kujifunza. Kwa maelezo zaidi, tafadhali unganisha API halisi ya AI.";
-                        }
-                    } else if(type === 'notes') {
-                        response = "<b>Summary:</b> Maandishi yako yamefupishwa hapa.<br><b>Key Points:</b><br>- Pointi 1<br>- Pointi 2<br>- Pointi 3";
-                    }
-                    resolve(response + "<br><br><span class='demo-note'>Demo Mode – Connect an AI backend for real AI responses.</span>");
-                }, 1000);
-            });
-        }
-        function explainTopic() {
-            const topic = document.getElementById('explain-topic').value;
-            const subject = document.getElementById('explain-subject').value;
-            const level = document.getElementById('explain-level').value;
-            if(!topic) return alert("Tafadhali weka mada!");
-            const resultBox = document.getElementById('explain-result');
-            resultBox.style.display = 'block';
-            resultBox.innerHTML = "Inatafuta jibu...";
-            callAI(topic, 'explain').then(res => {
-                resultBox.innerHTML = \`<b>Subject:</b> \${subject} | <b>Level:</b> \${level}<br><br>\${res}\`;
-            });
-        }
-        function generateNotes() {
-            const input = document.getElementById('notes-input').value;
-            if(!input) return alert("Tafadhali andika kitu!");
-            const resultBox = document.getElementById('notes-result');
-            resultBox.style.display = 'block';
-            resultBox.innerHTML = "Inatengeneza notes...";
-            callAI(input, 'notes').then(res => {
-                resultBox.innerHTML = res;
-                saveLesson("Notes: " + input.substring(0, 20) + "...", res);
-            });
-        }
-        function saveLesson(title, content) {
-            const newLesson = { id: Date.now(), title: title, content: content, date: new Date().toLocaleDateString() };
-            savedLessons.push(newLesson);
-            localStorage.setItem('kitwe_saved', JSON.stringify(savedLessons));
-            renderSaved();
-            updateProfileStats();
-        }
-        function renderSaved() {
-            const container = document.getElementById('saved-list');
-            if(!container) return;
-            container.innerHTML = '';
-            if(savedLessons.length === 0) {
-                container.innerHTML = '<p style="text-align:center; color:var(--text-light); font-size:0.85rem;">Hakuna lessons zilizohifadhiwa.</p>';
-                return;
-            }
-            savedLessons.slice().reverse().forEach(lesson => {
-                container.innerHTML += \`
-                    <div class="list-item">
-                        <h4>\${lesson.title}</h4>
-                        <p style="font-size:0.8rem;">\${lesson.content}</p>
-                        <div class="item-actions">
-                            <button class="btn btn-small btn-danger" onclick="deleteLesson(\${lesson.id})">Futa</button>
-                        </div>
-                    </div>
-                \`;
-            });
-        }
-        function deleteLesson(id) {
-            if(confirm("Una uhakika unataka kufuta?")) {
-                savedLessons = savedLessons.filter(l => l.id !== id);
-                localStorage.setItem('kitwe_saved', JSON.stringify(savedLessons));
-                renderSaved();
-                updateProfileStats();
-            }
-        }
-        const quizData = [
-            { q: "What is the capital of Tanzania?", options: ["Dar es Salaam", "Dodoma", "Arusha"], answer: 1 },
-            { q: "Which is an asset?", options: ["Loan", "Cash", "Rent"], answer: 1 },
-            { q: "What is 10% of 500?", options: ["50", "100", "10"], answer: 0 },
-            { q: "Water boils at?", options: ["100°C", "50°C", "0°C"], answer: 0 },
-            { q: "Who is the father of accounting?", options: ["Luca Pacioli", "Adam Smith", "John Nash"], answer: 0 }
-        ];
-        let currentQuizQuestions = [];
-        function startQuiz() {
-            const count = parseInt(document.getElementById('quiz-count').value);
-            document.getElementById('quiz-setup').style.display = 'none';
-            document.getElementById('quiz-play').style.display = 'block';
-            document.getElementById('quiz-result').style.display = 'none';
-            currentQuizQuestions = quizData.slice().sort(() => 0.5 - Math.random()).slice(0, count);
-            const container = document.getElementById('quiz-questions-container');
-            container.innerHTML = '';
-            currentQuizQuestions.forEach((q, index) => {
-                let optionsHtml = '';
-                q.options.forEach((opt, optIndex) => {
-                    optionsHtml += \`
-                        <label class="quiz-option">
-                            <input type="radio" name="q\${index}" value="\${optIndex}">
-                            \${opt}
-                        </label>
-                    \`;
-                });
-                container.innerHTML += \`
-                    <div style="margin-bottom:20px; background:white; padding:15px; border-radius:10px;">
-                        <p style="font-weight:bold; margin-bottom:10px;">\${index + 1}. \${q.q}</p>
-                        \${optionsHtml}
-                    </div>
-                \`;
-            });
-        }
-        function submitQuiz() {
-            let score = 0;
-            currentQuizQuestions.forEach((q, index) => {
-                const selected = document.querySelector(\`input[name="q\${index}"]:checked\`);
-                if(selected && parseInt(selected.value) === q.answer) { score++; }
-            });
-            document.getElementById('quiz-play').style.display = 'none';
-            document.getElementById('quiz-result').style.display = 'block';
-            document.getElementById('score-text').innerText = \`Alama: \${score}/\${currentQuizQuestions.length}\`;
-        }
-        function addPlan() {
-            const subject = document.getElementById('plan-subject').value;
-            const topic = document.getElementById('plan-topic').value;
-            const date = document.getElementById('plan-date').value;
-            const time = document.getElementById('plan-time').value;
-            if(!subject || !topic || !date || !time) return alert("Tafadhali jaza sehemu zote!");
-            const newPlan = { id: Date.now(), subject, topic, date, time };
-            studyPlans.push(newPlan);
-            localStorage.setItem('kitwe_plans', JSON.stringify(studyPlans));
-            document.getElementById('plan-subject').value = '';
-            document.getElementById('plan-topic').value = '';
-            renderPlans();
-            updateProfileStats();
-        }
-        function renderPlans() {
-            const container = document.getElementById('planner-list');
-            if(!container) return;
-            container.innerHTML = '';
-            if(studyPlans.length === 0) {
-                container.innerHTML = '<p style="text-align:center; color:var(--text-light); font-size:0.85rem;">Hakuna ratiba bado.</p>';
-                return;
-            }
-            studyPlans.slice().reverse().forEach(plan => {
-                container.innerHTML += \`
-                    <div class="list-item">
-                        <h4>\${plan.subject}: \${plan.topic}</h4>
-                        <p>📅 \${plan.date} | ⏰ \${plan.time}</p>
-                        <div class="item-actions">
-                            <button class="btn btn-small btn-danger" onclick="deletePlan(\${plan.id})">Futa</button>
-                        </div>
-                    </div>
-                \`;
-            });
-        }
-        function deletePlan(id) {
-            studyPlans = studyPlans.filter(p => p.id !== id);
-            localStorage.setItem('kitwe_plans', JSON.stringify(studyPlans));
-            renderPlans();
-            updateProfileStats();
-        }
-        function calcProfit() {
-            const rev = parseFloat(document.getElementById('profit-revenue').value) || 0;
-            const cost = parseFloat(document.getElementById('profit-cost').value) || 0;
-            document.getElementById('profit-result').innerText = "Faida: TSh " + (rev - cost).toLocaleString();
-        }
-        function calcPercentage() {
-            const part = parseFloat(document.getElementById('pct-part').value) || 0;
-            const total = parseFloat(document.getElementById('pct-total').value) || 0;
-            if (total === 0) { document.getElementById('pct-result').innerText = "Jumla haiwezi kuwa 0."; return; }
-            document.getElementById('pct-result').innerText = "Asilimia: " + ((part / total) * 100).toFixed(2) + "%";
-        }
-        function calcInterest() {
-            const principal = parseFloat(document.getElementById('int-principal').value) || 0;
-            const rate = parseFloat(document.getElementById('int-rate').value) || 0;
-            const time = parseFloat(document.getElementById('int-time').value) || 0;
-            const interest = (principal * rate * time) / 100;
-            document.getElementById('int-result').innerHTML = \`Riba: TSh \${interest.toLocaleString()}<br>Jumla: TSh \${(principal + interest).toLocaleString()}\`;
-        }
-        function calcDiscount() {
-            const price = parseFloat(document.getElementById('disc-price').value) || 0;
-            const percent = parseFloat(document.getElementById('disc-percent').value) || 0;
-            const discountAmount = (price * percent) / 100;
-            document.getElementById('disc-result').innerHTML = \`Punguzo: TSh \${discountAmount.toLocaleString()}<br>Bei Mpya: TSh \${(price - discountAmount).toLocaleString()}\`;
-        }
-        function loadProfile() {
-            document.getElementById('profile-name').innerText = profile.name;
-            document.getElementById('profile-course').innerText = "Course: " + profile.course;
-            document.getElementById('profile-year').innerText = "Year: " + profile.year;
-            document.getElementById('profile-avatar').innerText = profile.name.charAt(0).toUpperCase();
-            document.getElementById('edit-name').value = profile.name;
-            document.getElementById('edit-course').value = profile.course;
-            document.getElementById('edit-year').value = profile.year;
-            updateProfileStats();
-        }
-        function toggleEditProfile() {
-            const form = document.getElementById('edit-profile');
-            form.style.display = form.style.display === 'none' || form.style.display === '' ? 'block' : 'none';
-        }
-        function saveProfile() {
-            const newName = document.getElementById('edit-name').value.trim();
-            const newCourse = document.getElementById('edit-course').value.trim();
-            const newYear = document.getElementById('edit-year').value.trim();
-            if (!newName || !newCourse || !newYear) return alert("Tafadhali jaza sehemu zote!");
-            profile.name = newName; profile.course = newCourse; profile.year = newYear;
-            localStorage.setItem('kitwe_profile', JSON.stringify(profile));
-            loadProfile();
-            document.getElementById('edit-profile').style.display = 'none';
-            alert("Profile imehifadhiwa!");
-        }
-        function updateProfileStats() {
-            document.getElementById('stat-saved').innerText = savedLessons.length;
-            document.getElementById('stat-plans').innerText = studyPlans.length;
-        }
-    </script>
-</body>
-</html>`,
-
-            4: `<!DOCTYPE html>
-<html lang="sw">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>TIA Kigoma Student Forum</title>
-    <style>
-        :root { --main-blue: #003366; --sec-blue: #0057B8; --active-green: #22C55E; --white: #FFFFFF; --bg-light: #F5F7FA; --text-dark: #1F2937; --text-light: #6B7280; --gold: #F59E0B; --danger: #EF4444; }
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: var(--bg-light); color: var(--text-dark); overflow-x: hidden; }
-        #splash-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100vh; background: linear-gradient(135deg, var(--main-blue), var(--sec-blue)); display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; color: white; transition: opacity 0.5s ease; }
-        .splash-logo { font-size: 3rem; margin-bottom: 10px; animation: pulse 1.5s infinite; }
-        .splash-title { font-size: 1.5rem; font-weight: bold; text-align: center; letter-spacing: 1px; }
-        .splash-sub { font-size: 0.9rem; margin-top: 5px; color: #cbd5e1; }
-        .splash-loader { margin-top: 30px; width: 50px; height: 50px; border: 4px solid rgba(255,255,255,0.3); border-top: 4px solid var(--gold); border-radius: 50%; animation: spin 1s linear infinite; }
-        .splash-brand { position: absolute; bottom: 20px; font-size: 0.75rem; color: #94a3b8; letter-spacing: 1px; }
-        @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        #app-container { display: none; padding-bottom: 70px; width: 100%; max-width: 600px; margin: 0 auto; background: var(--bg-light); min-height: 100vh; position: relative; }
-        .app-header { background: var(--main-blue); color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .app-header h1 { font-size: 1.1rem; font-weight: bold; }
-        .app-header span { font-size: 0.6rem; color: var(--gold); display: block; font-weight: normal; }
-        .header-icon { font-size: 1.3rem; cursor: pointer; position: relative; }
-        .page { display: none; padding: 15px; animation: fadeIn 0.3s ease; }
-        .page.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-        .welcome-box { background: var(--sec-blue); color: white; padding: 20px; border-radius: 15px; margin-bottom: 15px; box-shadow: 0 4px 10px rgba(0,87,184,0.2); }
-        .welcome-box h2 { font-size: 1.2rem; margin-bottom: 5px; }
-        .welcome-box p { font-size: 0.85rem; opacity: 0.9; }
-        .search-bar { width: 100%; padding: 12px 15px; border-radius: 25px; border: 1px solid #e2e8f0; margin-bottom: 15px; font-size: 0.9rem; outline: none; background: white; }
-        .section-title { font-size: 1rem; font-weight: bold; margin-bottom: 10px; color: var(--main-blue); }
-        .categories-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 20px; }
-        .cat-card { background: white; padding: 15px; border-radius: 12px; text-align: center; font-size: 0.85rem; font-weight: bold; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-left: 4px solid var(--sec-blue); }
-        .post-card { background: white; padding: 15px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); cursor: pointer; }
-        .post-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .post-category { font-size: 0.7rem; font-weight: bold; color: var(--sec-blue); background: #e0f2fe; padding: 3px 8px; border-radius: 10px; }
-        .post-title { font-size: 1rem; font-weight: bold; margin-bottom: 5px; color: var(--text-dark); }
-        .post-content { font-size: 0.85rem; color: var(--text-light); line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 10px; }
-        .post-footer { display: flex; gap: 15px; font-size: 0.8rem; color: var(--text-light); border-top: 1px solid #f1f5f9; padding-top: 10px; }
-        .form-group { margin-bottom: 15px; }
-        .form-group label { display: block; font-size: 0.85rem; font-weight: bold; margin-bottom: 5px; color: var(--main-blue); }
-        .form-control { width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; outline: none; background: white; }
-        textarea.form-control { resize: vertical; min-height: 100px; }
-        .btn { width: 100%; padding: 12px; background: var(--sec-blue); color: white; border: none; border-radius: 8px; font-size: 1rem; font-weight: bold; cursor: pointer; margin-top: 10px; }
-        .btn-gold { background: var(--gold); color: var(--text-dark); }
-        .btn-danger { background: var(--danger); }
-        .btn-outline { background: transparent; border: 1px solid var(--sec-blue); color: var(--sec-blue); }
-        .toggle-container { display: flex; align-items: center; justify-content: space-between; background: white; padding: 12px; border-radius: 8px; border: 1px solid #cbd5e1; margin-bottom: 15px; }
-        .toggle-switch { position: relative; display: inline-block; width: 44px; height: 24px; }
-        .toggle-switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #ccc; transition: .4s; border-radius: 24px; }
-        .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
-        input:checked + .slider { background-color: var(--active-green); }
-        input:checked + .slider:before { transform: translateX(20px); }
-        .profile-header { text-align: center; margin-bottom: 20px; }
-        .avatar { width: 80px; height: 80px; background: var(--sec-blue); color: white; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 2rem; font-weight: bold; margin: 0 auto 10px; border: 3px solid var(--gold); }
-        .profile-stats { display: flex; justify-content: space-around; background: white; padding: 15px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .stat-item { text-align: center; }
-        .stat-val { font-size: 1.2rem; font-weight: bold; color: var(--main-blue); }
-        .stat-label { font-size: 0.75rem; color: var(--text-light); }
-        .notif-card { background: white; padding: 15px; border-radius: 10px; margin-bottom: 10px; border-left: 4px solid var(--gold); box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-        .bottom-nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 600px; background: white; display: flex; justify-content: space-around; padding: 10px 0; box-shadow: 0 -2px 10px rgba(0,0,0,0.05); z-index: 1000; border-top-left-radius: 15px; border-top-right-radius: 15px; }
-        .nav-item { display: flex; flex-direction: column; align-items: center; font-size: 0.65rem; color: var(--text-light); cursor: pointer; transition: 0.2s; padding: 5px 10px; border-radius: 8px; position: relative; }
-        .nav-item.active { color: var(--active-green); font-weight: bold; }
-        .nav-icon { font-size: 1.3rem; margin-bottom: 2px; }
-        .nav-badge { position: absolute; top: 0px; right: 15px; background: var(--danger); color: white; font-size: 0.6rem; padding: 2px 5px; border-radius: 10px; font-weight: bold; }
-        .admin-section { background: #fff1f2; border: 1px solid #fecdd3; padding: 15px; border-radius: 10px; margin-top: 20px; }
-        .admin-stats { display: flex; justify-content: space-between; margin-bottom: 15px; text-align: center; }
-        #post-view-content { background: white; padding: 20px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .comment-list { margin-top: 15px; }
-        .comment-item { background: #f8fafc; padding: 10px; border-radius: 8px; margin-bottom: 8px; font-size: 0.85rem; }
-        .comment-item b { color: var(--sec-blue); font-size: 0.8rem; display: block; margin-bottom: 3px; }
-        .disclaimer { text-align: center; font-size: 0.65rem; color: #94a3b8; padding: 20px 10px; line-height: 1.4; }
-        .branding { text-align: center; font-size: 0.7rem; color: var(--sec-blue); font-weight: bold; margin-bottom: 5px; }
-    </style>
-</head>
-<body>
-    <div id="splash-screen">
-        <div class="splash-logo">🎓</div>
-        <div class="splash-title">TIA KIGOMA</div>
-        <div class="splash-title" style="color: var(--gold); font-size: 1.2rem;">STUDENT FORUM</div>
-        <div class="splash-sub">Connect • Share • Learn</div>
-        <div class="splash-loader"></div>
-        <div class="splash-brand">Powered by KITWE GlobalMind</div>
-    </div>
-    <div id="app-container">
-        <div class="app-header">
-            <div><h1>TIA KIGOMA <span>Student Forum</span></h1></div>
-            <div class="header-icon" onclick="toggleNotifications()">🔔<span id="notif-badge" class="nav-badge" style="display:none;">0</span></div>
-        </div>
-        <div id="page-home" class="page active">
-            <div class="welcome-box">
-                <h2>Karibu Mwanafunzi! 👋</h2>
-                <p>Connect, Share na Learn na wenzako hapa TIA Kigoma.</p>
-            </div>
-            <input type="text" id="search-input" class="search-bar" placeholder="🔍 Tafuta posts, mada au makundi..." onkeyup="searchPosts()">
-            <h3 class="section-title">Categories</h3>
-            <div class="categories-grid" id="categories-container"></div>
-            <h3 class="section-title">Recent Posts</h3>
-            <div id="home-posts-container"></div>
-            <div class="branding">Built with ❤️ by KITWE GlobalMind</div>
-        </div>
-        <div id="page-trending" class="page">
-            <h3 class="section-title">🔥 Trending Discussions</h3>
-            <div id="trending-posts-container"></div>
-        </div>
-        <div id="page-create" class="page">
-            <h3 class="section-title">➕ Create New Post</h3>
-            <div class="form-group"><label>Kichwa cha Post (Title)</label><input type="text" id="post-title" class="form-control" placeholder="Andika kichwa kifupi..."></div>
-            <div class="form-group"><label>Maelezo (Content)</label><textarea id="post-content" class="form-control" placeholder="Eleza zaidi..."></textarea></div>
-            <div class="form-group">
-                <label>Chagua Category</label>
-                <select id="post-category" class="form-control">
-                    <option value="Academics">📚 Academics</option>
-                    <option value="Announcements">📢 Announcements</option>
-                    <option value="Questions">❓ Questions</option>
-                    <option value="Opportunities">💼 Opportunities</option>
-                    <option value="Campus Life">🎉 Campus Life</option>
-                    <option value="Ideas & Innovation">💡 Ideas & Innovation</option>
-                </select>
-            </div>
-            <div class="toggle-container">
-                <span style="font-size: 0.85rem; font-weight: bold; color: var(--main-blue);">Post Kama Anonymous 🕵️</span>
-                <label class="toggle-switch"><input type="checkbox" id="post-anonymous"><span class="slider"></span></label>
-            </div>
-            <button class="btn" onclick="createPost()">CHAPISHA POST</button>
-        </div>
-        <div id="page-notifications" class="page">
-            <h3 class="section-title">🔔 Notifications</h3>
-            <div id="notifications-container"></div>
-        </div>
-        <div id="page-profile" class="page">
-            <div class="profile-header">
-                <div class="avatar" id="profile-avatar">Y</div>
-                <h2 id="profile-name" style="font-size: 1.2rem;">Yahaya Boniphace</h2>
-                <p id="profile-reg" style="font-size: 0.85rem; color: var(--text-light);">Reg: TIA/DBA/001/2024</p>
-                <p id="profile-course" style="font-size: 0.85rem; color: var(--text-light);">Course: DBA I</p>
-            </div>
-            <div class="profile-stats">
-                <div class="stat-item"><div class="stat-val" id="profile-total-posts">0</div><div class="stat-label">Posts</div></div>
-                <div class="stat-item"><div class="stat-val" id="profile-total-likes">0</div><div class="stat-label">Total Likes</div></div>
-                <div class="stat-item"><div class="stat-val" id="profile-total-comments">0</div><div class="stat-label">Comments</div></div>
-            </div>
-            <button class="btn btn-outline" onclick="toggleEditProfile()" style="margin-bottom:10px;">Edit Profile</button>
-            <div id="edit-profile-form" style="display: none; background: white; padding: 15px; border-radius: 12px; margin-bottom: 15px;">
-                <div class="form-group"><label>Jina Kamili</label><input type="text" id="edit-name" class="form-control"></div>
-                <div class="form-group"><label>Namba ya Usajili</label><input type="text" id="edit-reg" class="form-control"></div>
-                <div class="form-group"><label>Kozi</label><input type="text" id="edit-course" class="form-control"></div>
-                <button class="btn" onclick="saveProfile()">Hifadhi</button>
-            </div>
-            <h3 class="section-title">My Posts</h3>
-            <div id="my-posts-container"></div>
-            <div class="admin-section">
-                <h3 style="font-size: 0.9rem; color: var(--danger); margin-bottom: 10px;">🛡️ Admin Panel (Demo)</h3>
-                <div class="admin-stats">
-                    <div><b id="admin-total-users">1</b><br><small>Users</small></div>
-                    <div><b id="admin-total-posts">0</b><br><small>Posts</small></div>
-                    <div><b id="admin-total-comments">0</b><br><small>Comments</small></div>
-                </div>
-                <div id="admin-post-list" style="max-height: 200px; overflow-y: auto; margin-top: 10px;"></div>
-            </div>
-            <div class="disclaimer">"TIA Kigoma Student Forum is an independent student community demo project."</div>
-        </div>
-        <div id="page-single-post" class="page">
-            <button class="btn btn-outline" style="width: auto; padding: 5px 15px; margin-bottom: 15px;" onclick="navigate('home')">← Rudi</button>
-            <div id="post-view-content">
-                <span class="post-category" id="view-cat">Category</span>
-                <h2 id="view-title" style="margin: 10px 0; font-size: 1.2rem;">Title</h2>
-                <p id="view-body" style="font-size: 0.9rem; line-height: 1.5; margin-bottom: 15px;">Content</p>
-                <div style="font-size: 0.8rem; color: var(--text-light); margin-bottom: 15px;">Posted by: <span id="view-author">Anonymous</span></div>
-                <div style="display: flex; gap: 10px;">
-                    <button class="btn" id="view-like-btn" style="flex: 1; background: #e0f2fe; color: var(--sec-blue);" onclick="likeCurrentPost()">❤️ Like (<span id="view-likes">0</span>)</button>
-                    <button class="btn" style="flex: 1; background: #dcfce7; color: #166534;" onclick="sharePost()">🔗 Share</button>
-                </div>
-            </div>
-            <h3 class="section-title">Comments (<span id="view-comment-count">0</span>)</h3>
-            <div class="comment-list" id="view-comments"></div>
-            <div class="form-group" style="margin-top: 15px;">
-                <input type="text" id="comment-input" class="form-control" placeholder="Andika maoni yako hapa...">
-                <button class="btn btn-gold" onclick="addComment()">Tuma Maoni</button>
-            </div>
-        </div>
-        <div class="bottom-nav">
-            <div class="nav-item active" id="nav-home" onclick="navigate('home')"><div class="nav-icon">🏠</div>Home</div>
-            <div class="nav-item" id="nav-trending" onclick="navigate('trending')"><div class="nav-icon">🔥</div>Trending</div>
-            <div class="nav-item" id="nav-create" onclick="navigate('create')">
-                <div class="nav-icon" style="background: var(--sec-blue); color: white; border-radius: 50%; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; margin-top: -15px; box-shadow: 0 4px 10px rgba(0,87,184,0.4);">➕</div>
-                <div style="margin-top: 2px;">Post</div>
-            </div>
-            <div class="nav-item" id="nav-notifications" onclick="navigate('notifications')"><div class="nav-icon">🔔</div>Notifs</div>
-            <div class="nav-item" id="nav-profile" onclick="navigate('profile')"><div class="nav-icon">👤</div>Profile</div>
-        </div>
-    </div>
-    <script>
-        const DEFAULT_PROFILE = { name: "Yahaya Boniphace", reg: "TIA/DBA/001/2024", course: "DBA I", year: "2024" };
-        const SAMPLE_POSTS = [
-            { id: 1, title: "Ratiba ya mitihani ya DBA I imetoka?", content: "Habari wakuu, naomba kujua kama ratiba ya mitihani imetoka.", category: "Academics", author: "Yahaya B.", anonymous: false, likes: 12, comments: [{name: "Juma", text: "Ndio imetoka jana."}] },
-            { id: 2, title: "Nani ana notes za Financial Accounting?", content: "Naomba msaada kwa yeyote mwenye soft copy za notes.", category: "Questions", author: "Anonymous", anonymous: true, likes: 5, comments: [] }
-        ];
-        let posts = JSON.parse(localStorage.getItem('tia_forum_posts')) || SAMPLE_POSTS;
-        let profile = JSON.parse(localStorage.getItem('tia_forum_profile')) || DEFAULT_PROFILE;
-        let notifications = JSON.parse(localStorage.getItem('tia_forum_notifs')) || [{ id: 1, text: "Mtu fulani amependa post yako.", time: "Dakika 5 zilizopita" }];
-        let currentPostId = null;
-        function saveData() {
-            localStorage.setItem('tia_forum_posts', JSON.stringify(posts));
-            localStorage.setItem('tia_forum_profile', JSON.stringify(profile));
-            localStorage.setItem('tia_forum_notifs', JSON.stringify(notifications));
-            updateUI();
-        }
-        function navigate(pageId) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById('page-' + pageId).classList.add('active');
-            if(pageId === 'home' || pageId === 'trending' || pageId === 'create' || pageId === 'notifications' || pageId === 'profile') {
-                document.getElementById('nav-' + pageId).classList.add('active');
-            }
-            window.scrollTo(0,0);
-            if(pageId === 'profile') { loadProfileData(); }
-            if(pageId === 'home') { renderHome(); }
-            if(pageId === 'trending') { renderTrending(); }
-        }
-        function updateUI() {
-            const notifBadge = document.getElementById('notif-badge');
-            if(notifications.length > 0) {
-                notifBadge.style.display = 'block';
-                notifBadge.innerText = notifications.length;
-            } else { notifBadge.style.display = 'none'; }
-            let totalLikes = posts.reduce((sum, post) => sum + post.likes, 0);
-            let totalComments = posts.reduce((sum, post) => sum + post.comments.length, 0);
-            document.getElementById('profile-total-posts').innerText = posts.length;
-            document.getElementById('profile-total-likes').innerText = totalLikes;
-            document.getElementById('profile-total-comments').innerText = totalComments;
-            document.getElementById('admin-total-posts').innerText = posts.length;
-            document.getElementById('admin-total-comments').innerText = totalComments;
-            renderHome();
-            renderTrending();
-            renderNotifications();
-            renderAdminPosts();
-        }
-        function renderHome() {
-            const container = document.getElementById('home-posts-container');
-            container.innerHTML = '';
-            const catContainer = document.getElementById('categories-container');
-            const cats = ['📚 Academics', '📢 Announcements', '❓ Questions', '💼 Opportunities', '🎉 Campus Life', '💡 Ideas & Innovation'];
-            catContainer.innerHTML = cats.map(c => \`<div class="cat-card" onclick="filterCategory('\${c.split(' ')[1]}')">\${c}</div>\`).join('');
-            if(posts.length === 0) {
-                container.innerHTML = '<p style="text-align:center; color:#6b7280; font-size:0.85rem;">Hakuna posts bado.</p>';
-                return;
-            }
-            posts.slice().reverse().forEach(post => { container.innerHTML += createPostHTML(post); });
-        }
-        function renderTrending() {
-            const container = document.getElementById('trending-posts-container');
-            container.innerHTML = '';
-            let trendingPosts = posts.slice().sort((a, b) => b.likes - a.likes).slice(0, 5);
-            trendingPosts.forEach(post => {
-                let isTrending = post.likes > 10 ? '<span style="font-size:0.7rem; color:var(--gold); font-weight:bold;">🔥 Trending</span>' : '';
-                container.innerHTML += \`
-                    <div class="post-card" onclick="openPost(\${post.id})">
-                        <div class="post-header"><span class="post-category">\${post.category}</span>\${isTrending}</div>
-                        <div class="post-title">\${post.title}</div>
-                        <div class="post-content">\${post.content}</div>
-                        <div class="post-footer"><span>❤️ \${post.likes}</span><span>💬 \${post.comments.length}</span></div>
-                    </div>
-                \`;
-            });
-        }
-        function createPostHTML(post) {
-            let authorName = post.anonymous ? "🕵️ Anonymous" : post.author;
-            return \`
-                <div class="post-card" onclick="openPost(\${post.id})">
-                    <div class="post-header"><span class="post-category">\${post.category}</span><small style="color: var(--text-light); font-size: 0.7rem;">\${authorName}</small></div>
-                    <div class="post-title">\${post.title}</div>
-                    <div class="post-content">\${post.content}</div>
-                    <div class="post-footer"><span>❤️ \${post.likes}</span><span>💬 \${post.comments.length}</span></div>
-                </div>
-            \`;
-        }
-        function createPost() {
-            const title = document.getElementById('post-title').value.trim();
-            const content = document.getElementById('post-content').value.trim();
-            const category = document.getElementById('post-category').value;
-            const isAnonymous = document.getElementById('post-anonymous').checked;
-            if(!title || !content) { alert("Tafadhali jaza kichwa na maelezo ya post!"); return; }
-            const newPost = { id: Date.now(), title: title, content: content, category: category, author: profile.name, anonymous: isAnonymous, likes: 0, comments: [] };
-            posts.push(newPost);
-            notifications.unshift({ id: Date.now(), text: "Post yako mpya imechapishwa kikamilifu.", time: "Sasa hivi" });
-            saveData();
-            document.getElementById('post-title').value = '';
-            document.getElementById('post-content').value = '';
-            document.getElementById('post-anonymous').checked = false;
-            alert("Post yako imechapishwa!");
-            navigate('home');
-        }
-        function openPost(id) {
-            currentPostId = id;
-            const post = posts.find(p => p.id === id);
-            if(!post) return;
-            document.getElementById('view-cat').innerText = post.category;
-            document.getElementById('view-title').innerText = post.title;
-            document.getElementById('view-body').innerText = post.content;
-            document.getElementById('view-author').innerText = post.anonymous ? "Anonymous" : post.author;
-            document.getElementById('view-likes').innerText = post.likes;
-            document.getElementById('view-comment-count').innerText = post.comments.length;
-            const commentContainer = document.getElementById('view-comments');
-            commentContainer.innerHTML = '';
-            if(post.comments.length === 0) {
-                commentContainer.innerHTML = '<p style="font-size:0.85rem; color:#6b7280;">Hakuna maoni bado.</p>';
-            } else {
-                post.comments.forEach(c => { commentContainer.innerHTML += \`<div class="comment-item"><b>\${c.name}</b>\${c.text}</div>\`; });
-            }
-            navigate('single-post');
-        }
-        function likeCurrentPost() {
-            if (!currentPostId) return;
-            const post = posts.find(p => p.id === currentPostId);
-            if (post) { post.likes++; document.getElementById('view-likes').innerText = post.likes; saveData(); }
-        }
-        function addComment() {
-            const input = document.getElementById('comment-input');
-            const text = input.value.trim();
-            if (!text || !currentPostId) return;
-            const post = posts.find(p => p.id === currentPostId);
-            if (post) { post.comments.push({ name: profile.name, text: text }); input.value = ''; saveData(); openPost(currentPostId); alert("Maoni yameongezwa!"); }
-        }
-        function sharePost() {
-            if (navigator.share) { navigator.share({ title: document.getElementById('view-title').innerText, text: document.getElementById('view-body').innerText, url: window.location.href }).catch(() => {}); }
-            else { alert("Kushare: " + window.location.href); }
-        }
-        function searchPosts() {
-            const query = document.getElementById('search-input').value.toLowerCase();
-            const container = document.getElementById('home-posts-container');
-            container.innerHTML = '';
-            const filtered = posts.filter(p => p.title.toLowerCase().includes(query) || p.content.toLowerCase().includes(query) || p.category.toLowerCase().includes(query));
-            if (filtered.length === 0) { container.innerHTML = '<p style="text-align:center; color:#6b7280; font-size:0.85rem;">Hakuna post inayolingana.</p>'; return; }
-            filtered.forEach(post => { container.innerHTML += createPostHTML(post); });
-        }
-        function filterCategory(cat) {
-            const container = document.getElementById('home-posts-container');
-            container.innerHTML = '';
-            const filtered = posts.filter(p => p.category.includes(cat));
-            if (filtered.length === 0) { container.innerHTML = '<p style="text-align:center; color:#6b7280; font-size:0.85rem;">Hakuna post kwenye category hii.</p>'; return; }
-            filtered.forEach(post => { container.innerHTML += createPostHTML(post); });
-            window.scrollTo(0, 300);
-        }
-        function toggleNotifications() { navigate('notifications'); document.getElementById('notif-badge').style.display = 'none'; }
-        function renderNotifications() {
-            const container = document.getElementById('notifications-container');
-            container.innerHTML = '';
-            if (notifications.length === 0) { container.innerHTML = '<p style="text-align:center; color:#6b7280; font-size:0.85rem;">Hakuna arifa mpya.</p>'; return; }
-            notifications.forEach(n => { container.innerHTML += \`<div class="notif-card"><p>\${n.text}</p><small>\${n.time}</small></div>\`; });
-        }
-        function loadProfileData() {
-            document.getElementById('profile-name').innerText = profile.name;
-            document.getElementById('profile-reg').innerText = "Reg: " + profile.reg;
-            document.getElementById('profile-course').innerText = "Course: " + profile.course;
-            document.getElementById('profile-avatar').innerText = profile.name.charAt(0).toUpperCase();
-            document.getElementById('edit-name').value = profile.name;
-            document.getElementById('edit-reg').value = profile.reg;
-            document.getElementById('edit-course').value = profile.course;
-            const myPostsContainer = document.getElementById('my-posts-container');
-            myPostsContainer.innerHTML = '';
-            let myPosts = posts.filter(p => p.author === profile.name || (p.anonymous && p.author === profile.name));
-            if (myPosts.length === 0) { myPostsContainer.innerHTML = '<p style="font-size:0.85rem; color:#6b7280;">Hujachapisha post yoyote bado.</p>'; }
-            else { myPosts.reverse().forEach(post => { myPostsContainer.innerHTML += createPostHTML(post); }); }
-        }
-        function toggleEditProfile() {
-            const form = document.getElementById('edit-profile-form');
-            form.style.display = form.style.display === 'none' ? 'block' : 'none';
-        }
-        function saveProfile() {
-            const newName = document.getElementById('edit-name').value.trim();
-            const newReg = document.getElementById('edit-reg').value.trim();
-            const newCourse = document.getElementById('edit-course').value.trim();
-            if (!newName || !newReg || !newCourse) { alert("Tafadhali jaza sehemu zote!"); return; }
-            profile.name = newName; profile.reg = newReg; profile.course = newCourse;
-            saveData(); loadProfileData();
-            document.getElementById('edit-profile-form').style.display = 'none';
-            alert("Profile imeboreshwa kikamilifu!");
-        }
-        function renderAdminPosts() {
-            const container = document.getElementById('admin-post-list');
-            if (!container) return;
-            container.innerHTML = '';
-            if (posts.length === 0) { container.innerHTML = '<p style="font-size:0.8rem; color:#6b7280;">Hakuna posts.</p>'; return; }
-            posts.forEach(post => {
-                container.innerHTML += \`
-                    <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #fecdd3; padding:8px 0;">
-                        <div style="font-size:0.75rem; max-width: 70%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">\${post.title}</div>
-                        <button class="btn btn-danger" style="width:auto; padding:4px 8px; font-size:0.65rem; margin-top:0;" onclick="deletePost(\${post.id})">Futa</button>
-                    </div>
-                \`;
-            });
-        }
-        function deletePost(id) {
-            if (confirm("Una uhakika unataka kufuta post hii?")) {
-                posts = posts.filter(p => p.id !== id);
-                saveData();
-                alert("Post imefutwa!");
-            }
-        }
-        window.onload = function() {
-            setTimeout(() => {
-                document.getElementById('splash-screen').style.opacity = '0';
-                setTimeout(() => {
-                    document.getElementById('splash-screen').style.display = 'none';
-                    document.getElementById('app-container').style.display = 'block';
-                    updateUI();
-                    loadProfileData();
-                }, 500);
-            }, 2500);
-        };
-    </script>
-</body>
-</html>`
-        };
-
-        const moduleNames = {
-            1: "💼 KITWE Digital Twin",
-            2: "🧠 KITWE Memory AI",
-            3: "📚 KITWE Study AI",
-            4: "🎓 TIA Kigoma Forum"
-        };
-
-        function openModule(id) {
-            const frame = document.getElementById('module-frame');
-            const viewer = document.getElementById('module-viewer');
-            const titleEl = document.getElementById('active-module-title');
-
-            titleEl.innerText = moduleNames[id];
-            viewer.style.display = 'flex';
-            frame.srcdoc = moduleCodes[id];
-        }
-
-        function returnToHub() {
-            const viewer = document.getElementById('module-viewer');
-            const frame = document.getElementById('module-frame');
-            viewer.style.display = 'none';
-            frame.srcdoc = '';
-        }
-    </script>
-</body>
 </html>
+</template>
